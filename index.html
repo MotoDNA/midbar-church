@@ -1,0 +1,796 @@
+<title>광야교회 미드바르</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap">
+<style>
+/* Layout: 새벽 강가 영상 위 하단 정렬 헤드라인(이사야 43:19) → 한 줄 바로가기 → 히브리어 미드바르/다바르 타이포 → 설교 → 예배·소식 → 짙은 기도 시트 → 하단 정보. 실제 교회 사이트처럼 밝은 단일 테마 */
+html,body{background:#FFFFFF}
+:root{
+  --bg:#FFFFFF;        /* 흰 바탕 */
+  --soft:#F4F3EF;      /* 엷은 바탕 · 마우스 올렸을 때 */
+  --surface:#FFFFFF;
+  --ink:#151712;
+  --mute:#6E6F66;
+  --line:rgba(21,23,18,.12);
+  --dawn:#C98A3A;      /* 해 뜨는 금빛 · 포인트 1색 */
+  --night:#191B16;     /* 짙은 시트 */
+  --night-ink:#E9E6DC;
+  --todo:#B4541E;
+  --f-serif:"Noto Serif KR","Nanum Myeongjo",serif;
+  --f-sans:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{color:var(--ink);font-family:var(--f-sans);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;word-break:keep-all;overflow-x:clip}
+::selection{background:rgba(201,138,58,.3)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--night)}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none;margin:0;padding:0}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:2px solid var(--dawn);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1280px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+@media (min-width:900px){.wrap{padding-left:max(48px,env(safe-area-inset-left,0px));padding-right:max(48px,env(safe-area-inset-right,0px))}}
+.todo{display:inline-block;font-family:var(--f-sans);font-size:11px;font-weight:700;letter-spacing:0;color:var(--todo);border:1px dashed currentColor;border-radius:3px;padding:0 5px;line-height:1.7;margin-left:6px;vertical-align:middle;white-space:nowrap}
+.label{font-size:12px;letter-spacing:.2em;color:var(--mute);font-weight:500}
+.label::before{content:"";display:inline-block;width:28px;height:1px;background:currentColor;vertical-align:middle;margin-right:12px;opacity:.6}
+
+/* ---------- 버튼 ---------- */
+.pill{display:inline-flex;align-items:center;gap:10px;border-radius:999px;font-size:15px;font-weight:500;padding:12px 14px 12px 24px;transition:transform .2s var(--ease),background .25s,color .25s}
+.pill:active{transform:scale(.97)}
+.pill .ar{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;transition:transform .3s var(--ease)}
+.pill:hover .ar{transform:translateX(2px) rotate(-45deg)}
+.pill.solid{background:#fff;color:var(--ink)}
+.pill.solid .ar{background:var(--ink);color:#fff}
+.pill.glass{background:rgba(255,255,255,.12);color:#fff;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+.pill.glass .ar{background:rgba(255,255,255,.18)}
+.pill.dark{background:var(--ink);color:#fff}
+.pill.dark .ar{background:#fff;color:var(--ink)}
+
+/* ---------- 헤더 ---------- */
+header{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:30;transition:background .3s,color .3s,box-shadow .3s;color:#fff}
+header.solid{background:rgba(255,255,255,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:var(--ink);box-shadow:0 1px 0 var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:76px;gap:20px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo .mk{width:44px;height:44px;border-radius:50%;background:#fff;display:grid;place-items:center;overflow:hidden;flex:none;box-shadow:0 2px 10px rgba(0,0,0,.12)}
+.logo .mk img{width:40px;height:40px;display:block}
+.logo b{font-family:var(--f-serif);font-size:20px;font-weight:700;letter-spacing:-.02em}
+.logo .en{display:flex;flex-direction:column;justify-content:center;font-size:9.5px;line-height:1.25;letter-spacing:.16em;font-weight:500;opacity:.75;margin-left:-4px}
+.gnb{display:flex;gap:4px}
+.gnb>li{position:relative}
+.gnb>li>a{display:block;padding:10px 18px;font-size:15px;font-weight:500;border-radius:999px;opacity:.88}
+.gnb>li>a:hover{opacity:1}
+.gnb>li.on>a{opacity:1;background:rgba(127,127,127,.16)}
+.gnb .dep2{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);min-width:160px;background:var(--surface);color:var(--ink);border-radius:14px;padding:8px;box-shadow:0 12px 32px rgba(0,0,0,.14);display:none}
+.gnb .dep2::before{content:"";position:absolute;inset:-10px 0 auto;height:10px}
+.gnb>li:hover .dep2,.gnb>li:focus-within .dep2{display:block}
+.gnb .dep2 a{display:block;padding:8px 14px;font-size:14px;border-radius:8px;color:var(--mute)}
+.gnb .dep2 a:hover{background:var(--soft);color:var(--ink)}
+.hd-cta{display:flex;align-items:center;gap:10px}
+.hd-cta .pill{padding:9px 10px 9px 18px;font-size:14px}
+.hd-cta .pill .ar{width:24px;height:24px}
+header .pill.glass{color:inherit}
+header.solid .pill.glass{background:var(--ink);color:#fff;box-shadow:none}
+.burger{display:none;width:44px;height:44px;border:0;background:none;color:inherit;cursor:pointer;padding:10px}
+.burger span{display:block;height:1.5px;background:currentColor;margin:6px 0}
+.mnav{position:fixed;inset:0;z-index:35;background:var(--night);color:var(--night-ink);display:none;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 96px) max(24px,env(safe-area-inset-right,0px)) 40px max(24px,env(safe-area-inset-left,0px))}
+.mnav.open{display:flex}
+.mnav a{font-family:var(--f-serif);font-size:30px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+.mnav .x{position:absolute;top:calc(env(safe-area-inset-top,0px) + 16px);right:max(16px,env(safe-area-inset-right,0px));width:44px;height:44px;border:0;background:none;color:inherit;font-size:28px;cursor:pointer}
+
+/* ---------- 히어로 ---------- */
+.hero{position:relative;height:max(600px,min(100svh,900px));overflow:hidden;background:#2A2A20;color:#fff}
+.hero video,.hero .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 50%}
+.hero video{opacity:0;transition:opacity .6s ease}
+.hero video.ready{opacity:1}
+.hero .poster{animation:settle 1.8s var(--ease) both}
+.hero .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,8,.45) 0%,rgba(10,12,8,0) 22%,rgba(10,12,8,0) 45%,rgba(10,12,8,.62) 100%)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.08;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.hero .wrap{position:relative;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-block:0 56px}
+.hero-row{display:flex;justify-content:space-between;align-items:flex-end;gap:40px}
+.hero .eyebrow{font-size:13px;letter-spacing:.18em;opacity:.8;text-shadow:0 2px 16px rgba(0,0,0,.3)}
+.hero h1{font-family:var(--f-serif);font-weight:500;font-size:clamp(44px,7.4vw,112px);line-height:1.08;letter-spacing:-.035em;margin-top:18px;text-shadow:0 16px 38px rgba(0,0,0,.28)}
+.hero h1 .ln{display:block;overflow:hidden;padding-bottom:.06em}
+.hero h1 .ln>span{display:block;animation:rise 1s var(--ease) both}
+.hero h1 .ln:nth-child(2)>span{animation-delay:.12s}
+.hero h1 em{font-style:normal;color:rgba(255,255,255,.62)}
+.hero .sub{margin-top:22px;max-width:30rem;font-size:17px;font-weight:300;line-height:1.65;color:rgba(255,255,255,.86);text-shadow:0 2px 18px rgba(0,0,0,.42)}
+.hero .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
+.hero .side{width:300px;flex:none;border-top:1px solid rgba(255,255,255,.35);padding-top:16px;font-size:14px;color:rgba(255,255,255,.85)}
+.hero .side b{display:block;font-family:var(--f-serif);font-size:22px;font-weight:500;color:#fff;margin:4px 0 2px;font-variant-numeric:tabular-nums}
+.hero .side .ref{display:block;margin-top:18px;font-size:12px;letter-spacing:.14em;opacity:.7}
+.in{animation:up .9s var(--ease) both}
+.d1{animation-delay:.05s}.d2{animation-delay:.35s}.d3{animation-delay:.5s}.d4{animation-delay:.65s}.d5{animation-delay:.8s}
+header.enter{animation:down .8s var(--ease) both}
+@keyframes rise{from{transform:translateY(105%)}to{transform:none}}
+@keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes down{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+@keyframes settle{from{transform:scale(1.06)}to{transform:none}}
+
+/* ---------- 바로가기 줄 ---------- */
+.quick{background:var(--surface);border-bottom:1px solid var(--line)}
+.quick ul{display:grid;grid-template-columns:repeat(4,1fr)}
+.quick li+li{border-left:1px solid var(--line)}
+.quick a{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:26px 28px;min-height:88px;transition:background .25s}
+.quick a:hover{background:var(--soft)}
+.quick a:hover .go{transform:translateX(3px)}
+.quick small{display:block;font-size:12px;color:var(--mute);letter-spacing:.04em}
+.quick b{display:block;font-family:var(--f-serif);font-size:19px;font-weight:500;letter-spacing:-.02em}
+.quick .go{color:var(--dawn);transition:transform .25s var(--ease);flex:none}
+
+/* ---------- 섹션 공통 ---------- */
+.sec{padding-block:128px}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:48px}
+.sec-head h2{font-family:var(--f-serif);font-weight:500;font-size:clamp(32px,4.4vw,56px);line-height:1.15;letter-spacing:-.035em;margin-top:16px}
+.sec-head h2 em{font-style:normal;color:var(--mute)}
+.more{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;border-bottom:1px solid var(--ink);padding-bottom:3px}
+.more:hover{color:var(--dawn);border-color:var(--dawn)}
+
+/* 미드바르 / 다바르 */
+.word{display:grid;grid-template-columns:1fr 1.1fr;gap:72px;align-items:center}
+.word .txt{min-width:0}
+.word p{color:var(--mute);font-size:17px;max-width:32rem}
+.word p+p{margin-top:16px}
+.heb{position:relative;font-family:"Times New Roman","Frank Ruhl Libre",serif;direction:rtl;unicode-bidi:isolate;font-size:clamp(120px,19vw,260px);line-height:.85;text-align:center;white-space:nowrap;letter-spacing:.02em}
+.heb .m{color:rgba(21,23,18,.14)}
+.heb .d{color:var(--ink)}
+.heb-key{display:flex;justify-content:space-between;margin-top:28px;border-top:1px solid var(--line);padding-top:16px;font-size:14px;color:var(--mute)}
+.heb-key b{display:block;font-family:var(--f-serif);font-weight:500;font-size:20px;color:var(--ink);letter-spacing:-.02em}
+.heb-key .r{text-align:right}
+.heb-key .r b{color:var(--dawn)}
+
+/* 설교 */
+.sermon{display:grid;grid-template-columns:1.35fr 1fr;gap:48px;align-items:start}
+.sermon>*{min-width:0}
+.feat{position:relative;display:block;aspect-ratio:16/10;max-width:100%;border-radius:28px;overflow:hidden;background:var(--night);color:var(--night-ink)}
+.feat img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 50%;filter:saturate(.7) brightness(.55);transition:transform .7s var(--ease)}
+.feat:hover img{transform:scale(1.04)}
+.feat .in-c{position:absolute;inset:0;padding:32px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(0deg,rgba(10,12,8,.7),rgba(10,12,8,0) 60%)}
+.feat .tag{align-self:flex-start;font-size:12px;letter-spacing:.14em;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:5px 12px}
+.feat .play{position:absolute;right:32px;top:32px;width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.16);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}
+.feat .play::after{content:"";border-left:15px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px}
+.feat h3{font-family:var(--f-serif);font-weight:500;font-size:clamp(24px,2.6vw,34px);letter-spacing:-.03em;line-height:1.25;color:#fff}
+.feat small{display:block;margin-top:8px;font-size:14px;opacity:.75}
+.slist li{border-top:1px solid var(--line)}
+.slist li:last-child{border-bottom:1px solid var(--line)}
+.slist a{display:grid;grid-template-columns:56px 1fr auto;gap:16px;align-items:center;padding:22px 0}
+.slist a:hover b{color:var(--dawn)}
+.slist .no{font-size:12px;color:var(--mute);letter-spacing:.1em;font-variant-numeric:tabular-nums}
+.slist b{display:block;font-family:var(--f-serif);font-weight:500;font-size:19px;letter-spacing:-.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .2s}
+.slist span{min-width:0}
+.slist small{display:block;color:var(--mute);font-size:13px}
+.slist .ar{color:var(--mute)}
+.note{margin-top:16px;font-size:13px;color:var(--mute)}
+
+/* 예배 + 소식 */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:72px}
+.two>*{min-width:0}
+.times li{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:baseline;padding:22px 0;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+.times li:last-child{border-bottom:1px solid var(--line)}
+.times b{font-family:var(--f-serif);font-weight:500;font-size:20px;letter-spacing:-.02em}
+.times small{display:block;color:var(--mute);font-size:13px}
+.times .t{font-size:20px;font-weight:300;white-space:nowrap}
+.board li{border-top:1px solid var(--line)}
+.board li:last-child{border-bottom:1px solid var(--line)}
+.board a{display:flex;justify-content:space-between;gap:16px;padding:22px 0;align-items:baseline}
+.board a:hover .t{color:var(--dawn)}
+.board .t{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .2s}
+.board .n{display:inline-block;font-size:11px;font-weight:700;color:var(--dawn);border:1px solid var(--dawn);border-radius:999px;padding:0 8px;margin-right:10px;line-height:1.7;vertical-align:2px}
+.board .dt{color:var(--mute);font-size:13px;flex:none;font-variant-numeric:tabular-nums}
+
+/* 기도 시트 */
+.pray{position:relative;z-index:2;background:var(--night);color:var(--night-ink);border-radius:48px 48px 0 0;margin-top:-48px}
+.pray .wrap{padding-block:120px}
+.pray .label{color:rgba(233,230,220,.55)}
+.pray h2{font-family:var(--f-serif);font-weight:500;font-size:clamp(34px,5.2vw,72px);line-height:1.12;letter-spacing:-.035em;margin-top:24px;max-width:14em}
+.pray h2 em{font-style:normal;color:rgba(233,230,220,.45)}
+.pray-row{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;margin-top:40px}
+.nw{white-space:nowrap}
+@media (max-width:640px){.nw{white-space:normal}}
+.pray p{max-width:32rem;color:rgba(233,230,220,.7)}
+.pray .pill{background:var(--night-ink);color:var(--night)}
+.pray .pill .ar{background:var(--night);color:var(--night-ink)}
+
+/* ---------- 서브 페이지 ---------- */
+.subhero{position:relative;height:420px;overflow:hidden;color:#fff;background:#2A2A20}
+.subhero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:settle 1.8s var(--ease) both}
+.subhero .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,8,.5),rgba(10,12,8,.2) 40%,rgba(10,12,8,.6))}
+.subhero .wrap{position:relative;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-block:0 48px}
+.subhero .crumb{font-size:13px;opacity:.75;letter-spacing:.06em}
+.subhero h1{font-family:var(--f-serif);font-weight:500;font-size:clamp(40px,6vw,80px);letter-spacing:-.035em;line-height:1.1;margin-top:10px}
+.subtabs{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px);z-index:5}
+.subtabs ul{display:flex;gap:4px;overflow-x:auto;padding-block:12px;scrollbar-width:none}
+.subtabs a{display:block;padding:8px 16px;border-radius:999px;font-size:14px;color:var(--mute);white-space:nowrap}
+.subtabs a:hover{background:var(--soft);color:var(--ink)}
+.block{padding-block:112px 0}
+.block:last-child{padding-bottom:128px}
+.block-grid{display:grid;grid-template-columns:280px 1fr;gap:64px}
+.block-grid>*{min-width:0}
+.block-grid h2{font-family:var(--f-serif);font-weight:500;font-size:32px;letter-spacing:-.03em;line-height:1.2}
+.block-grid .k{display:block;font-size:12px;letter-spacing:.2em;color:var(--mute);margin-bottom:12px}
+.prose{max-width:40rem}
+.prose p+p{margin-top:16px}
+.prose .lead{font-family:var(--f-serif);font-size:26px;line-height:1.5;letter-spacing:-.025em;color:var(--ink)}
+.prose p{color:#3E403A}
+.greet{display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:start}
+.greet>*{min-width:0}
+#greetBody p+p{margin-top:16px}
+#newsRows strong{display:block;font-weight:700;color:var(--ink);margin-bottom:4px}
+.copy{font:inherit;font-size:13px;font-weight:500;margin-left:10px;padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.copy:hover{border-color:var(--ink)}
+.photo{aspect-ratio:4/5;max-width:100%;border-radius:24px;background:var(--soft);border:1px dashed rgba(21,23,18,.25);display:grid;place-items:center;text-align:center;color:var(--mute);font-size:14px;padding:16px}
+.sign{margin-top:32px;font-family:var(--f-serif);font-size:16px;color:var(--mute)}
+.sign b{font-size:26px;font-weight:500;color:var(--ink);margin-left:10px;letter-spacing:-.02em}
+.rows li{display:grid;grid-template-columns:180px 1fr;gap:16px;padding:20px 0;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+.rows li:last-child{border-bottom:1px solid var(--line)}
+.rows b{font-family:var(--f-serif);font-weight:500;font-size:18px;letter-spacing:-.02em}
+.rows span{color:#3E403A;min-width:0}
+.map{margin-top:28px;aspect-ratio:16/7;max-width:100%;border-radius:24px;background:var(--soft);border:1px dashed rgba(21,23,18,.25);display:grid;place-items:center;color:var(--mute);font-size:14px;text-align:center;padding:16px}
+.vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px 24px}
+.vcard{display:block}
+.vcard .th{position:relative;aspect-ratio:16/10;max-width:100%;border-radius:20px;overflow:hidden;background:var(--night)}
+.vcard .th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.6) brightness(.5);transition:transform .7s var(--ease)}
+.vcard:hover .th img{transform:scale(1.05)}
+.vcard .th span{position:absolute;left:18px;bottom:16px;right:18px;font-family:var(--f-serif);color:#fff;font-size:20px;letter-spacing:-.02em;line-height:1.3}
+.vcard b{display:block;margin-top:14px;font-weight:500}
+.vcard small{color:var(--mute);font-size:13px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line)}
+.steps li{padding:28px 28px 28px 0;border-bottom:1px solid var(--line)}
+.steps li+li{padding-left:28px;border-left:1px solid var(--line)}
+.steps .s{font-size:12px;letter-spacing:.16em;color:var(--dawn)}
+.steps b{display:block;font-family:var(--f-serif);font-weight:500;font-size:22px;letter-spacing:-.02em;margin:8px 0}
+.steps p{color:var(--mute);font-size:15px}
+
+/* 유튜브 최신 설교 */
+.sv-main{display:block}
+.sv-main .th{position:relative;display:block;aspect-ratio:16/9;max-width:100%;border-radius:24px;overflow:hidden;background:var(--night)}
+.sv-main img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+.sv-main:hover img{transform:scale(1.03)}
+.pbtn{position:absolute;left:50%;top:50%;width:68px;height:68px;margin:-34px 0 0 -34px;border-radius:50%;background:rgba(20,20,16,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);transition:transform .25s var(--ease),background .25s}
+.pbtn::after{content:"";position:absolute;left:27px;top:22px;border-left:18px solid #fff;border-top:12px solid transparent;border-bottom:12px solid transparent}
+.sv-main:hover .pbtn{transform:scale(1.06);background:rgba(201,138,58,.85)}
+.new{position:absolute;left:18px;top:18px;font-size:12px;font-weight:700;color:#fff;background:var(--dawn);border-radius:999px;padding:3px 12px}
+.sv-main .cap{display:block;margin-top:20px}
+.sv-main .cap .k{display:block;font-size:12px;letter-spacing:.12em;color:var(--dawn);font-weight:500}
+.sv-main .cap b{display:block;font-family:var(--f-serif);font-weight:500;font-size:clamp(24px,2.6vw,32px);letter-spacing:-.03em;line-height:1.25;margin-top:6px}
+.sv-main .cap small{display:block;color:var(--mute);font-size:14px;margin-top:6px}
+.sv-list li{border-top:1px solid var(--line)}
+.sv-list li:last-child{border-bottom:1px solid var(--line)}
+.sv-list a{display:grid;grid-template-columns:148px 1fr auto;gap:18px;align-items:center;padding:18px 0}
+.sv-list a>span{min-width:0}
+.sv-list .th{display:block;aspect-ratio:16/9;max-width:100%;border-radius:12px;overflow:hidden;background:var(--night)}
+.sv-list .th img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+.sv-list a:hover img{transform:scale(1.05)}
+.sv-list b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-family:var(--f-serif);font-weight:500;font-size:18px;letter-spacing:-.02em;line-height:1.35;transition:color .2s}
+.sv-list a:hover b{color:var(--dawn)}
+.sv-list small{display:block;color:var(--mute);font-size:13px;margin-top:4px}
+.sv-list .ar{color:var(--mute)}
+.vcard .th{display:block}
+.photo.has{padding:0;border:0;overflow:hidden;background:var(--night)}
+.photo.has img{width:100%;height:100%;object-fit:cover;display:block}
+@media (max-width:640px){.sv-list a{grid-template-columns:112px 1fr;gap:14px}.sv-list .ar{display:none}.sv-main .th{border-radius:18px}}
+/* ---------- 주보 ---------- */
+.bul-two{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.bul-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px 20px}
+.bul-two>*,.bul-grid>*{min-width:0}
+.bcard{display:block;width:100%;text-align:left;background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer}
+.bcard .pg{position:relative;display:block;aspect-ratio:3/4;max-width:100%;border-radius:16px;overflow:hidden;background:var(--soft);box-shadow:0 0 0 1px var(--line)}
+.bcard .pg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .6s var(--ease)}
+.bcard:hover .pg img{transform:scale(1.03)}
+.bcard .cnt{position:absolute;right:12px;bottom:12px;font-size:12px;font-weight:700;color:#fff;background:rgba(20,22,16,.7);border-radius:999px;padding:2px 10px}
+.bcard .k{display:block;margin-top:14px;font-size:12px;letter-spacing:.12em;color:var(--dawn);font-weight:500}
+.bcard b{display:block;font-family:var(--f-serif);font-weight:500;font-size:20px;letter-spacing:-.02em;margin-top:4px}
+.bcard small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
+.bul-two .bcard .pg{aspect-ratio:4/3}
+.bempty{display:grid;place-items:center;text-align:center;aspect-ratio:4/3;border-radius:16px;border:1px dashed rgba(21,23,18,.25);background:var(--soft);color:var(--mute);padding:20px;font-size:15px}
+.bempty b{display:block;font-family:var(--f-serif);font-weight:500;color:var(--ink);font-size:19px;margin-bottom:6px}
+.bview{position:fixed;inset:0;z-index:50;background:rgba(14,15,12,.97);display:flex;flex-direction:column}
+.bview-bar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:calc(env(safe-area-inset-top,0px) + 14px) max(20px,env(safe-area-inset-right,0px)) 14px max(20px,env(safe-area-inset-left,0px));color:#fff;border-bottom:1px solid rgba(255,255,255,.1)}
+.bview-bar b{display:block;font-family:var(--f-serif);font-weight:500;font-size:20px}
+.bview-bar small{display:block;font-size:13px;opacity:.7}
+.bview-x{width:48px;height:48px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;font-size:28px;line-height:1;cursor:pointer}
+.bview-body{flex:1;overflow:auto;padding:24px max(16px,env(safe-area-inset-right,0px)) calc(40px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:grid;justify-items:center;align-content:start;gap:20px}
+.bview-body figure{margin:0;width:100%;max-width:880px}
+.bview-body img{display:block;width:100%;border-radius:6px;background:#fff}
+.bview-body figcaption{display:flex;justify-content:space-between;color:rgba(255,255,255,.7);font-size:13px;margin-top:8px}
+.bview-body figcaption a{color:#fff;text-decoration:underline}
+@media (max-width:1024px){.bul-grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:640px){.bul-two{grid-template-columns:1fr}.bul-grid{grid-template-columns:repeat(2,1fr);gap:20px 14px}.bcard b{font-size:17px}}
+section.page{display:none}
+section.page.on{display:block}
+
+/* ---------- 푸터 ---------- */
+footer{background:var(--night);color:rgba(233,230,220,.6);font-size:14px}
+footer .wrap{padding-block:56px 48px}
+.f-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.1)}
+.f-brand{display:flex;align-items:center;gap:12px}
+.f-brand .mk{width:clamp(36px,4vw,48px);height:clamp(36px,4vw,48px);border-radius:50%;background:#fff;display:grid;place-items:center;overflow:hidden;flex:none}
+.f-brand .mk img{width:92%;height:92%}
+.f-word{font-family:var(--f-serif);font-weight:500;font-size:clamp(26px,4vw,52px);letter-spacing:-.04em;line-height:1;color:var(--night-ink)}
+.f-links{display:flex;gap:24px;flex-wrap:wrap}
+.f-links a:hover{color:var(--night-ink)}
+.f-bot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:24px;font-size:13px}
+.f-bot address{font-style:normal}
+.f-bot address span+span::before{content:"·";margin:0 10px;opacity:.5}
+
+/* ---------- 반응형 ---------- */
+@media (max-width:1024px){
+  .gnb,.hd-cta .pill{display:none}
+  .burger{display:block}
+  .hero-row{flex-direction:column;align-items:flex-start;gap:28px}
+  .hero .side{width:100%;max-width:360px}
+  .quick ul{grid-template-columns:repeat(2,1fr)}
+  .quick li:nth-child(3){border-left:0}
+  .quick li:nth-child(n+3){border-top:1px solid var(--line)}
+  .word,.sermon,.two{grid-template-columns:1fr;gap:48px}
+  .block-grid{grid-template-columns:1fr;gap:24px}
+  .vgrid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:640px){
+  header .wrap{height:64px}
+  .subtabs{top:calc(env(safe-area-inset-top,0px) + 64px)}
+  .hero{height:max(640px,min(100svh,820px))}
+  .hero video,.hero .poster{object-position:68% 50%}
+  .hero .scrim{background:linear-gradient(180deg,rgba(10,12,8,.4) 0%,rgba(10,12,8,0) 25%,rgba(10,12,8,.25) 45%,rgba(10,12,8,.78) 100%)}
+  .hero .wrap{padding-block:0 36px}
+  .hero .sub{font-size:15.5px}
+  .hero .acts{flex-direction:column;align-items:stretch}
+  .hero .acts .pill{justify-content:space-between}
+  .quick a{padding:18px 16px;min-height:76px}
+  .quick b{font-size:17px}
+  .sec{padding-block:88px}
+  .feat{border-radius:20px}
+  .feat .in-c{padding:22px}
+  .feat .play{right:22px;top:22px;width:48px;height:48px}
+  .slist a{grid-template-columns:40px 1fr auto;gap:12px}
+  .pray{border-radius:32px 32px 0 0;margin-top:-32px}
+  .pray .wrap{padding-block:88px}
+  .subhero{height:340px}
+  .greet{grid-template-columns:1fr}
+  .photo{max-width:220px}
+  .rows li{grid-template-columns:1fr;gap:4px}
+  .vgrid{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .steps li,.steps li+li{padding:24px 0;border-left:0}
+  .f-bot address span{display:block}
+  .f-bot address span+span::before{content:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+
+<header id="hd" class="enter">
+  <div class="wrap">
+    <a class="logo" href="#home" aria-label="광야교회 홈"><span class="mk"><img src="logo-mark.png" alt=""></span><b>광야교회</b><span class="en"><span>MIDBAR</span><span>CHURCH</span></span></a>
+    <ul class="gnb" id="gnb">
+      <li data-p="about"><a href="#about">교회소개</a>
+        <div class="dep2"><a href="#about">인사말</a><a href="#about">교회 이름의 뜻</a><a href="#about">걸어온 길</a></div></li>
+      <li data-p="worship"><a href="#worship">예배안내</a>
+        <div class="dep2"><a href="#worship">예배 시간</a><a href="#worship">오시는 길</a></div></li>
+      <li data-p="word"><a href="#word">말씀</a>
+        <div class="dep2"><a href="#word">주일 설교</a><a href="#word">그림 묵상</a></div></li>
+      <li data-p="bulletin"><a href="#bulletin">주보</a></li>
+      <li data-p="together"><a href="#together">함께하기</a>
+        <div class="dep2"><a href="#together">새가족 안내</a><a href="#together">기도 제목</a><a href="#together">교회 소식</a><a href="#together">헌금 안내</a></div></li>
+    </ul>
+    <div class="hd-cta">
+      <a class="pill glass" href="#worship">예배 안내<span class="ar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg></span></a>
+      <button class="burger" id="burger" aria-label="메뉴 열기" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<nav class="mnav" id="mnav" aria-label="모바일 메뉴">
+  <button class="x" id="mclose" aria-label="메뉴 닫기">×</button>
+  <a href="#home">처음으로</a><a href="#about">교회소개</a><a href="#worship">예배안내</a><a href="#word">말씀</a><a href="#bulletin">주보</a><a href="#together">함께하기</a>
+</nav>
+
+<main>
+<!-- =================== 메인 =================== -->
+<section class="page" id="p-home">
+  <div class="hero">
+    <img class="poster" src="poster.jpg" alt="해 뜨는 산 아래 강가에서 사슴들이 물을 마시는 풍경">
+    <video id="hv" src="hero.mp4" poster="poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+    <div class="scrim"></div>
+    <div class="grain"></div>
+    <div class="wrap">
+      <div class="hero-row">
+        <div>
+          <p class="eyebrow in d1">대한예수교장로회 · 일산 풍동</p>
+          <h1><span class="ln"><span>광야에 길을,</span></span><span class="ln"><span><em>사막에</em> 강을</span></span></h1>
+          <p class="sub in d3" id="heroSub">척박한 광야 길을 걷는 듯한 일상 속에서, 광야교회가 여러분의 따뜻한 영적 오아시스가 되기를 소망합니다.</p>
+          <div class="acts in d4">
+            <a class="pill solid" href="#worship">이번 주일 예배 오기<span class="ar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg></span></a>
+            <a class="pill glass" href="https://www.youtube.com/@midbar-church-smilepastor" target="_blank" rel="noopener">설교 영상 보기<span class="ar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5"/></svg></span></a>
+          </div>
+        </div>
+        <div class="side in d5" id="heroSide">
+          주일 예배
+          <b>오후 5:00</b>
+          금요기도회 오후 8:30 · 다인타운 4층
+          <span class="ref">이사야 43:19</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="quick" aria-label="바로가기">
+    <ul class="wrap">
+      <li><a href="#worship"><span><small>매주 모이는 시간</small><b>예배 시간</b></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a></li>
+      <li><a href="#worship"><span><small>일산은광교회 예배당</small><b>오시는 길</b></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a></li>
+      <li><a href="#together"><span><small>처음 오셨나요</small><b>새가족 안내</b></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a></li>
+      <li><a href="#together"><span><small>온라인 헌금</small><b>헌금 안내</b></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a></li>
+    </ul>
+  </nav>
+
+  <div class="wrap sec">
+    <div class="word">
+      <div class="txt">
+        <p class="label" style="color:var(--mute);font-size:12px">교회 이름의 뜻</p>
+        <div class="sec-head" style="margin-bottom:28px"><h2>광야라는 단어 안에<br><em>말씀이 들어 있습니다</em></h2></div>
+        <p>히브리어로 광야는 ‘미드바르’입니다. 이 단어는 ‘말씀하시다’라는 뜻의 ‘다바르’에서 나왔습니다.</p>
+        <p>성경의 광야는 버려진 땅이 아니라, 세상의 소음이 잦아들고 하나님의 말씀이 가장 선명하게 들리는 곳입니다.</p>
+        <p style="margin-top:28px"><a class="more" href="#about">교회 소개 읽기 →</a></p>
+      </div>
+      <div>
+        <div class="heb" lang="he" aria-label="미드바르, 광야"><span class="m">מ</span><span class="d">דבר</span></div>
+        <div class="heb-key"><div><b style="color:var(--dawn)">다바르</b>말씀하시다 · 진한 글자</div><div class="r"><b style="color:var(--ink)">미드바르</b>광야 · 전체 단어</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap sec" style="padding-top:0">
+    <div class="sec-head">
+      <div><p class="label">말씀</p><h2>최신 설교</h2></div>
+      <a class="more" href="#word">설교 전체 보기 →</a>
+    </div>
+    <div class="sermon" id="svHome">
+      <a class="sv-main" href="https://www.youtube.com/watch?v=LEMtXSTmRFA" target="_blank" rel="noopener"><span class="th"><img src="thumbs/LEMtXSTmRFA.jpg" alt="감사하며 축복할 때 썸네일"><span class="pbtn"></span></span><span class="cap"><small class="k">최신 · 주일설교 · 추수감사주일</small><b>감사하며 축복할 때</b><small>박규성 담임목사 · 고린도전서 10장 16~17절 · 2026.11.01</small></span></a>
+      <div>
+        <ul class="sv-list" id="svList">
+          <li><a href="https://www.youtube.com/watch?v=x33yW_3tGZQ" target="_blank" rel="noopener"><span class="th"><img src="thumbs/x33yW_3tGZQ.jpg" alt=""></span><span><b>믿음으로 말미암아 살리라</b><small>금요기도회 · 하박국 2:1~4 · 2026.10.30</small></span><span class="ar">↗</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=1KxERtn-9qI" target="_blank" rel="noopener"><span class="th"><img src="thumbs/1KxERtn-9qI.jpg" alt=""></span><span><b>물 가에 심어진 나무</b><small>큐티말씀 · 예레미야 17:7-8</small></span><span class="ar">↗</span></a></li>
+        </ul>
+        <p class="note">유튜브에 새 영상을 올리면 이 목록이 최신순으로 자동으로 바뀝니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap sec" style="padding-top:0">
+    <div class="sec-head"><div><p class="label">주보</p><h2>이번 주 주보</h2></div><a class="more" href="#bulletin">지난 주보 모두 보기 →</a></div>
+    <div class="bul-two" id="homeBul"></div>
+  </div>
+
+  <div class="wrap sec" style="padding-top:0">
+    <div class="two">
+      <div>
+        <div class="sec-head" style="margin-bottom:24px"><div><p class="label">예배</p><h2>예배 시간</h2></div></div>
+        <ul class="times" id="homeTimes">
+          <li><span><b>주일 예배</b><small>인도 박규성 담임목사</small></span><span class="t">오후 5:00</span></li>
+          <li><span><b>금요기도회</b><small>경배와 찬양 · 말씀</small></span><span class="t">오후 8:30</span></li>
+        </ul>
+      </div>
+      <div>
+        <div class="sec-head" style="margin-bottom:24px"><div><p class="label">소식</p><h2>교회 소식</h2></div></div>
+        <ul class="board" id="homeNews">
+          <li><a href="#together"><span class="t"><i class="n">새소식</i>유튜브 채널에 매일 ‘큐티말씀’이 올라옵니다</span><span class="dt">2026.11.01</span></a></li>
+          <li><a href="#together"><span class="t"><i class="n">공지</i>추수감사주일 예배를 드렸습니다</span><span class="dt">2026.11.01</span></a></li>
+          <li><a href="#together"><span class="t">봉사자를 모집합니다</span><span class="dt">2026.11.01</span></a></li>
+          <li><a href="#together"><span class="t">심방이 필요하신 분은 알려 주세요</span><span class="dt">2026.11.01</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="pray">
+    <div class="wrap">
+      <p class="label">기도 부탁</p>
+      <h2><span class="nw">광야교회의 성전 마련을 위해</span><br><em class="nw">함께 기도해주세요.</em></h2>
+      <div class="pray-row">
+        <p>재정적으로 자립하여 현장 예배 장소를 속히 마련할 수 있도록, 그리고 예배당을 무료로 내어 주신 일산은광교회 당회와 성도님들을 위해서도 함께 기도해 주세요.</p>
+        <a class="pill" href="#together">기도 제목 보기<span class="ar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg></span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 교회소개 =================== -->
+<section class="page" id="p-about">
+  <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
+    <div class="wrap"><p class="crumb">홈 / 교회소개</p><h1>교회소개</h1></div></div>
+  <nav class="subtabs" aria-label="교회소개 메뉴"><ul class="wrap"><li><a href="#about">인사말</a></li><li><a href="#about">교회 이름의 뜻</a></li><li><a href="#about">걸어온 길</a></li></ul></nav>
+  <div class="wrap">
+    <div class="block block-grid">
+      <div><span class="k">인사말</span><h2>담임목사<br>인사말</h2></div>
+      <div class="greet">
+        <div class="photo has"><img src="pastor.jpg" alt="박규성 담임목사"></div>
+        <div class="prose">
+          <p class="lead" id="greetLead">하나님을 가장 깊이 만나는 곳,<br>광야교회입니다.</p>
+          <div id="greetBody" style="margin-top:24px"><p>광야교회는 아직 이 땅에 건물이 없습니다. 그러나 하나님의 은혜로 일산은광교회에서 예배당을 무상으로 사용할 수 있도록 허락해 주셔서, 2026년 9월 18일 개척을 위한 준비기도회를 시작으로 현장에서 예배를 드리게 되었습니다.</p><p>척박한 광야 길을 걷는 듯한 일상 속에서, 광야교회가 여러분의 따뜻한 영적 오아시스가 되기를 소망합니다. 함께 은혜를 나누고 서로를 위로하며, 평안이 넘치는 신앙 공동체를 함께 만들어가요.</p></div>
+          <p class="sign">광야교회 담임목사<b>박규성</b></p>
+        </div>
+      </div>
+    </div>
+    <div class="block block-grid">
+      <div><span class="k">이름</span><h2>교회 이름의 뜻</h2></div>
+      <div class="prose">
+        <p class="lead">광야는 하나님의 말씀이 가장 선명하게 들리는 곳입니다.</p>
+        <p style="margin-top:24px">히브리어로 광야는 ‘미드바르’입니다. 이 단어의 어원은 ‘말씀’ 혹은 ‘말씀하시다’라는 뜻의 히브리어 동사 ‘다바르’에서 비롯되었습니다.</p>
+        <p>성경이 말하는 광야란 메마르고 버려진 척박한 땅만이 아니라, 세상의 모든 소음이 잦아들고 오직 하나님의 말씀이 가장 선명하게 들리는 곳입니다. 미드바르에서 울려 퍼지는 생명의 다바르가 여러분의 삶을 다시 일어서게 하는 힘이 되기를 소망합니다.</p>
+      </div>
+    </div>
+    <div class="block block-grid">
+      <div><span class="k">연혁</span><h2>걸어온 길</h2></div>
+      <ul class="rows">
+        <li><b>2026. 09. 13</b><span>일산은광교회 당회에서 예배당 무상 사용을 허락해 주심</span></li>
+        <li><b>2026. 09. 18</b><span>개척을 위한 준비기도회로 첫 현장 예배</span></li>
+        <li><b>기도 중</b><span>단독 예배 처소 마련</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 예배안내 =================== -->
+<section class="page" id="p-worship">
+  <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
+    <div class="wrap"><p class="crumb">홈 / 예배안내</p><h1>예배안내</h1></div></div>
+  <nav class="subtabs" aria-label="예배안내 메뉴"><ul class="wrap"><li><a href="#worship">예배 시간</a></li><li><a href="#worship">오시는 길</a></li></ul></nav>
+  <div class="wrap">
+    <div class="block block-grid">
+      <div><span class="k">시간</span><h2>예배 시간</h2></div>
+      <ul class="times" id="worshipTimes">
+        <li><span><b>주일 예배</b><small>인도 박규성 담임목사</small></span><span class="t">오후 5:00</span></li>
+        <li><span><b>금요기도회</b><small>경배와 찬양 · 말씀</small></span><span class="t">오후 8:30</span></li>
+      </ul>
+    </div>
+    <div class="block block-grid">
+      <div><span class="k">장소</span><h2>오시는 길</h2></div>
+      <div>
+        <ul class="rows" id="placeRows">
+          <li><b>장소</b><span>일산은광교회 예배당 (임시 예배당)</span></li>
+          <li><b>주소</b><span>경기도 고양시 일산동구 숲속마을1로 26 다인타운 4층<br><small style="color:var(--mute)">지번: 풍동 1293</small></span></li>
+          <li><b>대중교통</b><span><b style="font-family:var(--f-sans);font-size:15px;font-weight:700">버스</b> ‘숲속마을1단지’ 또는 ‘숲속마을1단지.풍동성당’ 정류장 하차<br>81 · 83 · 84 · 98 · 100번<br><b style="font-family:var(--f-sans);font-size:15px;font-weight:700">지하철</b> 경의중앙선 풍산역에서 81번 버스로 갈아타기</span></li>
+          <li><b>주차</b><span>주차 가능</span></li>
+        </ul>
+        <div class="map"><span>실제 홈페이지에서는 이 자리에 지도가 들어갑니다<br><a class="pill dark" style="margin-top:16px" href="https://map.kakao.com/?q=%EA%B2%BD%EA%B8%B0%20%EA%B3%A0%EC%96%91%EC%8B%9C%20%EC%9D%BC%EC%82%B0%EB%8F%99%EA%B5%AC%20%EC%88%B2%EC%86%8D%EB%A7%88%EC%9D%841%EB%A1%9C%2026" target="_blank" rel="noopener">카카오맵에서 길찾기<span class="ar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5"/></svg></span></a></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 말씀 =================== -->
+<section class="page" id="p-word">
+  <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
+    <div class="wrap"><p class="crumb">홈 / 말씀</p><h1>말씀</h1></div></div>
+  <nav class="subtabs" aria-label="말씀 메뉴"><ul class="wrap"><li><a href="#word">주일 설교</a></li><li><a href="#word">그림 묵상</a></li></ul></nav>
+  <div class="wrap">
+    <div class="block">
+      <div class="sec-head"><div><p class="label">주일 설교</p><h2>설교 영상</h2></div><a class="more" href="https://www.youtube.com/@midbar-church-smilepastor/videos" target="_blank" rel="noopener">유튜브에서 전체 보기 ↗</a></div>
+      <div class="vgrid" id="svGrid">
+        <a class="vcard" href="https://www.youtube.com/watch?v=LEMtXSTmRFA" target="_blank" rel="noopener"><span class="th"><img src="thumbs/LEMtXSTmRFA.jpg" alt="감사하며 축복할 때 썸네일"></span><b>감사하며 축복할 때</b><small>주일설교 · 고린도전서 10장 16~17절 · 2026.11.01</small></a>
+        <a class="vcard" href="https://www.youtube.com/watch?v=x33yW_3tGZQ" target="_blank" rel="noopener"><span class="th"><img src="thumbs/x33yW_3tGZQ.jpg" alt="믿음으로 말미암아 살리라 썸네일"></span><b>믿음으로 말미암아 살리라</b><small>금요기도회 · 하박국 2:1~4 · 2026.10.30</small></a>
+        <a class="vcard" href="https://www.youtube.com/watch?v=1KxERtn-9qI" target="_blank" rel="noopener"><span class="th"><img src="thumbs/1KxERtn-9qI.jpg" alt="물 가에 심어진 나무 썸네일"></span><b>물 가에 심어진 나무</b><small>큐티말씀 · 예레미야 17:7-8</small></a>
+      </div>
+      <p class="note">유튜브에 올린 영상이 최신순으로 자동으로 정리됩니다. 큐티말씀은 매일 밤 12시 유튜브 [게시물]에도 올라옵니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 주보 =================== -->
+<section class="page" id="p-bulletin">
+  <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
+    <div class="wrap"><p class="crumb">홈 / 주보</p><h1>주보</h1></div></div>
+  <div class="wrap">
+    <div class="block">
+      <div class="sec-head"><div><p class="label">주보</p><h2>주보 모아보기</h2></div></div>
+      <div class="bul-grid" id="bulList"><p class="note">주보를 불러오는 중입니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 함께하기 =================== -->
+<section class="page" id="p-together">
+  <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
+    <div class="wrap"><p class="crumb">홈 / 함께하기</p><h1>함께하기</h1></div></div>
+  <nav class="subtabs" aria-label="함께하기 메뉴"><ul class="wrap"><li><a href="#together">새가족 안내</a></li><li><a href="#together">기도 제목</a></li><li><a href="#together">교회 소식</a></li><li><a href="#together">헌금 안내</a></li></ul></nav>
+  <div class="wrap">
+    <div class="block">
+      <div class="sec-head"><div><p class="label">새가족</p><h2>처음 오신 분을<br><em>진심으로 환영합니다</em></h2></div></div>
+      <ol class="steps">
+        <li><span class="s">처음 오신 날</span><b>함께 예배드리기</b><p>주일 오후 5시, 편하게 오셔서 함께 예배드리세요.</p></li>
+        <li><span class="s">예배 후</span><b>새가족 등록카드 작성</b><p>광야교회 등록을 원하시면 예배 후 새가족 등록카드를 작성해 주세요.</p></li>
+        <li><span class="s">그다음</span><b>새가족 심방</b><p>목사님이 가정을 찾아가 함께 기도하는 새가족 등록 심방이 있습니다.</p></li>
+      </ol>
+    </div>
+    <div class="block block-grid">
+      <div><span class="k">기도</span><h2>기도 제목</h2></div>
+      <ul class="rows" id="prayerRows">
+        <li><b>예배 장소</b><span>재정적으로 자립하여 현장 예배 장소를 속히 마련할 수 있도록</span></li>
+        <li><b>교회학교</b><span>교회학교 예배가 마련되도록</span></li>
+        <li><b>담임목사</b><span>박규성 담임목사의 성령충만함을 위해</span></li>
+        <li><b>가정과 일터</b><span>성도들의 가정과 일터마다 하나님의 은혜와 축복이 넘쳐나도록</span></li>
+        <li><b>건강</b><span>환우들과 연로하신 어르신들의 건강을 위해</span></li>
+        <li><b>자녀</b><span>학업 중에 있는 자녀손들을 위해</span></li>
+      </ul>
+    </div>
+    <div class="block block-grid">
+      <div><span class="k">소식</span><h2>교회 소식</h2></div>
+      <ul class="rows" id="newsRows">
+        <li><b>큐티말씀</b><span>유튜브 채널 [게시물]에 매일 밤 12시, 매일성경 본문을 따라 큐티말씀이 올라옵니다. 댓글로 함께 참여해 주세요.</span></li>
+        <li><b>심방 신청</b><span>가정 심방, 새가족 등록 심방, 환우 심방 등 기도와 심방이 필요하신 분은 알려 주세요.</span></li>
+        <li><b>봉사자 모집</b><span>예배안내 · 찬양팀 · 반주자 · 중창팀 · 주차안내 · 새가족환영팀 · 차량카풀 · 청소 · 식당</span></li>
+        <li><b>머문 자리 정돈</b><span>일산은광교회의 섬김으로 예배드리고 있습니다. 머문 자리는 깨끗하게 정돈해 주세요.</span></li>
+      </ul>
+    </div>
+    <div class="block block-grid">
+      <div><span class="k">헌금</span><h2>헌금 안내</h2></div>
+      <ul class="rows" id="offerRows">
+        <li><b>은행</b><span>국민은행</span></li>
+        <li><b>계좌번호</b><span><span id="acct" style="font-variant-numeric:tabular-nums;font-weight:500">293201-04-362488</span><button class="copy" id="copyAcct" type="button">복사</button></span></li>
+        <li><b>예금주</b><span>대한예수교장로회광야교회</span></li>
+        <li><b>입금자명</b><span>이름 + 헌금 종류 첫 글자 + 휴대폰 끝 4자리<br><small style="color:var(--mute)">예) 홍길동십9191 · 김헌금감3927 · 박예물건0691</small></span></li>
+        <li><b>헌금 종류</b><span>십(십일조) · 감(감사) · 주(주일) · 구(구제) · 선(선교) · 건(건축) · 장(장학) · 목(목적) · 추(추수감사)</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<div class="bview" id="bview" hidden role="dialog" aria-modal="true" aria-labelledby="bvTitle">
+  <div class="bview-bar"><div><b id="bvTitle">주보</b><small id="bvSub"></small></div><button type="button" class="bview-x" id="bvClose" aria-label="닫기">×</button></div>
+  <div class="bview-body" id="bvBody"></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="f-top">
+      <div class="f-brand"><span class="mk"><img src="logo-mark.png" alt="광야교회 로고"></span><div class="f-word">광야교회</div></div>
+      <div class="f-links"><a href="#about">교회소개</a><a href="#worship">예배안내</a><a href="#word">말씀</a><a href="#bulletin">주보</a><a href="#together">함께하기</a><a href="https://www.youtube.com/@midbar-church-smilepastor" target="_blank" rel="noopener">유튜브 ↗</a></div>
+    </div>
+    <div class="f-bot">
+      <address id="footAddr"><span>대한예수교장로회 광야교회</span><span>담임목사 박규성</span><span>경기도 고양시 일산동구 숲속마을1로 26 다인타운 4층 (일산은광교회 예배당)</span></address>
+      <span>© 2026 광야교회</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var hd=document.getElementById("hd"), pages=["home","about","worship","word","bulletin","together"], cur="home";
+  var v=document.getElementById("hv");
+  if(v){
+    var ok=function(){v.classList.add("ready")};
+    if(v.readyState>=2)ok();else v.addEventListener("loadeddata",ok);
+    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){v.removeAttribute("autoplay");try{v.pause()}catch(e){}}
+  }
+  function paint(){hd.classList.toggle("solid",window.scrollY>40)}
+  function show(){
+    var p=(location.hash||"#home").slice(1);
+    if(pages.indexOf(p)<0)p="home";
+    cur=p;
+    pages.forEach(function(x){document.getElementById("p-"+x).classList.toggle("on",x===p)});
+    document.querySelectorAll("#gnb>li").forEach(function(li){li.classList.toggle("on",li.dataset.p===p)});
+    closeMenu();window.scrollTo(0,0);paint();
+  }
+  var m=document.getElementById("mnav"), b=document.getElementById("burger");
+  function closeMenu(){m.classList.remove("open");b.setAttribute("aria-expanded","false");document.body.style.overflow=""}
+  b.addEventListener("click",function(){m.classList.add("open");b.setAttribute("aria-expanded","true");document.body.style.overflow="hidden"});
+  document.getElementById("mclose").addEventListener("click",closeMenu);
+  m.querySelectorAll("a").forEach(function(a){a.addEventListener("click",closeMenu)});
+  window.addEventListener("keydown",function(e){if(e.key==="Escape")closeMenu()});
+  window.addEventListener("resize",function(){if(window.innerWidth>1024)closeMenu()});
+  window.addEventListener("scroll",paint,{passive:true});
+  /* ===== 관리자 페이지에서 고친 내용 불러오기 =====
+     CONTENT_API 에 구글 Apps Script 웹앱 주소를 넣으면, 관리자 페이지에서 저장한 내용이 바로 홈페이지에 나옵니다.
+     비워 두면 같은 폴더의 content.json 을 읽습니다. */
+  var CONTENT_API="";
+  function E(x){return String(x==null?"":x).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+  function BR(x){return E(x).replace(/\n/g,"<br>")}
+  function D(d){return String(d||"").replace(/-/g,".")}
+  function setHTML(id,h){var el=document.getElementById(id);if(el)el.innerHTML=h}
+  function render(C){
+    if(!C)return;
+    var W=C.worship||[], P=C.place||{}, N=(C.news||[]).slice(), O=C.offering||{}, G=C.greeting||{};
+    if(C.hero&&C.hero.sub)setHTML("heroSub",E(C.hero.sub));
+    if(W.length)setHTML("heroSide",E(W[0].name)+"<b>"+E(W[0].time)+"</b>"+W.slice(1).map(function(w){return E(w.name)+" "+E(w.time)}).concat(P.short?[E(P.short)]:[]).join(" · ")+'<span class="ref">이사야 43:19</span>');
+    var times=W.map(function(w){return '<li><span><b>'+E(w.name)+'</b><small>'+E(w.desc)+'</small></span><span class="t">'+E(w.time)+'</span></li>'}).join("");
+    if(W.length){setHTML("homeTimes",times);setHTML("worshipTimes",times)}
+    N.sort(function(a,b){return (b.pinned?1:0)-(a.pinned?1:0)||String(b.date).localeCompare(String(a.date))});
+    if(N.length){
+      setHTML("homeNews",N.slice(0,4).map(function(n){return '<li><a href="#together"><span class="t">'+(n.tag?'<i class="n">'+E(n.tag)+'</i>':'')+E(n.title)+'</span><span class="dt">'+E(D(n.date))+'</span></a></li>'}).join(""));
+      setHTML("newsRows",N.map(function(n){return '<li><b>'+E(D(n.date))+'</b><span><strong>'+(n.tag?'['+E(n.tag)+'] ':'')+E(n.title)+'</strong>'+BR(n.body)+'</span></li>'}).join(""));
+    }
+    if(C.prayers&&C.prayers.length)setHTML("prayerRows",C.prayers.map(function(p){return '<li><b>'+E(p.label)+'</b><span>'+BR(p.text)+'</span></li>'}).join(""));
+    if(P.address)setHTML("placeRows",
+      '<li><b>장소</b><span>'+E(P.name)+'</span></li>'+
+      '<li><b>주소</b><span>'+E(P.address)+(P.jibun?'<br><small style="color:var(--mute)">지번: '+E(P.jibun)+'</small>':'')+'</span></li>'+
+      (P.transit?'<li><b>대중교통</b><span>'+BR(P.transit)+'</span></li>':'')+
+      (P.parking?'<li><b>주차</b><span>'+E(P.parking)+'</span></li>':''));
+    if(O.account)setHTML("offerRows",
+      '<li><b>은행</b><span>'+E(O.bank)+'</span></li>'+
+      '<li><b>계좌번호</b><span><span id="acct" style="font-variant-numeric:tabular-nums;font-weight:500">'+E(O.account)+'</span><button class="copy" id="copyAcct" type="button">복사</button></span></li>'+
+      '<li><b>예금주</b><span>'+E(O.holder)+'</span></li>'+
+      (O.howto?'<li><b>입금자명</b><span>'+E(O.howto)+(O.example?'<br><small style="color:var(--mute)">'+E(O.example)+'</small>':'')+'</span></li>':'')+
+      (O.kinds?'<li><b>헌금 종류</b><span>'+E(O.kinds)+'</span></li>':''));
+    renderBulletins(C.bulletins);
+    if(G.lead)setHTML("greetLead",BR(G.lead));
+    if(G.body)setHTML("greetBody",String(G.body).split(/\n\s*\n/).map(function(p){return '<p>'+BR(p.trim())+'</p>'}).join(""));
+    if(P.address)setHTML("footAddr",'<span>대한예수교장로회 광야교회</span><span>담임목사 박규성</span><span>'+E(P.address)+'</span>');
+  }
+  function load(url){return fetch(url,{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()})}
+  (CONTENT_API?load(CONTENT_API+"?action=content").catch(function(){return load("content.json")}):load("content.json")).then(render).catch(function(){});
+
+  /* ===== 주보 ===== */
+  var BUL=[], WK=["일","월","화","수","목","금","토"];
+  function ymd(d){var z=function(n){return (n<10?"0":"")+n};return d.getFullYear()+"-"+z(d.getMonth()+1)+"-"+z(d.getDate())}
+  function kd(s){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(s||"");if(!m)return E(s);var d=new Date(+m[1],m[2]-1,+m[3]);return (+m[2])+"월 "+(+m[3])+"일 ("+WK[d.getDay()]+")"}
+  function fimg(f){return f.src||("https://drive.google.com/thumbnail?id="+encodeURIComponent(f.drive)+"&sz=w2000")}
+  function flink(f){return f.src||("https://drive.google.com/file/d/"+encodeURIComponent(f.drive)+"/view")}
+  function bcard(b,label){
+    var f=(b.files||[])[0]||{}, n=(b.files||[]).length;
+    return '<button type="button" class="bcard" data-bul="'+E(b.id)+'"><span class="pg"><img src="'+E(fimg(f))+'" alt="'+E(kd(b.date))+' 주보" loading="lazy">'+(n>1?'<span class="cnt">'+n+'쪽</span>':'')+'</span>'+
+      (label?'<span class="k">'+E(label)+'</span>':'')+'<b>'+kd(b.date)+'</b><small>'+E([b.no,b.title].filter(Boolean).join(" · "))+'</small></button>';
+  }
+  function renderBulletins(list){
+    BUL=(list||[]).slice().sort(function(a,b){return String(b.date).localeCompare(String(a.date))});
+    var t=new Date();t.setHours(0,0,0,0);var today=ymd(t);
+    var sun=new Date(t);sun.setDate(t.getDate()+((7-t.getDay())%7));var nextSun=ymd(sun);
+    var asc=BUL.slice().reverse(), up=null;
+    for(var i=0;i<asc.length;i++){if(String(asc[i].date)>=today){up=asc[i];break}}
+    var cut=up?up.date:nextSun, prev=null;
+    for(i=0;i<BUL.length;i++){if(String(BUL[i].date)<cut){prev=BUL[i];break}}
+    var upHTML=up?bcard(up,up.date===today?"오늘 주일 주보":"다가오는 주일 주보")
+      :'<div class="bempty"><span><b>'+kd(nextSun)+' 주보</b>아직 올라오지 않았습니다.<br>토요일 즈음 올라옵니다.</span></div>';
+    var prevHTML=prev?bcard(prev,"지난 주일 주보"):'<div class="bempty"><span>지난 주보가 없습니다.</span></div>';
+    setHTML("homeBul",upHTML+prevHTML);
+    setHTML("bulList",BUL.length?BUL.map(function(b){return bcard(b,"")}).join(""):'<p class="note">아직 올라온 주보가 없습니다.</p>');
+  }
+  var lastFocus=null;
+  function openBul(id){
+    var b=BUL.filter(function(x){return x.id===id})[0];if(!b)return;
+    var v=document.getElementById("bview");lastFocus=document.activeElement;
+    document.getElementById("bvTitle").textContent=kd(b.date).replace(/&[^;]+;/g,"")+" 주보";
+    document.getElementById("bvSub").textContent=[b.no,b.title].filter(Boolean).join(" · ");
+    var fs=b.files||[];
+    document.getElementById("bvBody").innerHTML=fs.map(function(f,i){
+      return '<figure><a href="'+E(flink(f))+'" target="_blank" rel="noopener"><img src="'+E(fimg(f))+'" alt="주보 '+(i+1)+'쪽"></a><figcaption><span>'+(i+1)+' / '+fs.length+'쪽'+(f.type==="pdf"?" · PDF":"")+'</span><a href="'+E(flink(f))+'" target="_blank" rel="noopener">원본 열기</a></figcaption></figure>';
+    }).join("");
+    v.hidden=false;document.body.style.overflow="hidden";document.getElementById("bvClose").focus();
+  }
+  function closeBul(){var v=document.getElementById("bview");if(v.hidden)return;v.hidden=true;document.body.style.overflow="";if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+  document.addEventListener("click",function(e){
+    var c=e.target.closest&&e.target.closest("[data-bul]");if(c){openBul(c.dataset.bul);return}
+    if(e.target.id==="bvClose"||e.target.id==="bview")closeBul();
+  });
+  window.addEventListener("keydown",function(e){if(e.key==="Escape")closeBul()});
+
+  /* 계좌번호 복사 */
+  document.addEventListener("click",function(e){
+    var cb=e.target.closest&&e.target.closest("#copyAcct"); if(!cb)return;
+    var a=document.getElementById("acct"), t=(a?a.textContent:"");
+    function sel(){var r=document.createRange();r.selectNodeContents(a);var g=window.getSelection();g.removeAllRanges();g.addRange(r);cb.textContent="선택됨 · 길게 눌러 복사"}
+    try{navigator.clipboard.writeText(t).then(function(){cb.textContent="복사됨"},sel)}catch(err){sel()}
+  });
+  /* 유튜브 최신 설교: videos.json 을 읽어 최신순으로 그림 */
+  function esc(x){return String(x||"").replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+  var W="https://www.youtube.com/watch?v=";
+  function meta(v){return [v.kind,v.scripture,v.date].filter(Boolean).join(" · ")}
+  function TH(v){return v.thumb||("thumbs/"+v.id+".jpg")}
+  (CONTENT_API?load(CONTENT_API+"?action=videos").then(function(V){if(!V||!V.length)throw 0;return V}).catch(function(){return load("videos.json")}):load("videos.json")).then(function(V){
+    if(!V||!V.length)return;
+    V.sort(function(a,b){return (b.published||"").localeCompare(a.published||"")});
+    var m=V[0], tag=m.kind+(m.note&&m.kind!=="큐티말씀"?" · "+m.note:"");
+    var home=document.getElementById("svHome");
+    if(home){
+      home.firstElementChild.outerHTML='<a class="sv-main" href="'+W+m.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(m))+'" alt="'+esc(m.title)+' 썸네일"><span class="pbtn"></span></span><span class="cap"><small class="k">최신 · '+esc(tag)+'</small><b>'+esc(m.title)+'</b><small>박규성 담임목사 · '+esc([m.scripture,m.date].filter(Boolean).join(" · "))+'</small></span></a>';
+      document.getElementById("svList").innerHTML=V.slice(1,5).map(function(v){return '<li><a href="'+W+v.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(v))+'" alt=""></span><span><b>'+esc(v.title)+'</b><small>'+esc(meta(v))+'</small></span><span class="ar">↗</span></a></li>'}).join("");
+    }
+    var g=document.getElementById("svGrid");
+    if(g)g.innerHTML=V.slice(0,12).map(function(v){return '<a class="vcard" href="'+W+v.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(v))+'" alt="'+esc(v.title)+' 썸네일"></span><b>'+esc(v.title)+'</b><small>'+esc(meta(v))+'</small></a>'}).join("");
+  }).catch(function(){});
+  window.addEventListener("hashchange",show);
+  show();
+})();
+</script>

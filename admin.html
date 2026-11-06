@@ -1,0 +1,781 @@
+<title>광야교회 관리자</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: 왼쪽 짙은 메뉴(휴대폰에선 위쪽 탭) + 오른쪽 흰 작업 영역. 첫 화면은 한눈에 보는 요약 카드와 바로가기 버튼. 큰 글씨·큰 버튼 */
+:root{
+  --bg:#F6F5F2;        /* 작업 영역 바탕 */
+  --card:#FFFFFF;
+  --ink:#1A1C17;
+  --mute:#6B6D64;
+  --line:#E4E2DC;
+  --night:#1C1E18;     /* 메뉴 */
+  --night-ink:#E9E6DC;
+  --dawn:#C98A3A;      /* 포인트(교회 홈페이지와 같은 금빛) */
+  --dawn-soft:#F8EEDF;
+  --ok:#2F7A4B; --ok-soft:#E5F2E9;
+  --bad:#B4412A; --bad-soft:#FBE9E4;
+  --f-serif:"Noto Serif KR","Nanum Myeongjo",serif;
+  --f-sans:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{background:var(--bg)}
+body{color:var(--ink);font-family:var(--f-sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;word-break:keep-all;min-height:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:50;background:var(--night)}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:3px solid var(--dawn);outline-offset:2px;border-radius:6px}
+
+/* ---------- 버튼 ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:16px;font-weight:500;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .15s,border-color .15s,transform .1s}
+.btn:hover{border-color:var(--ink)}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.primary:hover{background:#000}
+.btn.gold{background:var(--dawn);border-color:var(--dawn);color:#fff}
+.btn.danger{background:var(--bad);border-color:var(--bad);color:#fff}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--mute)}
+.btn.ghost:hover{color:var(--ink);border-color:var(--line)}
+.btn.sm{min-height:40px;padding:0 14px;font-size:15px;border-radius:10px}
+.btn[disabled]{opacity:.5;cursor:default}
+.icon{width:20px;height:20px;flex:none}
+
+/* ---------- 로그인 ---------- */
+.login{min-height:100vh;display:grid;place-items:center;padding:24px max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px));background:var(--night)}
+.login-card{width:100%;max-width:400px;background:var(--card);border-radius:20px;padding:36px 28px}
+.login-card .mk{width:56px;height:56px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px var(--line);display:grid;place-items:center;overflow:hidden;margin-bottom:18px}
+.login-card .mk img{width:52px;height:52px}
+.login-card h1{font-family:var(--f-serif);font-size:26px;font-weight:700;letter-spacing:-.02em}
+.login-card p{color:var(--mute);margin-top:6px}
+.login-card form{display:grid;gap:14px;margin-top:24px}
+.login-card .err{color:var(--bad);font-size:15px;min-height:1.6em}
+
+/* ---------- 앱 틀 ---------- */
+.app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+.side{background:var(--night);color:var(--night-ink);padding:24px 16px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:24px}
+.brand{display:flex;align-items:center;gap:12px;padding:0 8px}
+.brand .mk{width:40px;height:40px;border-radius:50%;background:#fff;display:grid;place-items:center;overflow:hidden;flex:none}
+.brand .mk img{width:36px;height:36px}
+.brand b{display:block;font-family:var(--f-serif);font-size:18px;letter-spacing:-.02em}
+.brand small{display:block;font-size:12px;opacity:.6}
+.nav{display:grid;gap:4px}
+.nav a{display:flex;align-items:center;gap:12px;padding:12px 12px;border-radius:12px;text-decoration:none;font-size:16px;color:rgba(233,230,220,.78)}
+.nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav a[aria-current="page"]{background:rgba(255,255,255,.1);color:#fff;font-weight:700}
+.nav a .cnt{margin-left:auto;font-size:13px;font-weight:500;background:rgba(255,255,255,.1);border-radius:999px;padding:0 9px;font-variant-numeric:tabular-nums}
+.side-foot{margin-top:auto;display:grid;gap:8px}
+.side-foot a,.side-foot button{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:none;border:0;color:rgba(233,230,220,.7);font-size:15px;text-decoration:none;cursor:pointer;text-align:left}
+.side-foot a:hover,.side-foot button:hover{color:#fff;background:rgba(255,255,255,.06)}
+
+.main{min-width:0;padding-block:32px 120px;padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px))}
+.inner{max-width:960px}
+.demo{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--dawn-soft);border:1px solid #EBD3AE;border-radius:14px;padding:14px 18px;margin-bottom:28px;font-size:15px}
+.demo b{color:#8A5A1C}
+.demo .btn{margin-left:auto}
+.page-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.page-head h1{font-family:var(--f-serif);font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.25}
+.page-head p{color:var(--mute);margin-top:6px}
+.view{display:none}
+.view.on{display:block}
+
+/* ---------- 대시보드 ---------- */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.tile{display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;text-decoration:none;min-width:0;transition:border-color .15s}
+.tile:hover{border-color:var(--ink)}
+.tile .lb{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--mute)}
+.tile .lb .icon{color:var(--dawn)}
+.tile .v{font-family:var(--f-serif);font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.2;font-variant-numeric:tabular-nums}
+.tile .v small{font-family:var(--f-sans);font-size:15px;font-weight:500;color:var(--mute);margin-left:4px}
+.tile .s{font-size:14px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tile .go{margin-top:auto;padding-top:8px;font-size:14px;font-weight:700;color:var(--dawn)}
+.quick{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.two{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;margin-top:28px}
+.two>*{min-width:0}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+.panel h2{font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.panel h2 a{font-size:14px;font-weight:500;color:var(--dawn);text-decoration:none}
+.mini li{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.mini li:first-child{border-top:0}
+.mini .t{min-width:0;flex:1}
+.mini .t b{display:block;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mini .t small{color:var(--mute);font-size:13px}
+.note{display:flex;gap:12px;align-items:flex-start;font-size:15px;color:var(--mute)}
+.note .icon{color:var(--dawn);margin-top:2px}
+.note+.note{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.note b{color:var(--ink);font-weight:500}
+ul{list-style:none;margin:0;padding:0}
+
+/* ---------- 목록 편집 ---------- */
+.list{display:grid;gap:12px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.item-row{display:flex;gap:16px;align-items:flex-start}
+.item-row .body{min-width:0;flex:1}
+.item-row .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:14px;color:var(--mute)}
+.item-row h3{font-size:18px;font-weight:700;margin-top:4px;letter-spacing:-.01em}
+.item-row p{color:var(--mute);font-size:15px;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-line}
+.item-row .acts{display:flex;gap:6px;flex:none}
+.chip{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:1px 10px;background:var(--dawn-soft);color:#8A5A1C}
+.chip.pin{background:var(--ink);color:#fff}
+.confirm{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--bad-soft);color:var(--bad);font-size:15px;font-weight:500}
+.confirm span{flex:1;min-width:160px}
+.empty{text-align:center;color:var(--mute);padding:40px 16px;border:1px dashed var(--line);border-radius:16px;background:var(--card)}
+
+/* ---------- 입력 폼 ---------- */
+.form{display:grid;gap:16px}
+.form.card{background:var(--card);border:2px solid var(--ink);border-radius:16px;padding:22px}
+.form h3{font-size:18px;font-weight:700}
+.field{display:grid;gap:6px;min-width:0}
+.field>span{font-size:15px;font-weight:700}
+.field>span small{font-weight:400;color:var(--mute);margin-left:6px}
+.inp{width:100%;min-height:50px;padding:12px 14px;border:1px solid #CFCCC4;border-radius:12px;background:#fff;font-size:17px}
+.inp:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(201,138,58,.25)}
+textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.row3{display:grid;grid-template-columns:180px 1fr;gap:16px}
+.check{display:flex;align-items:center;gap:10px;font-size:16px;cursor:pointer}
+.check input{width:22px;height:22px;accent-color:var(--ink)}
+.form-acts{display:flex;gap:10px;flex-wrap:wrap}
+.ferr{color:var(--bad);font-size:15px;font-weight:500}
+
+/* 표 형태(예배 시간·기도 제목) */
+.grid-edit{display:grid;gap:10px}
+.ge-row{display:grid;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.ge-row.w{grid-template-columns:1.1fr 1.4fr .9fr auto}
+.ge-row.p{grid-template-columns:.8fr 2.2fr auto}
+.ge-row .inp{min-height:46px;font-size:16px}
+.ge-row .tools{display:flex;gap:4px}
+.ib{width:42px;height:42px;display:grid;place-items:center;border-radius:10px;border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--mute)}
+.ib:hover{border-color:var(--ink);color:var(--ink)}
+.ib[disabled]{opacity:.35;cursor:default}
+.ib.del:hover{border-color:var(--bad);color:var(--bad)}
+.ge-head{display:grid;gap:10px;padding:0 13px;font-size:14px;color:var(--mute);font-weight:500}
+.ge-head.w{grid-template-columns:1.1fr 1.4fr .9fr 138px}
+.ge-head.p{grid-template-columns:.8fr 2.2fr 138px}
+.savebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:20px;padding:16px 18px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+.savebar .msg{flex:1;min-width:180px;color:var(--mute);font-size:15px}
+.savebar.dirty{border-color:var(--dawn);background:var(--dawn-soft)}
+.savebar.dirty .msg{color:#8A5A1C;font-weight:500}
+.sec{margin-top:28px}
+.sec>h2{font-size:20px;font-weight:700;margin-bottom:12px}
+
+/* 주보 */
+.drop{display:flex;align-items:center;gap:14px;padding:22px;border:2px dashed #CFCCC4;border-radius:14px;background:#FBFAF8;cursor:pointer}
+.drop:hover,.drop.on{border-color:var(--dawn);background:var(--dawn-soft)}
+.drop input{position:absolute;width:1px;height:1px;opacity:0}
+.drop .icon{width:28px;height:28px;color:var(--dawn)}
+.drop b{display:block;font-size:17px}
+.drop small{display:block;color:var(--mute);font-size:14px}
+.pend{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+.pend:empty{display:none}
+.pf{position:relative;width:110px}
+.pf .th{display:grid;place-items:center;width:110px;height:146px;border-radius:10px;overflow:hidden;background:var(--bg);border:1px solid var(--line);font-size:13px;color:var(--mute);font-weight:700}
+.pf img{width:100%;height:100%;object-fit:cover;object-position:top}
+.pf small{display:block;text-align:center;font-size:13px;color:var(--mute);margin-top:4px}
+.pf .rm{position:absolute;top:-8px;right:-8px;width:30px;height:30px;border-radius:50%;border:0;background:var(--ink);color:#fff;cursor:pointer;display:grid;place-items:center}
+.bl{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+.bi{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;min-width:0}
+.bi .th{display:block;aspect-ratio:3/4;border-radius:10px;overflow:hidden;background:var(--bg)}
+.bi .th img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.bi b{display:block;margin-top:10px;font-size:16px}
+.bi small{display:block;color:var(--mute);font-size:13px}
+.bi .acts{display:flex;gap:6px;margin-top:10px}
+.bi .acts .btn{flex:1}
+.bi .confirm{margin-top:10px;padding:10px}
+.busy-msg{margin-top:14px;font-size:16px;font-weight:500;text-align:center}
+/* 기록 */
+.hist li{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line);font-size:15px}
+.hist li:first-child{border-top:0}
+.hist .t{flex:1;min-width:0}
+.hist small{color:var(--mute)}
+
+/* 알림 */
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--ink);color:#fff;border-radius:14px;padding:14px 20px;font-size:16px;font-weight:500;display:flex;gap:10px;align-items:center;box-shadow:0 12px 32px rgba(0,0,0,.2);transition:opacity .2s,transform .2s;z-index:60;max-width:calc(100% - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast.bad{background:var(--bad)}
+.busy{position:fixed;inset:0;background:rgba(255,255,255,.5);display:none;place-items:center;z-index:55}
+.busy.on{display:grid}
+.spin{width:40px;height:40px;border-radius:50%;border:4px solid var(--line);border-top-color:var(--ink);animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ---------- 휴대폰 ---------- */
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{min-width:0}
+  .side{position:sticky;top:env(safe-area-inset-top,0px);height:auto;z-index:20;padding:12px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));gap:10px}
+  .brand{padding:0}
+  .brand-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .nav{display:flex;overflow-x:auto;gap:6px;scrollbar-width:none;margin:0 -4px;padding:0 4px}
+  .nav a{flex:none;padding:8px 14px;font-size:15px;background:rgba(255,255,255,.06)}
+  .nav a .cnt{display:none}
+  .side-foot{display:none}
+  .m-acts{display:flex!important;gap:6px}
+  .main{padding-block:20px 120px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .tiles{grid-template-columns:repeat(2,1fr);gap:12px}
+  .tile{padding:16px}
+  .tile .v{font-size:24px}
+  .two{grid-template-columns:1fr}
+  .page-head h1{font-size:26px}
+  .row2,.row3{grid-template-columns:1fr}
+  .ge-head{display:none}
+  .ge-row.w,.ge-row.p{grid-template-columns:1fr 1fr}
+  .ge-row.w .inp:nth-child(2),.ge-row.p .inp:nth-child(2){grid-column:1/-1}
+  .ge-row.w .inp:nth-child(1){grid-column:1/2}
+  .ge-row.p .inp:nth-child(1){grid-column:1/-1}
+  .ge-row .tools{grid-column:1/-1;justify-content:flex-end}
+  .item-row{flex-direction:column;gap:12px}
+  .item-row .acts{width:100%}
+  .item-row .acts .btn{flex:1}
+  .demo .btn{margin-left:0}
+}
+.m-acts{display:none}
+.m-acts a,.m-acts button{display:grid;place-items:center;width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.08);color:var(--night-ink);border:0;cursor:pointer}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/></symbol>
+  <symbol id="i-news" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h13v14H6a2 2 0 0 1-2-2z"/><path d="M17 9h3v8a2 2 0 0 1-2 2"/><path d="M8 9h5M8 13h5"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-pray" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></symbol>
+  <symbol id="i-won" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h4"/></symbol>
+  <symbol id="i-church" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v5M10 4h4"/><path d="M6 21V11l6-4 6 4v10"/><path d="M10 21v-4h4v4"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 17l5-5-5-5M15 12H4"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 14 6-6 6 6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 10 6 6 6-6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></symbol>
+  <symbol id="i-up2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></symbol>
+</svg>
+
+<!-- ================= 로그인 ================= -->
+<div class="login" id="login" hidden>
+  <div class="login-card">
+    <div class="mk"><img src="logo-mark.png" alt=""></div>
+    <h1>광야교회 관리자</h1>
+    <p>비밀번호를 넣고 로그인하세요.</p>
+    <form id="loginForm">
+      <label class="field"><span>비밀번호</span><input class="inp" id="pw" type="password" autocomplete="current-password" required></label>
+      <label class="check"><input type="checkbox" id="keep"> 이 기기에서 로그인 유지</label>
+      <div class="err" id="loginErr" role="alert"></div>
+      <button class="btn primary" type="submit" id="loginBtn">로그인</button>
+    </form>
+  </div>
+</div>
+
+<!-- ================= 관리 화면 ================= -->
+<div class="app" id="app" hidden>
+  <aside class="side">
+    <div class="brand-row">
+      <div class="brand"><span class="mk"><img src="logo-mark.png" alt=""></span><span><b>광야교회 관리</b><small id="modeLabel">홈페이지 관리자</small></span></div>
+      <div class="m-acts"><a id="siteLinkM" href="./" target="_blank" rel="noopener" aria-label="홈페이지 보기"><svg class="icon"><use href="#i-ext"/></svg></a><button type="button" class="logout" aria-label="로그아웃"><svg class="icon"><use href="#i-out"/></svg></button></div>
+    </div>
+    <nav class="nav" aria-label="관리 메뉴">
+      <a href="#dash"><svg class="icon"><use href="#i-home"/></svg>한눈에 보기</a>
+      <a href="#news"><svg class="icon"><use href="#i-news"/></svg>교회 소식<span class="cnt" id="cNews">0</span></a>
+      <a href="#bulletin"><svg class="icon"><use href="#i-doc"/></svg>주보<span class="cnt" id="cBul">0</span></a>
+      <a href="#worship"><svg class="icon"><use href="#i-clock"/></svg>예배 시간<span class="cnt" id="cWorship">0</span></a>
+      <a href="#prayer"><svg class="icon"><use href="#i-pray"/></svg>기도 제목<span class="cnt" id="cPrayer">0</span></a>
+      <a href="#offering"><svg class="icon"><use href="#i-won"/></svg>헌금 안내</a>
+      <a href="#church"><svg class="icon"><use href="#i-church"/></svg>교회 정보</a>
+    </nav>
+    <div class="side-foot">
+      <a id="siteLink" href="./" target="_blank" rel="noopener"><svg class="icon"><use href="#i-ext"/></svg>홈페이지 보기</a>
+      <button type="button" class="logout"><svg class="icon"><use href="#i-out"/></svg>로그아웃</button>
+    </div>
+  </aside>
+
+  <main class="main"><div class="inner">
+    <div class="demo" id="demoBar" hidden>
+      <span><b>연습 모드</b> · 여기서 고친 내용은 이 기기에만 저장되고 실제 홈페이지에는 반영되지 않습니다. 마음껏 눌러 보세요.</span>
+      <button class="btn sm" type="button" id="demoReset">처음 내용으로 되돌리기</button>
+    </div>
+
+    <!-- 한눈에 보기 -->
+    <section class="view" id="v-dash">
+      <div class="page-head"><div><h1 id="hello">목사님, 안녕하세요</h1><p id="lastSaved">마지막 저장 기록을 불러오는 중입니다</p></div></div>
+      <div class="tiles">
+        <a class="tile" href="#news"><span class="lb"><svg class="icon"><use href="#i-news"/></svg>교회 소식</span><span class="v" id="tNews">0<small>개</small></span><span class="s" id="tNewsS"></span><span class="go">소식 관리 →</span></a>
+        <a class="tile" href="#worship"><span class="lb"><svg class="icon"><use href="#i-clock"/></svg>주일 예배</span><span class="v" id="tWorship"></span><span class="s" id="tWorshipS"></span><span class="go">예배 시간 →</span></a>
+        <a class="tile" href="#prayer"><span class="lb"><svg class="icon"><use href="#i-pray"/></svg>기도 제목</span><span class="v" id="tPrayer">0<small>개</small></span><span class="s" id="tPrayerS"></span><span class="go">기도 제목 →</span></a>
+        <a class="tile" href="#bulletin"><span class="lb"><svg class="icon"><use href="#i-doc"/></svg>주보</span><span class="v" id="tBul"></span><span class="s" id="tBulS"></span><span class="go">주보 관리 →</span></a>
+      </div>
+      <div class="quick">
+        <a class="btn gold" href="#bulletin"><svg class="icon"><use href="#i-up2"/></svg>주보 올리기</a>
+        <a class="btn" href="#news" data-new="1"><svg class="icon"><use href="#i-plus"/></svg>새 소식 쓰기</a>
+        <a class="btn" href="#worship">예배 시간 바꾸기</a>
+      </div>
+      <div class="two">
+        <div class="panel"><h2>최근 교회 소식 <a href="#news">전체 보기 →</a></h2><ul class="mini" id="dashNews"></ul></div>
+        <div class="panel">
+          <h2>알아두실 것</h2>
+          <div class="note"><svg class="icon"><use href="#i-play"/></svg><span><b>설교 영상은 따로 할 일이 없습니다.</b><br>유튜브에 올리면 홈페이지에 최신순으로 자동으로 나옵니다.</span></div>
+          <div class="note"><svg class="icon"><use href="#i-check"/></svg><span><b>저장하면 바로 반영됩니다.</b><br>홈페이지를 새로 고치면 바뀐 내용이 보입니다.</span></div>
+          <div class="note"><svg class="icon"><use href="#i-info"/></svg><span><b>실수해도 괜찮습니다.</b><br>저장할 때마다 기록이 남아서 이전 내용으로 되돌릴 수 있습니다.</span></div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:20px"><h2>저장 기록</h2><ul class="hist" id="hist"></ul></div>
+    </section>
+
+    <!-- 교회 소식 -->
+    <section class="view" id="v-news">
+      <div class="page-head"><div><h1>교회 소식</h1><p>홈페이지 첫 화면에는 고정한 소식과 최근 소식 4개가 나옵니다.</p></div>
+        <button class="btn gold" type="button" id="newsAddBtn"><svg class="icon"><use href="#i-plus"/></svg>새 소식 쓰기</button></div>
+      <div id="newsForm"></div>
+      <div class="list" id="newsList"></div>
+    </section>
+
+    <!-- 주보 -->
+    <section class="view" id="v-bulletin">
+      <div class="page-head"><div><h1>주보</h1><p>홈페이지 첫 화면에 다가오는 주일 주보와 지난 주일 주보가 나오고, 주보 게시판에는 최신순으로 모두 나옵니다.</p></div></div>
+      <form class="form card" id="bulForm" novalidate>
+        <h3>새 주보 올리기</h3>
+        <div class="row2">
+          <label class="field"><span>주일 날짜</span><input class="inp" type="date" name="date" required></label>
+          <label class="field"><span>호수 <small>없으면 비워 두세요</small></span><input class="inp" name="no" placeholder="예) 제2026-46호"></label>
+        </div>
+        <label class="field"><span>메모 <small>예) 성탄감사주일 · 없으면 비워 두세요</small></span><input class="inp" name="title"></label>
+        <div class="field"><span>주보 사진 또는 PDF <small>앞면·뒷면을 차례로 고르세요. 휴대폰에서는 바로 찍을 수 있습니다</small></span>
+          <label class="drop" id="bulDrop"><input type="file" id="bulFiles" accept="image/jpeg,image/png,image/webp,application/pdf" multiple><svg class="icon"><use href="#i-up2"/></svg><span><b>여기를 눌러 파일 고르기</b><small>사진(JPG·PNG) 또는 PDF</small></span></label>
+          <div class="pend" id="bulPend"></div>
+        </div>
+        <div class="ferr" aria-live="polite"></div>
+        <div class="form-acts"><button class="btn primary" type="submit" id="bulSubmit">홈페이지에 주보 올리기</button></div>
+      </form>
+      <div class="sec"><h2>올린 주보</h2><div class="bl" id="bulList"></div></div>
+    </section>
+
+    <!-- 예배 시간 -->
+    <section class="view" id="v-worship">
+      <div class="page-head"><div><h1>예배 시간</h1><p>맨 위 예배가 홈페이지 첫 화면에 크게 나옵니다. 화살표로 순서를 바꿀 수 있습니다.</p></div></div>
+      <div class="ge-head w"><span>예배 이름</span><span>설명</span><span>시간</span><span></span></div>
+      <div class="grid-edit" id="worshipEdit"></div>
+      <div style="margin-top:12px"><button class="btn" type="button" id="worshipAdd"><svg class="icon"><use href="#i-plus"/></svg>예배 추가</button></div>
+      <div class="savebar" data-sec="worship"><span class="msg">바꾼 내용이 없습니다.</span><button class="btn ghost" type="button" data-reset="worship">되돌리기</button><button class="btn primary" type="button" data-save="worship">저장하기</button></div>
+    </section>
+
+    <!-- 기도 제목 -->
+    <section class="view" id="v-prayer">
+      <div class="page-head"><div><h1>기도 제목</h1><p>함께하기 페이지의 기도 제목 목록입니다.</p></div></div>
+      <div class="ge-head p"><span>제목</span><span>기도 내용</span><span></span></div>
+      <div class="grid-edit" id="prayerEdit"></div>
+      <div style="margin-top:12px"><button class="btn" type="button" id="prayerAdd"><svg class="icon"><use href="#i-plus"/></svg>기도 제목 추가</button></div>
+      <div class="savebar" data-sec="prayer"><span class="msg">바꾼 내용이 없습니다.</span><button class="btn ghost" type="button" data-reset="prayer">되돌리기</button><button class="btn primary" type="button" data-save="prayer">저장하기</button></div>
+    </section>
+
+    <!-- 헌금 안내 -->
+    <section class="view" id="v-offering">
+      <div class="page-head"><div><h1>헌금 안내</h1><p>계좌번호를 바꿀 때는 숫자를 한 번 더 확인해 주세요.</p></div></div>
+      <div class="form card" style="border-width:1px;border-color:var(--line)" id="offerForm">
+        <div class="row2">
+          <label class="field"><span>은행</span><input class="inp" data-k="bank"></label>
+          <label class="field"><span>계좌번호</span><input class="inp" data-k="account" inputmode="numeric"></label>
+        </div>
+        <label class="field"><span>예금주</span><input class="inp" data-k="holder"></label>
+        <label class="field"><span>입금자명 적는 방법</span><input class="inp" data-k="howto"></label>
+        <label class="field"><span>예시</span><input class="inp" data-k="example"></label>
+        <label class="field"><span>헌금 종류 <small>· 으로 나눠 적어 주세요</small></span><textarea class="inp" data-k="kinds" style="min-height:90px"></textarea></label>
+      </div>
+      <div class="savebar" data-sec="offering"><span class="msg">바꾼 내용이 없습니다.</span><button class="btn ghost" type="button" data-reset="offering">되돌리기</button><button class="btn primary" type="button" data-save="offering">저장하기</button></div>
+    </section>
+
+    <!-- 교회 정보 -->
+    <section class="view" id="v-church">
+      <div class="page-head"><div><h1>교회 정보</h1><p>첫 화면 소개 문장, 인사말, 예배 장소를 고칩니다.</p></div></div>
+      <div class="form card" style="border-width:1px;border-color:var(--line)" id="churchForm">
+        <h3>첫 화면</h3>
+        <label class="field"><span>첫 화면 소개 문장 <small>큰 제목 아래 한두 줄</small></span><textarea class="inp" data-k="hero.sub" style="min-height:90px"></textarea></label>
+        <h3 style="margin-top:12px">담임목사 인사말</h3>
+        <label class="field"><span>큰 글씨 첫 문장 <small>줄을 바꾸면 홈페이지에서도 줄이 바뀝니다</small></span><textarea class="inp" data-k="greeting.lead" style="min-height:80px"></textarea></label>
+        <label class="field"><span>인사말 본문 <small>빈 줄을 넣으면 문단이 나뉩니다</small></span><textarea class="inp" data-k="greeting.body" style="min-height:200px"></textarea></label>
+        <h3 style="margin-top:12px">예배 장소</h3>
+        <div class="row2">
+          <label class="field"><span>장소 이름</span><input class="inp" data-k="place.name"></label>
+          <label class="field"><span>짧은 위치 <small>첫 화면용</small></span><input class="inp" data-k="place.short"></label>
+        </div>
+        <div class="row3">
+          <label class="field"><span>지번</span><input class="inp" data-k="place.jibun"></label>
+          <label class="field"><span>주소</span><input class="inp" data-k="place.address"></label>
+        </div>
+        <label class="field"><span>대중교통</span><textarea class="inp" data-k="place.transit" style="min-height:100px"></textarea></label>
+        <label class="field"><span>주차</span><input class="inp" data-k="place.parking"></label>
+      </div>
+      <div class="savebar" data-sec="church"><span class="msg">바꾼 내용이 없습니다.</span><button class="btn ghost" type="button" data-reset="church">되돌리기</button><button class="btn primary" type="button" data-save="church">저장하기</button></div>
+    </section>
+  </div></main>
+</div>
+
+<div class="busy" id="busy"><div><div class="spin" style="margin:0 auto" aria-label="저장하는 중"></div><div class="busy-msg" id="busyMsg"></div></div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  /* ================= 설정 =================
+     API_URL : 구글 Apps Script 웹앱 주소(…/exec). 비워 두면 '연습 모드'로 동작합니다.
+     SITE_URL: '홈페이지 보기' 버튼이 열 주소. 비워 두면 같은 폴더의 홈페이지(./)를 엽니다. */
+  var API_URL  = "";
+  var SITE_URL = "";
+
+  var DEMO = !API_URL, DEMO_KEY = "midbar-admin-demo", PW_KEY = "midbar-admin-pw";
+  var saved = null, draft = {}, PW = "", openNewsId = null, confirmId = null, history = [];
+  var $ = function(s,r){return (r||document).querySelector(s)}, $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+
+  function E(x){return String(x==null?"":x).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+  function clone(o){return JSON.parse(JSON.stringify(o))}
+  function same(a,b){return JSON.stringify(a)===JSON.stringify(b)}
+  function store(k,v,keep){try{(keep?localStorage:sessionStorage).setItem(k,v)}catch(e){}}
+  function read(k){try{return sessionStorage.getItem(k)||localStorage.getItem(k)}catch(e){return null}}
+  function forget(k){try{sessionStorage.removeItem(k);localStorage.removeItem(k)}catch(e){}}
+  function today(){var d=new Date(),z=function(n){return (n<10?"0":"")+n};return d.getFullYear()+"-"+z(d.getMonth()+1)+"-"+z(d.getDate())}
+  var WD=["일","월","화","수","목","금","토"];
+  function kdate(s){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(s||"");if(!m)return s||"";var d=new Date(+m[1],m[2]-1,+m[3]);return (+m[2])+"월 "+(+m[3])+"일 ("+WD[d.getDay()]+")"}
+  function ktime(iso){if(!iso)return "";var d=new Date(iso);if(isNaN(d))return iso;var h=d.getHours(),ap=h<12?"오전":"오후",hh=h%12||12,mm=d.getMinutes();return (d.getMonth()+1)+"월 "+d.getDate()+"일 "+ap+" "+hh+":"+(mm<10?"0":"")+mm}
+  function uid(){return "n"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+
+  var toastT;
+  function toast(msg,bad){var t=$("#toast");t.innerHTML=(bad?"":'<svg class="icon"><use href="#i-check"/></svg>')+E(msg);t.className="toast on"+(bad?" bad":"");clearTimeout(toastT);toastT=setTimeout(function(){t.className="toast"+(bad?" bad":"")},bad?5000:2600)}
+  function busy(on,msg){$("#busy").classList.toggle("on",!!on);$("#busyMsg").textContent=on&&msg?msg:""}
+
+  /* ---------- 서버 통신 ---------- */
+  function post(body){
+    return fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)})
+      .then(function(r){return r.json()});
+  }
+  function fetchContent(){
+    if(DEMO){
+      var local=null;try{local=JSON.parse(localStorage.getItem(DEMO_KEY)||"null")}catch(e){}
+      if(local)return Promise.resolve(local);
+      return fetch("content.json",{cache:"no-store"}).then(function(r){return r.json()});
+    }
+    return fetch(API_URL+"?action=content",{cache:"no-store"}).then(function(r){return r.json()});
+  }
+  function saveAll(next,note){
+    next.updated=new Date().toISOString();
+    busy(true);
+    var p;
+    if(DEMO){
+      p=new Promise(function(res){setTimeout(function(){
+        try{localStorage.setItem(DEMO_KEY,JSON.stringify(next))}catch(e){}
+        history.unshift({time:next.updated,note:note});history=history.slice(0,10);
+        try{localStorage.setItem(DEMO_KEY+'-log',JSON.stringify(history))}catch(e){}
+        res({ok:true,updated:next.updated});
+      },350)});
+    }else{
+      p=post({action:"save",password:PW,content:next,note:note});
+    }
+    return p.then(function(r){
+      busy(false);
+      if(!r||!r.ok)throw new Error((r&&r.error)||"저장하지 못했습니다.");
+      saved=clone(next);if(r.updated)saved.updated=r.updated;
+      DEMO?renderHistory():loadHistory();
+      renderAll();toast("저장했습니다. 홈페이지에 반영됐습니다.");
+      return true;
+    }).catch(function(e){busy(false);toast((e&&e.message)||"인터넷 연결을 확인하고 다시 저장해 주세요.",true);return false});
+  }
+  function loadHistory(){
+    if(DEMO){try{history=JSON.parse(localStorage.getItem(DEMO_KEY+'-log')||'[]')}catch(e){history=[]}renderHistory();return}
+    post({action:"history",password:PW}).then(function(r){if(r&&r.ok){history=r.items||[];renderHistory()}}).catch(function(){});
+  }
+
+  /* ---------- 로그인 ---------- */
+  function showApp(){$("#login").hidden=true;$("#app").hidden=false}
+  function showLogin(msg){$("#app").hidden=true;$("#login").hidden=false;$("#loginErr").textContent=msg||"";setTimeout(function(){$("#pw").focus()},50)}
+  $("#loginForm").addEventListener("submit",function(e){
+    e.preventDefault();
+    var pw=$("#pw").value.trim();if(!pw){$("#loginErr").textContent="비밀번호를 넣어 주세요.";return}
+    var b=$("#loginBtn");b.disabled=true;b.textContent="확인하는 중…";
+    post({action:"login",password:pw}).then(function(r){
+      b.disabled=false;b.textContent="로그인";
+      if(r&&r.ok){PW=pw;store(PW_KEY,pw,$("#keep").checked);start()}
+      else $("#loginErr").textContent=(r&&r.error)||"비밀번호가 맞지 않습니다.";
+    }).catch(function(){b.disabled=false;b.textContent="로그인";$("#loginErr").textContent="연결하지 못했습니다. 인터넷 연결을 확인해 주세요."});
+  });
+  $$(".logout").forEach(function(b){b.addEventListener("click",function(){forget(PW_KEY);PW="";if(DEMO){toast("연습 모드에서는 로그아웃이 없습니다.");return}showLogin("로그아웃했습니다.")})});
+
+  function start(){
+    showApp();busy(true);
+    fetchContent().then(function(c){busy(false);saved=c||{};resetDrafts();renderAll();loadHistory();route()})
+      .catch(function(){busy(false);toast("홈페이지 내용을 불러오지 못했습니다. 잠시 후 새로 고침해 주세요.",true)});
+  }
+
+  /* ---------- 화면 그리기 ---------- */
+  function resetDrafts(which){
+    var all=!which;
+    if(all||which==="worship")draft.worship=clone(saved.worship||[]);
+    if(all||which==="prayer")draft.prayer=clone(saved.prayers||[]);
+    if(all||which==="offering")draft.offering=clone(saved.offering||{});
+    if(all||which==="church")draft.church={hero:clone(saved.hero||{}),greeting:clone(saved.greeting||{}),place:clone(saved.place||{})};
+  }
+  function sortedNews(){return (saved.news||[]).slice().sort(function(a,b){return (b.pinned?1:0)-(a.pinned?1:0)||String(b.date).localeCompare(String(a.date))})}
+
+  function renderAll(){
+    var N=saved.news||[],W=saved.worship||[],P=saved.prayers||[],O=saved.offering||{};
+    $("#cNews").textContent=N.length;$("#cWorship").textContent=W.length;$("#cPrayer").textContent=P.length;
+    $("#tNews").innerHTML=N.length+"<small>개</small>";
+    var sn=sortedNews();$("#tNewsS").textContent=sn[0]?"최근: "+sn[0].title:"아직 소식이 없습니다";
+    $("#tWorship").textContent=W[0]?W[0].time:"—";
+    $("#tWorshipS").textContent=W.slice(1).map(function(w){return w.name+" "+w.time}).join(" · ")||(W[0]?W[0].name:"");
+    $("#tPrayer").innerHTML=P.length+"<small>개</small>";$("#tPrayerS").textContent=P[0]?P[0].label+" 외":"";
+    var B=sortedBul();$("#cBul").textContent=B.length;$("#tBul").textContent=B[0]?kshort(B[0].date):"—";$("#tBulS").textContent=B[0]?("최근 주보 · 모두 "+B.length+"개"):"아직 주보가 없습니다";
+    $("#lastSaved").textContent=saved.updated?"마지막 저장: "+ktime(saved.updated):"아직 저장한 기록이 없습니다";
+    $("#dashNews").innerHTML=sn.slice(0,5).map(function(n){
+      return '<li><span class="t"><b>'+(n.pinned?'<span class="chip pin">고정</span> ':'')+(n.tag?'<span class="chip">'+E(n.tag)+'</span> ':'')+E(n.title)+'</b><small>'+E(kdate(n.date))+'</small></span><a class="btn sm" href="#news" data-edit="'+E(n.id)+'">고치기</a></li>';
+    }).join("")||'<li><span class="t"><small>아직 소식이 없습니다.</small></span></li>';
+    renderNews();renderBulletins();renderWorship();renderPrayer();fillForm("#offerForm",draft.offering);fillChurch();
+    $$(".savebar").forEach(updateBar);
+  }
+
+  /* 교회 소식 */
+  function newsFormHTML(n,isNew){
+    n=n||{date:today(),tag:"",title:"",body:"",pinned:false};
+    var tags=["","공지","새소식","행사","부고","축하"];
+    return '<form class="form card" data-id="'+E(n.id||"")+'" novalidate>'+
+      '<h3>'+(isNew?"새 소식 쓰기":"소식 고치기")+'</h3>'+
+      '<div class="row2"><label class="field"><span>날짜</span><input class="inp" type="date" name="date" value="'+E(n.date)+'" required></label>'+
+      '<label class="field"><span>구분 <small>제목 앞에 작게 붙습니다</small></span><select class="inp" name="tag">'+tags.map(function(t){return '<option value="'+t+'"'+(t===(n.tag||"")?" selected":"")+'>'+(t||"없음")+'</option>'}).join("")+'</select></label></div>'+
+      '<label class="field"><span>제목</span><input class="inp" name="title" value="'+E(n.title)+'" placeholder="예) 11월 성찬식 안내" required></label>'+
+      '<label class="field"><span>내용</span><textarea class="inp" name="body" placeholder="자세한 내용을 적어 주세요">'+E(n.body)+'</textarea></label>'+
+      '<label class="check"><input type="checkbox" name="pinned"'+(n.pinned?" checked":"")+'> 첫 화면 맨 위에 고정하기</label>'+
+      '<div class="ferr" aria-live="polite"></div>'+
+      '<div class="form-acts"><button class="btn primary" type="submit">'+(isNew?"홈페이지에 올리기":"고친 내용 저장")+'</button><button class="btn ghost" type="button" data-cancel>취소</button></div>'+
+    '</form>';
+  }
+  function renderNews(){
+    var list=sortedNews();
+    $("#newsForm").innerHTML=openNewsId==="new"?newsFormHTML(null,true)+'<div style="height:16px"></div>':"";
+    $("#newsList").innerHTML=list.length?list.map(function(n){
+      if(openNewsId===n.id)return newsFormHTML(n,false);
+      return '<div class="item"><div class="item-row"><div class="body">'+
+        '<div class="meta">'+(n.pinned?'<span class="chip pin">고정</span>':'')+(n.tag?'<span class="chip">'+E(n.tag)+'</span>':'')+'<span>'+E(kdate(n.date))+'</span></div>'+
+        '<h3>'+E(n.title)+'</h3>'+(n.body?'<p>'+E(n.body)+'</p>':'')+
+        '</div><div class="acts"><button class="btn sm" type="button" data-edit="'+E(n.id)+'">고치기</button><button class="btn sm ghost" type="button" data-del="'+E(n.id)+'">지우기</button></div></div>'+
+        (confirmId===n.id?'<div class="confirm"><span>이 소식을 홈페이지에서 지울까요?</span><button class="btn sm danger" type="button" data-delok="'+E(n.id)+'">지우기</button><button class="btn sm" type="button" data-delno>취소</button></div>':'')+
+      '</div>';
+    }).join(""):'<div class="empty">아직 소식이 없습니다. 오른쪽 위 <b>새 소식 쓰기</b>를 눌러 보세요.</div>';
+    var f=$("#newsForm form")||$("#newsList form");if(f){var t=f.querySelector("[name=title]");if(t&&!t.value)setTimeout(function(){t.focus()},30)}
+  }
+  function openNew(){openNewsId="new";confirmId=null;renderNews();$("#newsForm").scrollIntoView({behavior:"smooth",block:"start"})}
+  $("#newsAddBtn").addEventListener("click",openNew);
+  document.addEventListener("submit",function(e){
+    var f=e.target;if(!f.closest("#v-news"))return;e.preventDefault();
+    var g=function(n){return f.elements[n]};
+    var title=g("title").value.trim(),date=g("date").value;
+    if(!title){f.querySelector(".ferr").textContent="제목을 적어 주세요.";g("title").focus();return}
+    if(!date){f.querySelector(".ferr").textContent="날짜를 골라 주세요.";return}
+    var item={id:f.dataset.id||uid(),date:date,tag:g("tag").value,title:title,body:g("body").value.trim(),pinned:g("pinned").checked};
+    var next=clone(saved),isNew=!f.dataset.id;next.news=next.news||[];
+    if(isNew)next.news.unshift(item);else next.news=next.news.map(function(n){return n.id===item.id?item:n});
+    saveAll(next,(isNew?"소식 추가: ":"소식 수정: ")+title).then(function(ok){if(ok){openNewsId=null;renderNews()}});
+  });
+
+
+  /* ---------- 주보 ---------- */
+  var pend=[], bulConfirm=null;
+  function ymdD(d){var z=function(n){return (n<10?"0":"")+n};return d.getFullYear()+"-"+z(d.getMonth()+1)+"-"+z(d.getDate())}
+  function nextSunday(){var t=new Date();t.setHours(0,0,0,0);t.setDate(t.getDate()+((7-t.getDay())%7));return ymdD(t)}
+  function kshort(s){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(s||"");return m?(+m[2])+"월 "+(+m[3])+"일":s}
+  function sortedBul(){return (saved&&saved.bulletins||[]).slice().sort(function(a,b){return String(b.date).localeCompare(String(a.date))})}
+  function fimg(f){return f.src||("https://drive.google.com/thumbnail?id="+encodeURIComponent(f.drive)+"&sz=w800")}
+  function nextNo(){var b=sortedBul()[0];if(!b||!b.no)return "";var m=/^(.*?)(\d+)(\D*)$/.exec(b.no);return m?m[1]+(+m[2]+1)+m[3]:""}
+  function prepBulForm(){
+    var f=$("#bulForm");if(!f.elements.date.value)f.elements.date.value=nextSunday();
+    if(!f.elements.no.value)f.elements.no.placeholder=nextNo()?"예) "+nextNo():"예) 제2026-46호";
+  }
+  function renderPend(){
+    $("#bulPend").innerHTML=pend.map(function(p,i){
+      return '<div class="pf"><span class="th">'+(p.preview?'<img src="'+p.preview+'" alt="">':'PDF')+'</span><small>'+(i+1)+'쪽</small><button type="button" class="rm" data-pendrm="'+i+'" aria-label="빼기">×</button></div>';
+    }).join("");
+  }
+  function readURL(file){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(r.result)};r.onerror=function(){rej(new Error("파일을 읽지 못했습니다."))};r.readAsDataURL(file)})}
+  function shrink(file,max,q){return new Promise(function(res,rej){
+    var url=URL.createObjectURL(file),img=new Image();
+    img.onload=function(){var w=img.naturalWidth,h=img.naturalHeight,k=Math.min(1,max/Math.max(w,h)),c=document.createElement("canvas");c.width=Math.round(w*k);c.height=Math.round(h*k);var g=c.getContext("2d");g.fillStyle="#fff";g.fillRect(0,0,c.width,c.height);g.drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);res(c.toDataURL("image/jpeg",q))};
+    img.onerror=function(){URL.revokeObjectURL(url);rej(new Error("이 사진 형식은 열 수 없습니다. JPG로 바꿔서 올려 주세요."))};
+    img.src=url;
+  })}
+  function addFiles(list){
+    var err=$("#bulForm .ferr");err.textContent="";
+    Array.prototype.forEach.call(list,function(file){
+      var isPdf=file.type==="application/pdf"||/\.pdf$/i.test(file.name);
+      if(!isPdf&&!/^image\//.test(file.type)){err.textContent="사진 또는 PDF 파일만 올릴 수 있습니다.";return}
+      if(isPdf&&file.size>15*1024*1024){err.textContent="PDF가 너무 큽니다. 15MB 이하로 올려 주세요.";return}
+      var item={file:file,pdf:isPdf,preview:""};pend.push(item);
+      if(!isPdf)shrink(file,400,.7).then(function(u){item.preview=u;renderPend()}).catch(function(e){err.textContent=e.message;pend.splice(pend.indexOf(item),1);renderPend()});
+    });
+    renderPend();
+  }
+  $("#bulFiles").addEventListener("change",function(e){addFiles(e.target.files);e.target.value=""});
+  var drop=$("#bulDrop");
+  ["dragenter","dragover"].forEach(function(t){drop.addEventListener(t,function(e){e.preventDefault();drop.classList.add("on")})});
+  ["dragleave","drop"].forEach(function(t){drop.addEventListener(t,function(e){e.preventDefault();drop.classList.remove("on")})});
+  drop.addEventListener("drop",function(e){if(e.dataTransfer&&e.dataTransfer.files)addFiles(e.dataTransfer.files)});
+
+  function renderBulletins(){
+    var B=sortedBul();
+    $("#bulList").innerHTML=B.length?B.map(function(b){
+      var f=(b.files||[])[0]||{};
+      return '<div class="bi"><span class="th">'+(f.src||f.drive?'<img src="'+E(fimg(f))+'" alt="" loading="lazy">':'')+'</span><b>'+E(kshort(b.date))+' 주보</b><small>'+E([b.no,b.title].filter(Boolean).join(" · ")||" ")+' · '+(b.files||[]).length+'쪽</small>'+
+        (bulConfirm===b.id?'<div class="confirm"><span>이 주보를 지울까요?</span><button class="btn sm danger" type="button" data-buldelok="'+E(b.id)+'">지우기</button><button class="btn sm" type="button" data-buldelno>취소</button></div>'
+        :'<div class="acts"><button class="btn sm ghost" type="button" data-buldel="'+E(b.id)+'">지우기</button></div>')+'</div>';
+    }).join(""):'<div class="empty" style="grid-column:1/-1">아직 올린 주보가 없습니다.</div>';
+  }
+
+  $("#bulForm").addEventListener("submit",function(e){
+    e.preventDefault();
+    var f=e.target,err=f.querySelector(".ferr"),date=f.elements.date.value;
+    err.textContent="";
+    if(!date){err.textContent="주일 날짜를 골라 주세요.";return}
+    if(!pend.length){err.textContent="주보 사진이나 PDF를 골라 주세요.";return}
+    if(sortedBul().some(function(b){return b.date===date})){err.textContent=kshort(date)+" 주보가 이미 있습니다. 먼저 지우고 다시 올려 주세요.";return}
+    var files=[],uploaded=[],i=0;
+    function step(){
+      if(i>=pend.length)return Promise.resolve();
+      var p=pend[i],n=i+1;busy(true,"주보 "+n+" / "+pend.length+"쪽 올리는 중…");
+      var data=p.pdf?readURL(p.file):shrink(p.file,DEMO?1000:2200,DEMO?.6:.85);
+      return data.then(function(u){
+        var mime=p.pdf?"application/pdf":"image/jpeg",b64=u.split(",")[1];
+        if(DEMO){files.push({src:u,type:p.pdf?"pdf":"image"});return}
+        return post({action:"upload",password:PW,name:date+"-"+n+(p.pdf?".pdf":".jpg"),mime:mime,data:b64}).then(function(r){
+          if(!r||!r.ok)throw new Error((r&&r.error)||"파일을 올리지 못했습니다.");
+          uploaded.push(r.id);files.push({drive:r.id,type:p.pdf?"pdf":"image"});
+        });
+      }).then(function(){i++;return step()});
+    }
+    step().then(function(){
+      busy(false);
+      var next=clone(saved);next.bulletins=next.bulletins||[];
+      next.bulletins.push({id:"b"+date.replace(/-/g,"")+Math.random().toString(36).slice(2,5),date:date,no:f.elements.no.value.trim(),title:f.elements.title.value.trim(),files:files});
+      return saveAll(next,"주보 올리기: "+kshort(date)).then(function(ok){
+        if(ok){pend=[];renderPend();f.reset();prepBulForm();renderBulletins()}
+        else if(uploaded.length)post({action:"trash",password:PW,ids:uploaded}).catch(function(){});
+      });
+    }).catch(function(x){busy(false);err.textContent=(x&&x.message)||"올리지 못했습니다. 인터넷 연결을 확인해 주세요.";if(uploaded.length)post({action:"trash",password:PW,ids:uploaded}).catch(function(){})});
+  });
+
+  /* 표 편집: 예배 시간 · 기도 제목 */
+  function rowTools(i,n){return '<span class="tools"><button class="ib" type="button" data-mv="-1" data-i="'+i+'" aria-label="위로"'+(i===0?" disabled":"")+'><svg class="icon"><use href="#i-up"/></svg></button><button class="ib" type="button" data-mv="1" data-i="'+i+'" aria-label="아래로"'+(i===n-1?" disabled":"")+'><svg class="icon"><use href="#i-down"/></svg></button><button class="ib del" type="button" data-rm data-i="'+i+'" aria-label="지우기"><svg class="icon"><use href="#i-x"/></svg></button></span>'}
+  function renderWorship(){
+    var W=draft.worship;
+    $("#worshipEdit").innerHTML=W.length?W.map(function(w,i){return '<div class="ge-row w" data-sec="worship" data-i="'+i+'">'+
+      '<input class="inp" data-f="name" value="'+E(w.name)+'" placeholder="예배 이름" aria-label="예배 이름">'+
+      '<input class="inp" data-f="desc" value="'+E(w.desc)+'" placeholder="설명 (예: 인도 박규성 담임목사)" aria-label="설명">'+
+      '<input class="inp" data-f="time" value="'+E(w.time)+'" placeholder="오후 5:00" aria-label="시간">'+rowTools(i,W.length)+'</div>'}).join(""):'<div class="empty">예배가 없습니다. 아래 <b>예배 추가</b>를 눌러 주세요.</div>';
+  }
+  function renderPrayer(){
+    var P=draft.prayer;
+    $("#prayerEdit").innerHTML=P.length?P.map(function(p,i){return '<div class="ge-row p" data-sec="prayer" data-i="'+i+'">'+
+      '<input class="inp" data-f="label" value="'+E(p.label)+'" placeholder="제목" aria-label="제목">'+
+      '<input class="inp" data-f="text" value="'+E(p.text)+'" placeholder="기도 내용" aria-label="기도 내용">'+rowTools(i,P.length)+'</div>'}).join(""):'<div class="empty">기도 제목이 없습니다. 아래 <b>기도 제목 추가</b>를 눌러 주세요.</div>';
+  }
+  $("#worshipAdd").addEventListener("click",function(){draft.worship.push({name:"",desc:"",time:""});renderWorship();updateBar($('.savebar[data-sec="worship"]'));var r=$$("#worshipEdit .ge-row");r[r.length-1].querySelector("input").focus()});
+  $("#prayerAdd").addEventListener("click",function(){draft.prayer.push({label:"",text:""});renderPrayer();updateBar($('.savebar[data-sec="prayer"]'));var r=$$("#prayerEdit .ge-row");r[r.length-1].querySelector("input").focus()});
+  document.addEventListener("input",function(e){
+    var row=e.target.closest(".ge-row");
+    if(row){var sec=row.dataset.sec,i=+row.dataset.i,f=e.target.dataset.f;draft[sec][i][f]=e.target.value;updateBar($('.savebar[data-sec="'+sec+'"]'));return}
+    var k=e.target.dataset.k;
+    if(k&&e.target.closest("#offerForm")){draft.offering[k]=e.target.value;updateBar($('.savebar[data-sec="offering"]'))}
+    if(k&&e.target.closest("#churchForm")){var p=k.split(".");draft.church[p[0]][p[1]]=e.target.value;updateBar($('.savebar[data-sec="church"]'))}
+  });
+
+  /* 폼 채우기 */
+  function fillForm(sel,obj){$$(sel+" [data-k]").forEach(function(el){el.value=obj[el.dataset.k]||""})}
+  function fillChurch(){$$("#churchForm [data-k]").forEach(function(el){var p=el.dataset.k.split(".");el.value=(draft.church[p[0]]||{})[p[1]]||""})}
+
+  /* 저장 막대 */
+  function current(sec){
+    if(sec==="worship")return [draft.worship,saved.worship||[]];
+    if(sec==="prayer")return [draft.prayer,saved.prayers||[]];
+    if(sec==="offering")return [draft.offering,saved.offering||{}];
+    return [draft.church,{hero:saved.hero||{},greeting:saved.greeting||{},place:saved.place||{}}];
+  }
+  function updateBar(bar){
+    if(!bar)return;var c=current(bar.dataset.sec),dirty=!same(c[0],c[1]);
+    bar.classList.toggle("dirty",dirty);
+    bar.querySelector(".msg").textContent=dirty?"아직 저장하지 않았습니다. 저장하기를 눌러야 홈페이지에 반영됩니다.":"바꾼 내용이 없습니다.";
+    bar.querySelector("[data-save]").disabled=!dirty;bar.querySelector("[data-reset]").disabled=!dirty;
+  }
+  function saveSection(sec){
+    var next=clone(saved),note;
+    if(sec==="worship"){
+      var W=draft.worship.filter(function(w){return (w.name||"").trim()||(w.time||"").trim()});
+      if(W.some(function(w){return !(w.name||"").trim()||!(w.time||"").trim()})){toast("예배 이름과 시간을 모두 적어 주세요.",true);return}
+      next.worship=W.map(function(w){return {name:w.name.trim(),desc:(w.desc||"").trim(),time:w.time.trim()}});note="예배 시간 수정";
+    }else if(sec==="prayer"){
+      next.prayers=draft.prayer.filter(function(p){return (p.label||"").trim()||(p.text||"").trim()}).map(function(p){return {label:(p.label||"").trim(),text:(p.text||"").trim()}});note="기도 제목 수정";
+    }else if(sec==="offering"){
+      if(!(draft.offering.account||"").trim()){toast("계좌번호를 적어 주세요.",true);return}
+      next.offering=clone(draft.offering);note="헌금 안내 수정";
+    }else{
+      next.hero=clone(draft.church.hero);next.greeting=clone(draft.church.greeting);next.place=clone(draft.church.place);note="교회 정보 수정";
+    }
+    saveAll(next,note).then(function(ok){if(ok){resetDrafts(sec);renderAll()}});
+  }
+
+  /* 클릭 처리 */
+  document.addEventListener("click",function(e){
+    var t=e.target.closest("button,a");if(!t)return;
+    if(t.dataset.new){setTimeout(openNew,0);return}
+    if(t.dataset.pendrm){pend.splice(+t.dataset.pendrm,1);renderPend();return}
+    if(t.dataset.buldel){bulConfirm=t.dataset.buldel;renderBulletins();return}
+    if(t.hasAttribute("data-buldelno")){bulConfirm=null;renderBulletins();return}
+    if(t.dataset.buldelok){var bid=t.dataset.buldelok,nb=clone(saved),gb=(saved.bulletins||[]).filter(function(b){return b.id===bid})[0];nb.bulletins=(nb.bulletins||[]).filter(function(b){return b.id!==bid});
+      saveAll(nb,"주보 삭제: "+(gb?kshort(gb.date):"")).then(function(ok){if(ok){bulConfirm=null;renderBulletins();var ids=(gb&&gb.files||[]).map(function(f){return f.drive}).filter(Boolean);if(!DEMO&&ids.length)post({action:"trash",password:PW,ids:ids}).catch(function(){})}});return}
+
+    if(t.dataset.edit){openNewsId=t.dataset.edit;confirmId=null;if(location.hash!=="#news"){location.hash="#news"}else{renderNews()};setTimeout(function(){renderNews();var f=$("#newsList form");if(f)f.scrollIntoView({behavior:"smooth",block:"center"})},0);if(t.tagName==="A")e.preventDefault();return}
+    if(t.hasAttribute("data-cancel")){openNewsId=null;renderNews();return}
+    if(t.dataset.del){confirmId=t.dataset.del;openNewsId=null;renderNews();return}
+    if(t.hasAttribute("data-delno")){confirmId=null;renderNews();return}
+    if(t.dataset.delok){var id=t.dataset.delok,next=clone(saved),gone=(saved.news||[]).filter(function(n){return n.id===id})[0];next.news=(next.news||[]).filter(function(n){return n.id!==id});saveAll(next,"소식 삭제: "+(gone?gone.title:"")).then(function(ok){if(ok){confirmId=null;renderNews()}});return}
+    if(t.dataset.mv){var row=t.closest(".ge-row"),sec=row.dataset.sec,i=+t.dataset.i,j=i+(+t.dataset.mv),L=draft[sec];if(j<0||j>=L.length)return;var tmp=L[i];L[i]=L[j];L[j]=tmp;sec==="worship"?renderWorship():renderPrayer();updateBar($('.savebar[data-sec="'+sec+'"]'));return}
+    if(t.hasAttribute("data-rm")){var r2=t.closest(".ge-row"),s2=r2.dataset.sec;draft[s2].splice(+t.dataset.i,1);s2==="worship"?renderWorship():renderPrayer();updateBar($('.savebar[data-sec="'+s2+'"]'));return}
+    if(t.dataset.save){saveSection(t.dataset.save);return}
+    if(t.dataset.reset){var s3=t.dataset.reset;resetDrafts(s3);renderAll();toast("저장하기 전 내용으로 되돌렸습니다.");return}
+    if(t.dataset.restore!=null){
+      var h=history[+t.dataset.restore];if(!h)return;
+      if(t.dataset.sure!=="1"){t.dataset.sure="1";t.textContent="한 번 더 누르면 되돌립니다";t.classList.add("danger");setTimeout(function(){if(t.isConnected){t.dataset.sure="";t.textContent="이 때로 되돌리기";t.classList.remove("danger")}},4000);return}
+      busy(true);post({action:"restore",password:PW,time:h.time}).then(function(r){busy(false);if(r&&r.ok){toast("이전 내용으로 되돌렸습니다.");start()}else toast((r&&r.error)||"되돌리지 못했습니다.",true)}).catch(function(){busy(false);toast("연결하지 못했습니다.",true)});
+      return;
+    }
+  });
+  $("#demoReset").addEventListener("click",function(){try{localStorage.removeItem(DEMO_KEY);localStorage.removeItem(DEMO_KEY+"-log")}catch(e){}history=[];start();toast("연습 내용을 처음 상태로 되돌렸습니다.")});
+
+  function renderHistory(){
+    $("#hist").innerHTML=history.length?history.slice(0,8).map(function(h,i){
+      return '<li><span class="t">'+E(h.note||"저장")+'<br><small>'+E(ktime(h.time))+'</small></span>'+(DEMO||i===0?'':'<button class="btn sm" type="button" data-restore="'+i+'">이 때로 되돌리기</button>')+'</li>';
+    }).join(""):'<li><span class="t"><small>'+(DEMO?"연습 모드에서 저장하면 여기에 기록이 쌓입니다.":"아직 저장 기록이 없습니다.")+'</small></span></li>';
+  }
+
+  /* 화면 이동 */
+  var VIEWS=["dash","news","bulletin","worship","prayer","offering","church"];
+  function route(){
+    var v=(location.hash||"#dash").slice(1);if(VIEWS.indexOf(v)<0)v="dash";
+    VIEWS.forEach(function(x){$("#v-"+x).classList.toggle("on",x===v)});
+    $$(".nav a").forEach(function(a){a.getAttribute("href")==="#"+v?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current")});
+    if(v!=="news"&&openNewsId==="new"){openNewsId=null}
+    if(v==="news")renderNews();
+    if(v==="bulletin")prepBulForm();
+    window.scrollTo(0,0);
+    var cur=$('.nav a[aria-current]');if(cur&&window.innerWidth<=900){var n=cur.parentNode;n.scrollLeft=cur.offsetLeft-16}
+  }
+  window.addEventListener("hashchange",route);
+  window.addEventListener("beforeunload",function(e){
+    if(!saved)return;var d=["worship","prayer","offering","church"].some(function(s){var c=current(s);return !same(c[0],c[1])});
+    if(d){e.preventDefault();e.returnValue=""}
+  });
+
+  /* 시작 */
+  var site=SITE_URL||"./";$("#siteLink").href=site;$("#siteLinkM").href=site;
+  if(DEMO){$("#demoBar").hidden=false;$("#modeLabel").textContent="연습 모드";start()}
+  else{PW=read(PW_KEY)||"";if(PW){post({action:"login",password:PW}).then(function(r){r&&r.ok?start():showLogin()}).catch(function(){showLogin("연결하지 못했습니다. 인터넷 연결을 확인해 주세요.")})}else showLogin()}
+})();
+</script>
