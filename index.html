@@ -231,6 +231,37 @@ header.enter{animation:down .8s var(--ease) both}
 .rows span{color:#3E403A;min-width:0}
 .map{margin-top:28px;aspect-ratio:16/7;max-width:100%;border-radius:24px;background:var(--soft);border:1px dashed rgba(21,23,18,.25);display:grid;place-items:center;color:var(--mute);font-size:14px;text-align:center;padding:16px}
 .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px 24px}
+.lead-s{color:var(--mute);margin:-24px 0 28px;max-width:40rem}
+.vcard .k2{display:block;color:var(--dawn);font-size:13px;margin-top:2px}
+.more-btn{display:block;margin:36px auto 0;padding:13px 26px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:15px;cursor:pointer}
+.more-btn:hover{border-color:var(--ink)}
+.qgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px 20px}
+.qcard{display:block;width:100%;padding:0;border:0;background:none;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.qcard .th{display:block;aspect-ratio:4/5;border-radius:16px;overflow:hidden;background:var(--soft);border:1px solid var(--line)}
+.qcard .th img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;transition:transform .7s var(--ease)}
+.qcard:hover .th img{transform:scale(1.04)}
+.qcard .d{display:block;margin-top:14px;font-size:13px;letter-spacing:.06em;color:var(--dawn)}
+.qcard b{display:block;margin-top:4px;font-weight:500;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.qcard small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
+.qview{position:fixed;inset:0;z-index:50;background:rgba(14,15,12,.82);display:grid;place-items:center;padding:24px}
+.qview-card{width:min(1120px,100%);max-height:100%;background:var(--surface);border-radius:20px;display:flex;flex-direction:column;overflow:hidden}
+.qview-bar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:20px 24px;border-bottom:1px solid var(--line)}
+.qview-bar small{display:block;font-size:13px;letter-spacing:.06em;color:var(--dawn)}
+.qview-bar b{display:block;font-family:var(--f-serif);font-weight:500;font-size:22px;letter-spacing:-.02em;line-height:1.35;margin-top:4px}
+.qview-bar span{display:block;color:var(--mute);font-size:14px;margin-top:4px}
+.qview-x{flex:none;width:44px;height:44px;border-radius:50%;border:0;background:var(--soft);color:var(--ink);font-size:26px;line-height:1;cursor:pointer}
+.qview-body{flex:1;overflow:auto;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:32px;padding:24px}
+.qview-body figure{margin:0}
+.qview-body figure img{display:block;width:100%;border-radius:12px;border:1px solid var(--line)}
+.qview-body figure a{display:inline-block;margin-top:10px;font-size:14px;color:var(--mute);text-decoration:underline}
+.qtext{font-size:16px;line-height:1.85;color:var(--ink);word-break:keep-all}
+.qtext p{margin:0 0 6px}
+.qtext .sh{font-weight:700;margin:4px 0 10px}
+.qtext .vs{display:flex;gap:10px}
+.qtext .vs i{flex:none;width:1.6em;text-align:right;font-style:normal;font-size:13px;color:var(--dawn);padding-top:.25em}
+.qtext .hd{font-family:var(--f-serif);font-size:19px;font-weight:500;margin:28px 0 8px;padding-top:20px;border-top:1px solid var(--line)}
+.qtext .it{padding-left:1.4em;text-indent:-1.4em;font-weight:500;margin-top:10px}
+.qtext .ds{color:var(--mute);padding-left:1.4em}
 .vcard{display:block}
 .vcard .th{position:relative;aspect-ratio:16/10;max-width:100%;border-radius:20px;overflow:hidden;background:var(--night)}
 .vcard .th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.6) brightness(.5);transition:transform .7s var(--ease)}
@@ -382,6 +413,8 @@ footer .wrap{padding-block:56px 48px}
   .f-bot address span{display:block}
   .f-bot address span+span::before{content:none}
 }
+@media (max-width:1024px){.qgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){.qgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 14px}.qview{padding:0}.qview-card{border-radius:0;height:100%}.qview-body{grid-template-columns:1fr;padding:16px}.qview-bar{padding:calc(env(safe-area-inset-top,0px) + 14px) 16px 14px}.qview-bar b{font-size:19px}}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
@@ -396,7 +429,7 @@ footer .wrap{padding-block:56px 48px}
       <li data-p="worship"><a href="#worship">예배안내</a>
         <div class="dep2"><a href="#worship/times">예배 시간</a><a href="#worship/place">오시는 길</a></div></li>
       <li data-p="word"><a href="#word">말씀</a>
-        <div class="dep2"><a href="#word/sermon">주일 설교</a><a href="#word/canvas">그림 묵상</a></div></li>
+        <div class="dep2"><a href="#word/sunday">주일설교</a><a href="#word/friday">금요기도회</a><a href="#word/canvas">광야캔버스</a><a href="#word/palm">뿌리깊은 종려나무</a><a href="#word/qt">매일성경큐티</a></div></li>
       <li data-p="bulletin"><a href="#bulletin">주보</a></li>
       <li data-p="together"><a href="#together">함께하기</a>
         <div class="dep2"><a href="#together/new">새가족 안내</a><a href="#together/prayer">기도 제목</a><a href="#together/news">교회 소식</a><a href="#together/offering">헌금 안내</a></div></li>
@@ -589,21 +622,37 @@ footer .wrap{padding-block:56px 48px}
 <section class="page" id="p-word">
   <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 말씀</p><h1>말씀</h1></div></div>
-  <nav class="subtabs" aria-label="말씀 메뉴"><ul class="wrap"><li><a href="#word/sermon">주일 설교</a></li><li><a href="#word/canvas">그림 묵상</a></li></ul></nav>
+  <nav class="subtabs" aria-label="말씀 메뉴"><ul class="wrap"><li><a href="#word/sunday">주일설교</a></li><li><a href="#word/friday">금요기도회</a></li><li><a href="#word/canvas">광야캔버스</a></li><li><a href="#word/palm">뿌리깊은 종려나무</a></li><li><a href="#word/qt">매일성경큐티</a></li></ul></nav>
   <div class="wrap">
-    <div id="sec-word-sermon" class="block">
-      <div class="sec-head"><div><p class="label">주일 설교</p><h2>설교 영상</h2></div><a class="more" href="https://www.youtube.com/@midbar-church-smilepastor/videos" target="_blank" rel="noopener">유튜브에서 전체 보기 ↗</a></div>
-      <div class="vgrid" id="svGrid">
-        <a class="vcard" href="https://www.youtube.com/watch?v=LEMtXSTmRFA" target="_blank" rel="noopener"><span class="th"><img src="thumbs/LEMtXSTmRFA.jpg" alt="감사하며 축복할 때 썸네일"></span><b>감사하며 축복할 때</b><small>주일설교 · 고린도전서 10장 16~17절 · 2026.11.01</small></a>
-        <a class="vcard" href="https://www.youtube.com/watch?v=x33yW_3tGZQ" target="_blank" rel="noopener"><span class="th"><img src="thumbs/x33yW_3tGZQ.jpg" alt="믿음으로 말미암아 살리라 썸네일"></span><b>믿음으로 말미암아 살리라</b><small>금요기도회 · 하박국 2:1~4 · 2026.10.30</small></a>
-        <a class="vcard" href="https://www.youtube.com/watch?v=1KxERtn-9qI" target="_blank" rel="noopener"><span class="th"><img src="thumbs/1KxERtn-9qI.jpg" alt="물 가에 심어진 나무 썸네일"></span><b>물 가에 심어진 나무</b><small>큐티말씀 · 예레미야 17:7-8</small></a>
-      </div>
-      <p class="note">유튜브에 올린 영상이 최신순으로 자동으로 정리됩니다. 큐티말씀은 매일 밤 12시 유튜브 [게시물]에도 올라옵니다.</p>
+    <div id="sec-word-sunday" class="block">
+      <div class="sec-head"><div><p class="label">주일설교</p><h2>주일 예배 설교</h2></div><a class="more" href="https://www.youtube.com/@midbar-church-smilepastor/videos" target="_blank" rel="noopener">유튜브에서 보기 ↗</a></div>
+      <p class="lead-s">주일 오후 5시 예배의 말씀입니다.</p>
+      <div class="vgrid" id="wv-sunday"><p class="note">영상을 불러오는 중입니다.</p></div>
+      <button type="button" class="more-btn" data-more="sunday" hidden>지난 영상 더 보기</button>
+    </div>
+    <div id="sec-word-friday" class="block">
+      <div class="sec-head"><div><p class="label">금요기도회</p><h2>개척 준비 금요기도회</h2></div><a class="more" href="https://www.youtube.com/@midbar-church-smilepastor/videos" target="_blank" rel="noopener">유튜브에서 보기 ↗</a></div>
+      <p class="lead-s">교회 개척을 위해 금요일마다 함께 기도하며 나눈 말씀입니다.</p>
+      <div class="vgrid" id="wv-friday"><p class="note">영상을 불러오는 중입니다.</p></div>
+      <button type="button" class="more-btn" data-more="friday" hidden>지난 영상 더 보기</button>
     </div>
     <div id="sec-word-canvas" class="block">
-      <div class="sec-head"><div><p class="label">그림 묵상</p><h2>광야캔버스</h2></div></div>
-      <p style="color:var(--mute);margin:-24px 0 28px;max-width:40rem">그림 한 점을 함께 보며 그 안에 담긴 말씀을 묵상합니다.</p>
-      <div class="vgrid" id="cvGrid"><p class="note">그림 묵상 영상을 불러오는 중입니다.</p></div>
+      <div class="sec-head"><div><p class="label">광야캔버스</p><h2>그림으로 나누는 묵상</h2></div><a class="more" href="https://www.youtube.com/@midbar-church-smilepastor/videos" target="_blank" rel="noopener">유튜브에서 보기 ↗</a></div>
+      <p class="lead-s">그림 한 점을 함께 보며 그 안에 담긴 말씀을 묵상합니다.</p>
+      <div class="vgrid" id="wv-canvas"><p class="note">영상을 불러오는 중입니다.</p></div>
+      <button type="button" class="more-btn" data-more="canvas" hidden>지난 영상 더 보기</button>
+    </div>
+    <div id="sec-word-palm" class="block">
+      <div class="sec-head"><div><p class="label">뿌리깊은 종려나무</p><h2>큐티 말씀 묵상</h2></div><a class="more" href="https://www.youtube.com/@midbar-church-smilepastor/videos" target="_blank" rel="noopener">유튜브에서 보기 ↗</a></div>
+      <p class="lead-s">광야에서도 푸르게 자라는 종려나무처럼, 말씀에 뿌리내리는 짧은 묵상입니다.</p>
+      <div class="vgrid" id="wv-palm"><p class="note">영상을 불러오는 중입니다.</p></div>
+      <button type="button" class="more-btn" data-more="palm" hidden>지난 영상 더 보기</button>
+    </div>
+    <div id="sec-word-qt" class="block">
+      <div class="sec-head"><div><p class="label">매일성경큐티</p><h2>오늘의 말씀 묵상</h2></div><a class="more" href="https://www.youtube.com/@midbar-church-smilepastor/posts" target="_blank" rel="noopener">유튜브 게시물에서 보기 ↗</a></div>
+      <p class="lead-s">매일성경 본문을 따라 하루 한 장씩 묵상합니다. 그림을 누르면 본문과 묵상 글 전체를 읽을 수 있습니다.</p>
+      <div class="qgrid" id="wv-qt"><p class="note">큐티를 불러오는 중입니다.</p></div>
+      <button type="button" class="more-btn" data-more="qt" hidden>지난 큐티 더 보기</button>
     </div>
   </div>
 </section>
@@ -668,6 +717,12 @@ footer .wrap{padding-block:56px 48px}
 </section>
 </main>
 
+<div class="qview" id="qview" hidden role="dialog" aria-modal="true" aria-labelledby="qvTitle">
+  <div class="qview-card">
+    <div class="qview-bar"><div><small id="qvDate"></small><b id="qvTitle"></b><span id="qvRef"></span></div><button type="button" class="qview-x" id="qvClose" aria-label="닫기">×</button></div>
+    <div class="qview-body"><figure id="qvFig"></figure><div class="qtext" id="qvText"></div></div>
+  </div>
+</div>
 <div class="bview" id="bview" hidden role="dialog" aria-modal="true" aria-labelledby="bvTitle">
   <div class="bview-bar"><div><b id="bvTitle">주보</b><small id="bvSub"></small></div><button type="button" class="bview-x" id="bvClose" aria-label="닫기">×</button></div>
   <div class="bview-body" id="bvBody"></div>
@@ -700,6 +755,7 @@ footer .wrap{padding-block:56px 48px}
   }
   function paint(){hd.classList.toggle("solid",window.scrollY>40)}
   function goSub(p,sub){
+    if(p==="word"){sub={sermon:"sunday"}[sub]||sub;wordJump={sub:sub,t:Date.now()};if(sub)loadWord()}
     var el=sub&&document.getElementById("sec-"+p+"-"+sub);
     document.querySelectorAll(".subtabs a,.dep2 a").forEach(function(a){a.getAttribute("href")==="#"+p+"/"+sub?a.setAttribute("aria-current","true"):a.removeAttribute("aria-current")});
     if(!el)return;
@@ -712,6 +768,7 @@ footer .wrap{padding-block:56px 48px}
     pages.forEach(function(x){document.getElementById("p-"+x).classList.toggle("on",x===p)});
     document.querySelectorAll("#gnb>li").forEach(function(li){li.classList.toggle("on",li.dataset.p===p)});
     closeMenu();window.scrollTo(0,0);paint();
+    if(p==="word")loadWord();
     goSub(p,sub);
   }
   /* 같은 하위 메뉴를 다시 눌렀을 때도 그 자리로 이동 */
@@ -875,12 +932,70 @@ footer .wrap{padding-block:56px 48px}
       home.firstElementChild.outerHTML='<a class="sv-main" href="'+W+m.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(m))+'" alt="'+esc(m.title)+' 썸네일"><span class="pbtn"></span></span><span class="cap"><small class="k">최신 · '+esc(tag)+'</small><b>'+esc(m.title)+'</b><small>박규성 담임목사 · '+esc([m.scripture,m.date].filter(Boolean).join(" · "))+'</small></span></a>';
       document.getElementById("svList").innerHTML=V.slice(1,5).map(function(v){return '<li><a href="'+W+v.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(v))+'" alt=""></span><span><b>'+esc(v.title)+'</b><small>'+esc(meta(v))+'</small></span><span class="ar">↗</span></a></li>'}).join("");
     }
-    var g=document.getElementById("svGrid");
-    var isCanvas=function(v){return /캔버스|그림/.test(v.kind||"")};
-    var cv=document.getElementById("cvGrid"),CV=V.filter(isCanvas);
-    if(cv)cv.innerHTML=CV.length?CV.map(function(v){return '<a class="vcard" href="'+W+v.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(v))+'" alt="'+esc(v.title)+' 썸네일"></span><b>'+esc(v.title)+'</b><small>'+esc(meta(v))+'</small></a>'}).join(""):'<p class="note">아직 그림 묵상 영상이 없습니다.</p>';
-    if(g)g.innerHTML=V.filter(function(v){return !isCanvas(v)}).slice(0,12).map(function(v){return '<a class="vcard" href="'+W+v.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(v))+'" alt="'+esc(v.title)+' 썸네일"></span><b>'+esc(v.title)+'</b><small>'+esc(meta(v))+'</small></a>'}).join("");
   }).catch(function(){});
+
+  /* 말씀 메뉴: word.json(재생목록별 영상) · qt.json(유튜브 게시물 큐티) — 1시간마다 자동 갱신 */
+  var wordLoaded=false, QT=[], shown={}, wordJump=null;
+  /* 영상이 늦게 채워지면 위치가 밀리므로, 방금 누른 하위 메뉴 자리로 한 번 더 맞춥니다 */
+  function reJump(){if(!wordJump||!wordJump.sub||Date.now()-wordJump.t>5000)return;var el=document.getElementById("sec-word-"+wordJump.sub);if(el)el.scrollIntoView({block:"start"})}
+  var PAGE={sunday:6,friday:6,canvas:6,palm:6,qt:8};
+  function kdate(d){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(d||"");return m?m[1]+"."+m[2]+"."+m[3]:""}
+  function vcard(v,key){
+    var sub=[v.scripture,(key==="sunday"||key==="friday")?kdate(v.date):""].filter(Boolean).join(" · ");
+    return '<a class="vcard" href="'+W+encodeURIComponent(v.id)+'" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/'+encodeURIComponent(v.id)+'/hqdefault.jpg" alt="'+esc(v.title)+' 썸네일" loading="lazy"></span><b>'+esc(v.title)+'</b>'+
+      (v.note?'<span class="k2">'+esc(v.note)+'</span>':'')+(sub?'<small>'+esc(sub)+'</small>':'')+'</a>';
+  }
+  function qimg(u,s){return String(u||"").replace(/=s\d+.*$/,"")+"=s"+s}
+  function qcard(q,i){
+    return '<button type="button" class="qcard" data-qt="'+i+'"><span class="th">'+(q.image?'<img src="'+esc(qimg(q.image,600))+'" alt="" loading="lazy">':'')+'</span><span class="d">'+esc(kdate(q.date))+'</span><b>'+esc(q.title)+'</b>'+(q.ref?'<small>'+esc(q.ref)+'</small>':'')+'</button>';
+  }
+  function fillWord(key,list,make){
+    var box=document.getElementById("wv-"+key),btn=document.querySelector('[data-more="'+key+'"]');if(!box)return;
+    var n=shown[key]||PAGE[key];
+    box.innerHTML=list.length?list.slice(0,n).map(make).join(""):'<p class="note">아직 올라온 영상이 없습니다.</p>';
+    if(btn)btn.hidden=list.length<=n;
+  }
+  var WORD={};
+  function loadWord(){
+    if(wordLoaded)return;wordLoaded=true;
+    var h=Math.floor(Date.now()/36e5);
+    load("word.json?h="+h).then(function(D){
+      (D.categories||[]).forEach(function(c){WORD[c.key]=c.videos||[];fillWord(c.key,WORD[c.key],function(v){return vcard(v,c.key)})});reJump();
+    }).catch(function(){["sunday","friday","canvas","palm"].forEach(function(k){var b=document.getElementById("wv-"+k);if(b)b.innerHTML='<p class="note">영상을 불러오지 못했습니다. 위의 \'유튜브에서 보기\'를 눌러 주세요.</p>'})});
+    load("qt.json?h="+h).then(function(D){QT=D.posts||[];fillWord("qt",QT,qcard);reJump()})
+      .catch(function(){var b=document.getElementById("wv-qt");if(b)b.innerHTML='<p class="note">큐티를 불러오지 못했습니다. 위의 \'유튜브 게시물에서 보기\'를 눌러 주세요.</p>'});
+  }
+  document.addEventListener("click",function(e){
+    var mb=e.target.closest&&e.target.closest("[data-more]");
+    if(mb){var k=mb.dataset.more;shown[k]=(shown[k]||PAGE[k])+PAGE[k]*2;if(k==="qt")fillWord("qt",QT,qcard);else fillWord(k,WORD[k]||[],function(v){return vcard(v,k)});return}
+    var qc=e.target.closest&&e.target.closest("[data-qt]");
+    if(qc){openQT(QT[+qc.dataset.qt]);return}
+    if(e.target.id==="qvClose"||e.target.id==="qview")closeQT();
+  });
+  function qtHTML(t){
+    return String(t||"").split("\n").map(function(line){
+      var x=line.trim(),m;
+      if(!x)return "";
+      if(/^\[.*\]$/.test(x))return '<p class="sh">'+esc(x)+'</p>';
+      if((m=/^(\d{1,3})\s{2,}(.+)$/.exec(x)))return '<p class="vs"><i>'+m[1]+'</i><span>'+esc(m[2])+'</span></p>';
+      if(/^\d\.\s/.test(x)||/^\[\d\./.test(x))return '<p class="hd">'+esc(x.replace(/^\[|\]$/g,""))+'</p>';
+      if(/^[①-⑳]/.test(x))return '<p class="it">'+esc(x)+'</p>';
+      return '<p class="ds">'+esc(x)+'</p>';
+    }).join("");
+  }
+  var qLast=null;
+  function openQT(q){
+    if(!q)return;qLast=document.activeElement;
+    document.getElementById("qvDate").textContent=kdate(q.date)+" · 매일성경큐티";
+    document.getElementById("qvTitle").textContent=q.title;
+    document.getElementById("qvRef").textContent=q.ref||"";
+    document.getElementById("qvFig").innerHTML=(q.image?'<img src="'+esc(qimg(q.image,1600))+'" alt="'+esc(q.title)+' 묵상 그림">':'')+'<a href="https://www.youtube.com/post/'+encodeURIComponent(q.id)+'" target="_blank" rel="noopener">유튜브 게시물에서 보기 ↗</a>';
+    document.getElementById("qvText").innerHTML=qtHTML(q.body);
+    var v=document.getElementById("qview");v.hidden=false;document.body.style.overflow="hidden";
+    v.querySelector(".qview-body").scrollTop=0;document.getElementById("qvClose").focus();
+  }
+  function closeQT(){var v=document.getElementById("qview");if(v.hidden)return;v.hidden=true;document.body.style.overflow="";if(qLast&&qLast.focus)qLast.focus()}
+  window.addEventListener("keydown",function(e){if(e.key==="Escape")closeQT()});
   window.addEventListener("hashchange",show);
   show();
 })();

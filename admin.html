@@ -72,6 +72,12 @@ h1,h2,h3,p{margin:0}
 .nav a[aria-current="page"]{background:rgba(255,255,255,.1);color:#fff;font-weight:700}
 .nav .grp{display:block;padding:14px 12px 4px;font-size:12px;letter-spacing:.14em;color:rgba(233,230,220,.42)}
 .nav a.sub{padding:9px 12px 9px 22px;font-size:15.5px}
+.wp{margin-bottom:20px;display:none}
+.wp.on{display:block}
+.wp-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.wp-how{color:var(--mute);font-size:15px;margin:6px 0 12px}
+.cnt-pill{font-size:13px;font-weight:700;color:var(--dawn);background:var(--dawn-soft);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.cnt-pill:empty{display:none}
 .nav .auto{font-size:11px;border:1px solid rgba(233,230,220,.3);border-radius:999px;padding:0 7px;margin-left:4px;color:rgba(233,230,220,.6)}
 .nav a .cnt{margin-left:auto;font-size:13px;font-weight:500;background:rgba(255,255,255,.1);border-radius:999px;padding:0 9px;font-variant-numeric:tabular-nums}
 .side-foot{margin-top:auto;display:grid;gap:8px}
@@ -372,7 +378,11 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
       <a href="#worship" class="sub">예배 시간<span class="cnt" id="cWorship">0</span></a>
       <a href="#place" class="sub">오시는 길</a>
       <span class="grp">말씀</span>
-      <a href="#word" class="sub">설교 영상 <small class="auto">자동</small></a>
+      <a href="#word/sunday" class="sub">주일설교 <small class="auto">자동</small></a>
+      <a href="#word/friday" class="sub">금요기도회 <small class="auto">자동</small></a>
+      <a href="#word/canvas" class="sub">광야캔버스 <small class="auto">자동</small></a>
+      <a href="#word/palm" class="sub">뿌리깊은 종려나무 <small class="auto">자동</small></a>
+      <a href="#word/qt" class="sub">매일성경큐티 <small class="auto">자동</small></a>
       <span class="grp">주보</span>
       <a href="#bulletin" class="sub">주보<span class="cnt" id="cBul">0</span></a>
       <span class="grp">함께하기</span>
@@ -539,12 +549,16 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
 
     <!-- 말씀 › 설교 영상 -->
     <section class="view" id="v-word">
-      <div class="page-head"><div><small class="crumb">말씀</small><h1>설교 영상</h1><p>이 메뉴는 따로 고칠 것이 없습니다.</p></div>
+      <div class="page-head"><div><small class="crumb">말씀</small><h1>말씀 (자동)</h1><p>이 메뉴는 따로 고칠 것이 없습니다. 유튜브에 올리시면 <b>1시간 안에</b> 홈페이지에 저절로 나옵니다.</p></div>
         <a class="btn" href="https://studio.youtube.com/" target="_blank" rel="noopener"><svg class="icon"><use href="#i-ext"/></svg>유튜브 스튜디오 열기</a></div>
       <div class="panel" style="margin-bottom:20px">
-        <div class="note"><svg class="icon"><use href="#i-play"/></svg><span><b>유튜브에 올리면 30분 안에 홈페이지에 자동으로 나옵니다.</b><br>제목을 <b>"설교 제목 | 성경 본문 | 광야교회 박규성목사 | 2026.11.08 | 주일설교"</b>처럼 적으면 홈페이지에 제목·본문·날짜·구분이 나뉘어 보기 좋게 나옵니다. 두 번째 칸에 "광야캔버스"를 적으면 그림 묵상으로 따로 모입니다.</span></div>
+        <div class="note"><svg class="icon"><use href="#i-play"/></svg><span><b>홈페이지 첫 화면</b>에는 지금처럼 모든 영상이 최신순으로 나오고, <b>말씀 메뉴</b>에서는 아래 다섯 칸으로 나뉘어 나옵니다.<br>영상 제목은 <b>"설교 제목 | 성경 본문 | 광야교회 박규성목사 | 2026.11.08 | 주일설교"</b>처럼 적으면 제목·본문·날짜가 나뉘어 보기 좋게 나옵니다.</span></div>
       </div>
-      <div class="panel"><h2>지금 홈페이지에 나오는 영상</h2><ul class="mini" id="wordList"><li><span class="t"><small>불러오는 중…</small></span></li></ul></div>
+      <div class="panel wp" id="wp-sunday"><div class="wp-head"><h2>주일설교</h2><span class="cnt-pill" id="wc-sunday"></span></div><p class="wp-how">유튜브 제목에 <b>주일설교</b>를 넣거나, 재생목록 <b>[주일설교]</b>에 넣으면 들어옵니다.</p><ul class="mini" id="wl-sunday"><li><span class="t"><small>불러오는 중…</small></span></li></ul></div>
+      <div class="panel wp" id="wp-friday"><div class="wp-head"><h2>금요기도회</h2><span class="cnt-pill" id="wc-friday"></span></div><p class="wp-how">유튜브 제목에 <b>금요기도회</b>를 넣거나, 재생목록 <b>[금요기도회-개척준비기도회]</b>에 넣으면 들어옵니다.</p><ul class="mini" id="wl-friday"><li><span class="t"><small>불러오는 중…</small></span></li></ul></div>
+      <div class="panel wp" id="wp-canvas"><div class="wp-head"><h2>광야캔버스</h2><span class="cnt-pill" id="wc-canvas"></span></div><p class="wp-how">유튜브 제목에 <b>광야캔버스</b>를 넣거나, 재생목록 <b>[광야캔버스-그림으로 나누는 묵상]</b>에 넣으면 들어옵니다.</p><ul class="mini" id="wl-canvas"><li><span class="t"><small>불러오는 중…</small></span></li></ul></div>
+      <div class="panel wp" id="wp-palm"><div class="wp-head"><h2>뿌리깊은 종려나무</h2><span class="cnt-pill" id="wc-palm"></span></div><p class="wp-how">유튜브 제목에 <b>종려나무</b>를 넣거나, 재생목록 <b>[뿌리 깊은 종려나무-큐티 말씀 묵상]</b>에 넣으면 들어옵니다.</p><ul class="mini" id="wl-palm"><li><span class="t"><small>불러오는 중…</small></span></li></ul></div>
+      <div class="panel wp" id="wp-qt"><div class="wp-head"><h2>매일성경큐티</h2><span class="cnt-pill" id="wc-qt"></span></div><p class="wp-how">유튜브 <b>게시물</b> 첫 줄을 <b>261108 | 제목 (본문)</b>처럼 날짜 6자리로 시작하면 들어옵니다. 한 번 들어온 큐티는 유튜브에서 지워도 홈페이지에 남습니다.</p><ul class="mini" id="wl-qt"><li><span class="t"><small>불러오는 중…</small></span></li></ul></div>
     </section>
 
   </div></main>
@@ -1016,14 +1030,24 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
       '<input class="inp" data-f="text" value="'+E(n.text)+'" placeholder="설명" aria-label="설명">'+rowTools(i,L.length)+'</div>'}).join(""):'<div class="empty">안내 단계가 없습니다. 아래 <b>단계 추가</b>를 눌러 주세요.</div>';
   }
   $("#newcAdd").addEventListener("click",function(){draft.newcomer.push({step:"",title:"",text:""});renderNewc();updateBar($('.savebar[data-sec="newcomer"]'));var r=$$("#newcEdit .ge-row");r[r.length-1].querySelector("input").focus()});
-  /* 말씀: 지금 홈페이지에 나오는 유튜브 영상 */
+  /* 말씀: 홈페이지 말씀 메뉴에 지금 나오는 영상·큐티 (word.json · qt.json, 1시간마다 자동 갱신) */
   var wordLoaded=false;
+  function kd(d){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(d||"");return m?m[1]+"."+m[2]+"."+m[3]:""}
+  function wli(t,sub,href){return '<li><span class="t"><b>'+E(t)+'</b><small>'+E(sub)+'</small></span><a class="btn sm" href="'+href+'" target="_blank" rel="noopener">유튜브</a></li>'}
   function loadWord(){
     if(wordLoaded)return;wordLoaded=true;
-    fetch(API_URL?API_URL+"?action=videos":"videos.json",{cache:"no-store"}).then(function(r){return r.json()}).then(function(V){
-      $("#wordList").innerHTML=(V||[]).slice(0,12).map(function(v){var sc=v.scripture&&/\d/.test(v.scripture)?v.scripture:"",k=v.scripture&&!/\d/.test(v.scripture)?v.scripture:v.kind;
-        return '<li><span class="t"><b>'+E(v.title)+'</b><small>'+E([k,sc,v.date].filter(Boolean).join(" · "))+'</small></span><a class="btn sm" href="https://www.youtube.com/watch?v='+encodeURIComponent(v.id)+'" target="_blank" rel="noopener">유튜브</a></li>'}).join("")||'<li><span class="t"><small>영상이 없습니다.</small></span></li>';
-    }).catch(function(){wordLoaded=false;$("#wordList").innerHTML='<li><span class="t"><small>영상 목록을 불러오지 못했습니다.</small></span></li>'});
+    var base=API_URL?"":"https://midbarchurch.co.kr/", h=Math.floor(Date.now()/36e5);
+    fetch(base+"word.json?h="+h,{cache:"no-store"}).then(function(r){return r.json()}).then(function(D){
+      (D.categories||[]).forEach(function(c){
+        var L=c.videos||[], dated=c.key==="sunday"||c.key==="friday";
+        $("#wc-"+c.key).textContent="영상 "+L.length+"개";
+        $("#wl-"+c.key).innerHTML=L.slice(0,5).map(function(v){return wli(v.title,[v.scripture,v.note,dated?kd(v.date):""].filter(Boolean).join(" · "),"https://www.youtube.com/watch?v="+encodeURIComponent(v.id))}).join("")||'<li><span class="t"><small>아직 없습니다.</small></span></li>';
+      });
+    }).catch(function(){wordLoaded=false;["sunday","friday","canvas","palm"].forEach(function(k){$("#wl-"+k).innerHTML='<li><span class="t"><small>영상 목록을 불러오지 못했습니다.</small></span></li>'})});
+    fetch(base+"qt.json?h="+h,{cache:"no-store"}).then(function(r){return r.json()}).then(function(D){
+      var L=D.posts||[];$("#wc-qt").textContent="큐티 "+L.length+"개";
+      $("#wl-qt").innerHTML=L.slice(0,5).map(function(q){return wli(q.title,[kd(q.date),q.ref].filter(Boolean).join(" · "),"https://www.youtube.com/post/"+encodeURIComponent(q.id))}).join("")||'<li><span class="t"><small>아직 없습니다.</small></span></li>';
+    }).catch(function(){wordLoaded=false;$("#wl-qt").innerHTML='<li><span class="t"><small>큐티 목록을 불러오지 못했습니다.</small></span></li>'});
   }
   $("#histAdd").addEventListener("click",function(){draft.history.push({label:"",text:""});renderHist();updateBar($('.savebar[data-sec="history"]'));var r=$$("#histEdit .ge-row");r[r.length-1].querySelector("input").focus()});
   function renderPrayer(){
@@ -1135,7 +1159,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     greeting:[["교회소개 › 인사말","about","greetLead"]],
     history:[["교회소개 › 걸어온 길","about","histRows"]],
     place:[["예배안내 › 오시는 길","worship","placeRows"],["첫 화면 오른쪽 아래","home","heroSide"]],
-    word:[["첫 화면 설교","home","svHome"],["말씀 페이지","word","svGrid"]],
+    word:[["첫 화면 설교","home","svHome"],["주일설교","word/sunday","sec-word-sunday"],["금요기도회","word/friday","sec-word-friday"],["광야캔버스","word/canvas","sec-word-canvas"],["종려나무","word/palm","sec-word-palm"],["매일성경큐티","word/qt","sec-word-qt"]],
     newcomer:[["함께하기 › 새가족 안내","together","newcSteps"]]
   };
   var pvView="dash",pvIdx=0,pvReady=false,pvTimer=null,pvFrame=$("#pvFrame");
@@ -1185,15 +1209,17 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
   document.addEventListener("click",function(e){if(e.target.closest(".ge-row .ib,[data-reset],#worshipAdd,#prayerAdd,#histAdd,#newcAdd,.ed-b,[data-pendrm]"))pvSoon()});
 
   function route(){
-    var v=(location.hash||"#dash").slice(1);if(v==="church")v="hero";if(VIEWS.indexOf(v)<0)v="dash";
+    var full=(location.hash||"#dash").slice(1),v=full.split("/")[0],sub=full.split("/")[1]||"";if(v==="church")v="hero";if(VIEWS.indexOf(v)<0)v="dash";
+    if(v==="word"&&!sub){sub="sunday";full="word/sunday"}
     if(v==="word")loadWord();
     VIEWS.forEach(function(x){$("#v-"+x).classList.toggle("on",x===v)});
-    $$(".nav a").forEach(function(a){a.getAttribute("href")==="#"+v?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current")});
+    $$(".nav a").forEach(function(a){var hh=a.getAttribute("href");(hh==="#"+v||hh==="#"+full)?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current")});
     if(v!=="news"&&openNewsId==="new"){openNewsId=null}
     if(v==="news")renderNews();
     if(v==="bulletin")prepBulForm();
     pvSetView(v);
     window.scrollTo(0,0);
+    if(v==="word"){if(!$("#wp-"+sub))sub="sunday";$$(".wp").forEach(function(x){x.classList.toggle("on",x.id==="wp-"+sub)})}
     var cur=$('.nav a[aria-current]');if(cur&&window.innerWidth<=900){var n=cur.parentNode;n.scrollLeft=cur.offsetLeft-16}
   }
   window.addEventListener("hashchange",route);

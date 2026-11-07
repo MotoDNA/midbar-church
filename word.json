@@ -1,0 +1,225 @@
+{
+ "updated": "2026-11-07T17:17:18+09:00",
+ "categories": [
+  {
+   "key": "sunday",
+   "name": "주일설교",
+   "videos": [
+    {
+     "id": "LEMtXSTmRFA",
+     "title": "감사하며 축복할 때",
+     "scripture": "고린도전서 10장 16~17",
+     "date": "2026-11-01",
+     "note": "추수감사주일"
+    },
+    {
+     "id": "6Tb6kuY4CaA",
+     "title": "세상에 휩쓸릴 때",
+     "scripture": "로마서 12:1~2",
+     "date": "2026-10-25",
+     "note": ""
+    },
+    {
+     "id": "Vee-iYMt-Pc",
+     "title": "병에 걸렸을 때",
+     "scripture": "열왕기하 20:1~6",
+     "date": "2026-10-18",
+     "note": ""
+    },
+    {
+     "id": "yR-oaqYGRKc",
+     "title": "기도하다 낙심될 때",
+     "scripture": "누가복음 18:1~8",
+     "date": "2026-10-11",
+     "note": ""
+    },
+    {
+     "id": "OjybQT4TTLY",
+     "title": "앞날이 두려울 때",
+     "scripture": "여호수아 1:1~9",
+     "date": "2026-10-04",
+     "note": ""
+    },
+    {
+     "id": "KuRRPHaaYf8",
+     "title": "인생의 쓴 맛을 볼 때",
+     "scripture": "출애굽기 15:22-26",
+     "date": "2026-09-27",
+     "note": ""
+    },
+    {
+     "id": "l4eB1apMC6U",
+     "title": "끝이라고 생각될 때",
+     "scripture": "고린도후서 4:14-18",
+     "date": "2026-09-20",
+     "note": ""
+    },
+    {
+     "id": "bvPwDJy-pBM",
+     "title": "수고하고 무거운 짐진 자들",
+     "scripture": "마태복음 11:28~30",
+     "date": "2026-09-13",
+     "note": ""
+    },
+    {
+     "id": "V2eXT9lbIaI",
+     "title": "여호와는 나의 목자시니",
+     "scripture": "시편 23:1~6",
+     "date": "2026-09-06",
+     "note": ""
+    },
+    {
+     "id": "kT6uy_UxRT8",
+     "title": "새 일을 행하시는 하나님",
+     "scripture": "이사야 43:18~20",
+     "date": "2026-08-30",
+     "note": ""
+    },
+    {
+     "id": "XXH98XfNvcs",
+     "title": "다시, 말씀 앞에 서다",
+     "scripture": "시편 40:1-3",
+     "date": "2026-08-23",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "key": "friday",
+   "name": "금요기도회",
+   "videos": [
+    {
+     "id": "IPbTvGbopdo",
+     "title": "추수할 일꾼을 보내소서",
+     "scripture": "마태복음 9:35~38",
+     "date": "2026-11-06",
+     "note": ""
+    },
+    {
+     "id": "x33yW_3tGZQ",
+     "title": "믿음으로 말미암아 살리라",
+     "scripture": "하박국 2:1~4",
+     "date": "2026-10-30",
+     "note": ""
+    },
+    {
+     "id": "vDknqzFkURg",
+     "title": "한 사람이 소중한 교회",
+     "scripture": "누가복음 15:1~7",
+     "date": "2026-10-23",
+     "note": ""
+    },
+    {
+     "id": "EULE-zj4uZw",
+     "title": "예수님의 제자가 모인 교회",
+     "scripture": "요한복음 13:34~35",
+     "date": "2026-10-16",
+     "note": ""
+    },
+    {
+     "id": "fKWvf-ijN9U",
+     "title": "성령세례를 받으리라",
+     "scripture": "사도행전 1:4~8",
+     "date": "2026-10-09",
+     "note": ""
+    },
+    {
+     "id": "PDAz4coo8Jg",
+     "title": "하나님의 열심 (여호와께서 세우지 아니하시면)",
+     "scripture": "시편 127:1~2",
+     "date": "2026-10-02",
+     "note": ""
+    },
+    {
+     "id": "-ItrChoFgZs",
+     "title": "하나님은 반드시 나와 함께 하신다",
+     "scripture": "출애굽기 3:1~12",
+     "date": "2026-09-18",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "key": "canvas",
+   "name": "광야캔버스",
+   "videos": [
+    {
+     "id": "N_YZleEyX9s",
+     "title": "죄로부터 구출된 영혼(십자가의 은혜)",
+     "scripture": "",
+     "date": "2026-11-05",
+     "note": ""
+    },
+    {
+     "id": "NBX2VgW84_s",
+     "title": "깨어 기도하라",
+     "scripture": "",
+     "date": "2026-09-27",
+     "note": "하인리히 호프먼"
+    },
+    {
+     "id": "YG-gVlISY1o",
+     "title": "광야시험을 이겨내라",
+     "scripture": "",
+     "date": "2026-09-13",
+     "note": "이반 크람스코이"
+    },
+    {
+     "id": "FpUl0tk2Lbg",
+     "title": "좋은 편을 택하라",
+     "scripture": "",
+     "date": "2026-08-30",
+     "note": "디에고 벨라스케스, 마르다와 마리아의 집의 그리스도, 1618"
+    },
+    {
+     "id": "IWPhy53s9kg",
+     "title": "폭풍 속의 평안",
+     "scripture": "",
+     "date": "2026-08-23",
+     "note": "렘브란트, 갈릴리 호수 폭풍 속의 그리스도, 1632"
+    }
+   ]
+  },
+  {
+   "key": "palm",
+   "name": "뿌리 깊은 종려나무",
+   "videos": [
+    {
+     "id": "1KxERtn-9qI",
+     "title": "물 가에 심어진 나무",
+     "scripture": "예레미야 17:7-8",
+     "date": "2026-10-29",
+     "note": ""
+    },
+    {
+     "id": "ok8Ut9YXjf8",
+     "title": "천국에서 흔드는 종려나무",
+     "scripture": "요한계시록 7:9~12",
+     "date": "2026-10-18",
+     "note": ""
+    },
+    {
+     "id": "cC2-W_Rq-Xk",
+     "title": "꺾인 종려나무",
+     "scripture": "요한복음 12:12~13",
+     "date": "2026-09-20",
+     "note": ""
+    },
+    {
+     "id": "SAaQvuGKuSM",
+     "title": "엘림의 축복",
+     "scripture": "출애굽기 15:27",
+     "date": "2026-09-06",
+     "note": ""
+    },
+    {
+     "id": "AEvvOL3Jw3g",
+     "title": "뿌리 깊은 종려나무 신앙",
+     "scripture": "골로새서 2:6~7",
+     "date": "2026-08-30",
+     "note": ""
+    }
+   ]
+  }
+ ]
+}
