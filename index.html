@@ -298,6 +298,14 @@ header.enter{animation:down .8s var(--ease) both}
 .bview-body figcaption a{color:#fff;text-decoration:underline}
 @media (max-width:1024px){.bul-grid{grid-template-columns:repeat(3,1fr)}}
 @media (max-width:640px){.bul-two{grid-template-columns:1fr}.bul-grid{grid-template-columns:repeat(2,1fr);gap:20px 14px}.bcard b{font-size:17px}}
+.nbody{margin-top:4px}
+.nbody p{margin:0 0 10px}
+.nbody h3{font-family:var(--f-serif);font-weight:500;font-size:19px;margin:14px 0 6px;color:var(--ink)}
+.nbody ul,.nbody ol{margin:0 0 10px;padding-left:1.3em}
+.nbody ul{list-style:disc}.nbody ol{list-style:decimal}
+.nbody a{color:var(--dawn);text-decoration:underline}
+.nbody img{display:block;max-width:100%;max-height:560px;border-radius:12px;margin:12px 0;background:var(--soft)}
+.gnb .ext{opacity:.75}
 section.page{display:none}
 section.page.on{display:block}
 
@@ -375,6 +383,7 @@ footer .wrap{padding-block:56px 48px}
       <li data-p="bulletin"><a href="#bulletin">주보</a></li>
       <li data-p="together"><a href="#together">함께하기</a>
         <div class="dep2"><a href="#together">새가족 안내</a><a href="#together">기도 제목</a><a href="#together">교회 소식</a><a href="#together">헌금 안내</a></div></li>
+      <li><a href="https://cafe.naver.com/midbarchurch" target="_blank" rel="noopener" class="ext">네이버 카페 <span aria-hidden="true">↗</span></a></li>
     </ul>
     <div class="hd-cta">
       <a class="pill glass" href="#worship">예배 안내<span class="ar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg></span></a>
@@ -384,7 +393,7 @@ footer .wrap{padding-block:56px 48px}
 </header>
 <nav class="mnav" id="mnav" aria-label="모바일 메뉴">
   <button class="x" id="mclose" aria-label="메뉴 닫기">×</button>
-  <a href="#home">처음으로</a><a href="#about">교회소개</a><a href="#worship">예배안내</a><a href="#word">말씀</a><a href="#bulletin">주보</a><a href="#together">함께하기</a>
+  <a href="#home">처음으로</a><a href="#about">교회소개</a><a href="#worship">예배안내</a><a href="#word">말씀</a><a href="#bulletin">주보</a><a href="#together">함께하기</a><a href="https://cafe.naver.com/midbarchurch" target="_blank" rel="noopener">네이버 카페 ↗</a>
 </nav>
 
 <main>
@@ -647,7 +656,7 @@ footer .wrap{padding-block:56px 48px}
   <div class="wrap">
     <div class="f-top">
       <div class="f-brand"><span class="mk"><img src="logo-mark.png" alt="광야교회 로고"></span><div class="f-word">광야교회</div></div>
-      <div class="f-links"><a href="#about">교회소개</a><a href="#worship">예배안내</a><a href="#word">말씀</a><a href="#bulletin">주보</a><a href="#together">함께하기</a><a href="https://www.youtube.com/@midbar-church-smilepastor" target="_blank" rel="noopener">유튜브 ↗</a></div>
+      <div class="f-links"><a href="#about">교회소개</a><a href="#worship">예배안내</a><a href="#word">말씀</a><a href="#bulletin">주보</a><a href="#together">함께하기</a><a href="https://cafe.naver.com/midbarchurch" target="_blank" rel="noopener">네이버 카페 ↗</a><a href="https://www.youtube.com/@midbar-church-smilepastor" target="_blank" rel="noopener">유튜브 ↗</a></div>
     </div>
     <div class="f-bot">
       <address id="footAddr"><span>대한예수교장로회 광야교회</span><span>담임목사 박규성</span><span>경기도 고양시 일산동구 숲속마을1로 26 다인타운 4층 (일산은광교회 예배당)</span></address>
@@ -700,7 +709,7 @@ footer .wrap{padding-block:56px 48px}
     N.sort(function(a,b){return (b.pinned?1:0)-(a.pinned?1:0)||String(b.date).localeCompare(String(a.date))});
     if(N.length){
       setHTML("homeNews",N.slice(0,4).map(function(n){return '<li><a href="#together"><span class="t">'+(n.tag?'<i class="n">'+E(n.tag)+'</i>':'')+E(n.title)+'</span><span class="dt">'+E(D(n.date))+'</span></a></li>'}).join(""));
-      setHTML("newsRows",N.map(function(n){return '<li><b>'+E(D(n.date))+'</b><span><strong>'+(n.tag?'['+E(n.tag)+'] ':'')+E(n.title)+'</strong>'+BR(n.body)+'</span></li>'}).join(""));
+      setHTML("newsRows",N.map(function(n){return '<li><b>'+E(D(n.date))+'</b><span><strong>'+(n.tag?'['+E(n.tag)+'] ':'')+E(n.title)+'</strong>'+(n.html?'<div class="nbody">'+showHTML(n.html)+'</div>':BR(n.body))+'</span></li>'}).join(""));
     }
     if(C.prayers&&C.prayers.length)setHTML("prayerRows",C.prayers.map(function(p){return '<li><b>'+E(p.label)+'</b><span>'+BR(p.text)+'</span></li>'}).join(""));
     if(P.address)setHTML("placeRows",
@@ -718,6 +727,26 @@ footer .wrap{padding-block:56px 48px}
     if(G.lead)setHTML("greetLead",BR(G.lead));
     if(G.body)setHTML("greetBody",String(G.body).split(/\n\s*\n/).map(function(p){return '<p>'+BR(p.trim())+'</p>'}).join(""));
     if(P.address)setHTML("footAddr",'<span>대한예수교장로회 광야교회</span><span>담임목사 박규성</span><span>'+E(P.address)+'</span>');
+  }
+  /* 소식 본문(관리자 편집기에서 쓴 글): 허용한 태그만 남기고, 사진은 구글 드라이브 주소로 표시 */
+  function showHTML(html){
+    var doc=new DOMParser().parseFromString("<div>"+html+"</div>","text/html"),root=doc.body.firstChild;
+    var OK={P:1,BR:1,B:1,STRONG:1,I:1,EM:1,U:1,H3:1,UL:1,OL:1,LI:1,A:1,IMG:1,BLOCKQUOTE:1};
+    (function walk(n){Array.prototype.slice.call(n.childNodes).forEach(function(c){
+      if(c.nodeType===3)return;
+      if(c.nodeType!==1||!OK[c.tagName]){if(c.nodeType===1&&!/^(SCRIPT|STYLE|IFRAME|OBJECT|EMBED)$/i.test(c.tagName)){walk(c);while(c.firstChild)n.insertBefore(c.firstChild,c)}n.removeChild(c);return}
+      var href=c.getAttribute("href")||"",drive=c.getAttribute("data-drive")||"",src=c.getAttribute("src")||"";
+      Array.prototype.slice.call(c.attributes).forEach(function(a){c.removeAttribute(a.name)});
+      if(c.tagName==="A"){if(/^https?:\/\//i.test(href)){c.setAttribute("href",href);c.setAttribute("target","_blank");c.setAttribute("rel","noopener")}}
+      if(c.tagName==="IMG"){
+        if(/^[\w-]{10,}$/.test(drive))c.setAttribute("src","https://drive.google.com/thumbnail?id="+encodeURIComponent(drive)+"&sz=w1600");
+        else if(/^data:image\/(jpeg|png|webp);base64,/i.test(src))c.setAttribute("src",src);
+        else{n.removeChild(c);return}
+        c.setAttribute("alt","");c.setAttribute("loading","lazy");
+      }
+      walk(c);
+    })})(root);
+    return root.innerHTML;
   }
   function load(url){return fetch(url,{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()})}
   (CONTENT_API?load(CONTENT_API+"?action=content").catch(function(){return load("content.json")}):load("content.json")).then(render).catch(function(){});
