@@ -232,7 +232,10 @@ header.enter{animation:down .8s var(--ease) both}
 .rows li:last-child{border-bottom:1px solid var(--line)}
 .rows b{font-family:var(--f-serif);font-weight:500;font-size:18px;letter-spacing:-.02em}
 .rows span{color:#3E403A;min-width:0}
-.map{margin-top:28px;aspect-ratio:16/7;max-width:100%;border-radius:24px;background:var(--soft);border:1px dashed rgba(21,23,18,.25);display:grid;place-items:center;color:var(--mute);font-size:14px;text-align:center;padding:16px}
+.map{margin-top:28px;aspect-ratio:16/8;max-width:100%;border-radius:24px;overflow:hidden;background:var(--soft);border:1px solid var(--line)}
+.map iframe{display:block;width:100%;height:100%;border:0}
+.map-acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+@media (max-width:640px){.map{aspect-ratio:4/3;border-radius:18px}}
 .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px 24px}
 .lead-s{color:var(--mute);margin:-24px 0 28px;max-width:40rem}
 .vcard .k2{display:block;color:var(--dawn);font-size:13px;margin-top:2px}
@@ -311,6 +314,7 @@ header.enter{animation:down .8s var(--ease) both}
 .bul-two{display:grid;grid-template-columns:1fr 1fr;gap:24px}
 .bul-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px 20px}
 .bul-two>*,.bul-grid>*{min-width:0}
+.bul-grid,.bul-two,.qgrid{align-items:start}
 .bcard{display:block;width:100%;text-align:left;background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer}
 .bcard .pg{position:relative;display:block;aspect-ratio:3/4;max-width:100%;border-radius:16px;overflow:hidden;background:var(--soft);box-shadow:0 0 0 1px var(--line)}
 .bcard .pg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .6s var(--ease)}
@@ -615,7 +619,8 @@ footer .wrap{padding-block:56px 48px}
           <li><b>대중교통</b><span><b style="font-family:var(--f-sans);font-size:15px;font-weight:700">버스</b> ‘숲속마을1단지’ 또는 ‘숲속마을1단지.풍동성당’ 정류장 하차<br>81 · 83 · 84 · 98 · 100번<br><b style="font-family:var(--f-sans);font-size:15px;font-weight:700">지하철</b> 경의중앙선 풍산역에서 81번 버스로 갈아타기</span></li>
           <li><b>주차</b><span>주차 가능</span></li>
         </ul>
-        <div class="map"><span>실제 홈페이지에서는 이 자리에 지도가 들어갑니다<br><a class="pill dark" style="margin-top:16px" href="https://map.kakao.com/?q=%EA%B2%BD%EA%B8%B0%20%EA%B3%A0%EC%96%91%EC%8B%9C%20%EC%9D%BC%EC%82%B0%EB%8F%99%EA%B5%AC%20%EC%88%B2%EC%86%8D%EB%A7%88%EC%9D%841%EB%A1%9C%2026" target="_blank" rel="noopener">카카오맵에서 길찾기<span class="ar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5"/></svg></span></a></span></div>
+        <div class="map" id="mapBox"><iframe id="mapFrame" title="광야교회 위치 지도" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EA%B3%A0%EC%96%91%EC%8B%9C%20%EC%9D%BC%EC%82%B0%EB%8F%99%EA%B5%AC%20%EC%88%B2%EC%86%8D%EB%A7%88%EC%9D%841%EB%A1%9C%2026&amp;hl=ko&amp;z=17&amp;output=embed"></iframe></div>
+        <div class="map-acts" id="mapActs"><a class="pill dark" id="mapKakao" href="https://map.kakao.com/link/search/%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EA%B3%A0%EC%96%91%EC%8B%9C%20%EC%9D%BC%EC%82%B0%EB%8F%99%EA%B5%AC%20%EC%88%B2%EC%86%8D%EB%A7%88%EC%9D%841%EB%A1%9C%2026" target="_blank" rel="noopener">카카오맵 길찾기<span class="ar">↗</span></a><a class="pill" id="mapNaver" href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EA%B3%A0%EC%96%91%EC%8B%9C%20%EC%9D%BC%EC%82%B0%EB%8F%99%EA%B5%AC%20%EC%88%B2%EC%86%8D%EB%A7%88%EC%9D%841%EB%A1%9C%2026" target="_blank" rel="noopener">네이버 지도 길찾기<span class="ar">↗</span></a></div>
       </div>
     </div>
   </div>
@@ -816,6 +821,13 @@ footer .wrap{padding-block:56px 48px}
       '<li><b>주소</b><span>'+E(P.address)+(P.jibun?'<br><small style="color:var(--mute)">지번: '+E(P.jibun)+'</small>':'')+'</span></li>'+
       (P.transit?'<li><b>대중교통</b><span>'+BR(P.transit)+'</span></li>':'')+
       (P.parking?'<li><b>주차</b><span>'+E(P.parking)+'</span></li>':''));
+    if(P.address){ /* 지도는 도로명 주소(건물 번호까지)로 찾습니다 */
+      var mq=(/^(.*?(?:로|길)\s*\d+(?:-\d+)?)/.exec(P.address)||[,P.address])[1], eq=encodeURIComponent(mq);
+      var mf=document.getElementById("mapFrame"), ms="https://maps.google.com/maps?q="+eq+"&hl=ko&z=17&output=embed";
+      if(mf&&mf.getAttribute("src")!==ms)mf.setAttribute("src",ms);
+      var mk=document.getElementById("mapKakao"),mn=document.getElementById("mapNaver");
+      if(mk)mk.href="https://map.kakao.com/link/search/"+eq;if(mn)mn.href="https://map.naver.com/p/search/"+eq;
+    }
     if(O.account)setHTML("offerRows",
       '<li><b>은행</b><span>'+E(O.bank)+'</span></li>'+
       '<li><b>계좌번호</b><span><span id="acct" style="font-variant-numeric:tabular-nums;font-weight:500">'+E(O.account)+'</span><button class="copy" id="copyAcct" type="button">복사</button></span></li>'+
@@ -962,10 +974,10 @@ footer .wrap{padding-block:56px 48px}
   function loadWord(){
     if(wordLoaded)return;wordLoaded=true;
     var h=Math.floor(Date.now()/36e5);
-    load("word.json?h="+h).then(function(D){
+    load("word.json?t="+Math.floor(Date.now()/6e4)).then(function(D){
       (D.categories||[]).forEach(function(c){WORD[c.key]=c.videos||[];fillWord(c.key,WORD[c.key],function(v){return vcard(v,c.key)})});reJump();
     }).catch(function(){["sunday","friday","canvas","palm"].forEach(function(k){var b=document.getElementById("wv-"+k);if(b)b.innerHTML='<p class="note">영상을 불러오지 못했습니다. 위의 \'유튜브에서 보기\'를 눌러 주세요.</p>'})});
-    load("qt.json?h="+h).then(function(D){QT=D.posts||[];fillWord("qt",QT,qcard);reJump()})
+    load("qt.json?t="+Math.floor(Date.now()/6e4)).then(function(D){QT=D.posts||[];fillWord("qt",QT,qcard);reJump()})
       .catch(function(){var b=document.getElementById("wv-qt");if(b)b.innerHTML='<p class="note">큐티를 불러오지 못했습니다. 위의 \'유튜브 게시물에서 보기\'를 눌러 주세요.</p>'});
   }
   document.addEventListener("click",function(e){

@@ -75,6 +75,24 @@ h1,h2,h3,p{margin:0}
 .nav a[aria-current="page"]{background:rgba(255,255,255,.1);color:#fff;font-weight:700}
 .nav .grp{display:block;padding:14px 12px 4px;font-size:12px;letter-spacing:.14em;color:rgba(233,230,220,.42)}
 .nav a.sub{padding:9px 12px 9px 22px;font-size:15.5px}
+.head-acts{display:flex;gap:10px;flex-wrap:wrap}
+.rf{background:var(--card);border:1px solid var(--dawn);box-shadow:0 0 0 3px var(--dawn-soft);border-radius:16px;padding:18px 20px;margin-bottom:20px}
+.rf.ok{border-color:var(--ok,#2E7D4F);box-shadow:none}
+.rf.bad{border-color:var(--bad);box-shadow:none}
+.rf-row{display:flex;gap:14px;align-items:flex-start}
+.rf-row b{display:block;font-size:17px}
+.rf-row small{display:block;color:var(--mute);font-size:14px;margin-top:2px}
+.rf-ic{flex:none;width:26px;height:26px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--dawn);animation:sp 1s linear infinite;margin-top:2px}
+.rf.ok .rf-ic,.rf.bad .rf-ic{animation:none;border:0;display:grid;place-items:center;color:#fff;font-weight:700;font-size:15px}
+.rf.ok .rf-ic{background:var(--ok,#2E7D4F)}.rf.ok .rf-ic::before{content:"✓"}
+.rf.bad .rf-ic{background:var(--bad)}.rf.bad .rf-ic::before{content:"!"}
+.rf-steps{display:flex;gap:6px 18px;flex-wrap:wrap;margin:14px 0 0 40px;padding:0;list-style:none;font-size:14px;color:var(--mute)}
+.rf-steps li::before{content:"○ ";color:var(--line)}
+.rf-steps li.on{color:var(--ink);font-weight:700}.rf-steps li.on::before{content:"● ";color:var(--dawn)}
+.rf-steps li.done{color:var(--ink)}.rf-steps li.done::before{content:"✓ ";color:var(--ok,#2E7D4F)}
+.rf .mini{margin:12px 0 0 40px}
+.wu{color:var(--mute);font-size:14px;margin:-8px 0 16px}
+.wu:empty{display:none}
 .wp{margin-bottom:20px;display:none}
 .wp.on{display:block}
 .wp-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -552,8 +570,10 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
 
     <!-- 말씀 › 설교 영상 -->
     <section class="view" id="v-word">
-      <div class="page-head"><div><small class="crumb">말씀</small><h1>말씀 (자동)</h1><p>이 메뉴는 따로 고칠 것이 없습니다. 유튜브에 올리시면 <b>1시간 안에</b> 홈페이지에 저절로 나옵니다.</p></div>
-        <a class="btn" href="https://studio.youtube.com/" target="_blank" rel="noopener"><svg class="icon"><use href="#i-ext"/></svg>유튜브 스튜디오 열기</a></div>
+      <div class="page-head"><div><small class="crumb">말씀</small><h1>말씀 (자동)</h1><p>이 메뉴는 따로 고칠 것이 없습니다. 유튜브에 올리시면 <b>1시간 안에</b> 홈페이지에 저절로 나옵니다.<br>바로 올리고 싶으면 <b>유튜브에서 지금 불러오기</b>를 누르세요.</p></div>
+        <div class="head-acts"><a class="btn" href="https://studio.youtube.com/" target="_blank" rel="noopener"><svg class="icon"><use href="#i-ext"/></svg>유튜브 스튜디오</a><button class="btn gold" type="button" id="wordRefresh"><svg class="icon"><use href="#i-up2"/></svg>유튜브에서 지금 불러오기</button></div></div>
+      <div class="rf" id="rfBox" hidden><div class="rf-row"><span class="rf-ic" id="rfIc"></span><div><b id="rfMsg"></b><small id="rfSub"></small></div></div><ol class="rf-steps" id="rfSteps"><li>GitHub에 불러오기 요청</li><li>유튜브에서 새 영상·게시물 확인</li><li>홈페이지에 반영</li></ol><ul class="mini" id="rfNew" hidden></ul></div>
+      <p class="wu" id="wordUpdated"></p>
       <div class="panel" style="margin-bottom:20px">
         <div class="note"><svg class="icon"><use href="#i-play"/></svg><span><b>홈페이지 첫 화면</b>에는 지금처럼 모든 영상이 최신순으로 나오고, <b>말씀 메뉴</b>에서는 아래 다섯 칸으로 나뉘어 나옵니다.<br>영상 제목은 <b>"설교 제목 | 성경 본문 | 광야교회 박규성목사 | 2026.11.08 | 주일설교"</b>처럼 적으면 제목·본문·날짜가 나뉘어 보기 좋게 나옵니다.</span></div>
       </div>
@@ -1034,24 +1054,101 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
   }
   $("#newcAdd").addEventListener("click",function(){draft.newcomer.push({step:"",title:"",text:""});renderNewc();updateBar($('.savebar[data-sec="newcomer"]'));var r=$$("#newcEdit .ge-row");r[r.length-1].querySelector("input").focus()});
   /* 말씀: 홈페이지 말씀 메뉴에 지금 나오는 영상·큐티 (word.json · qt.json, 1시간마다 자동 갱신) */
-  var wordLoaded=false;
+  var wordLoaded=false, WD=null, QD=null;
+  var GH="https://api.github.com/repos/MotoDNA/midbar-church";
   function kd(d){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(d||"");return m?m[1]+"."+m[2]+"."+m[3]:""}
   function wli(t,sub,href){return '<li><span class="t"><b>'+E(t)+'</b><small>'+E(sub)+'</small></span><a class="btn sm" href="'+href+'" target="_blank" rel="noopener">유튜브</a></li>'}
-  function loadWord(){
-    if(wordLoaded)return;wordLoaded=true;
-    var base=API_URL?"":"https://midbarchurch.co.kr/", h=Math.floor(Date.now()/36e5);
-    fetch(base+"word.json?h="+h,{cache:"no-store"}).then(function(r){return r.json()}).then(function(D){
-      (D.categories||[]).forEach(function(c){
-        var L=c.videos||[], dated=c.key==="sunday"||c.key==="friday";
-        $("#wc-"+c.key).textContent="영상 "+L.length+"개";
-        $("#wl-"+c.key).innerHTML=L.slice(0,5).map(function(v){return wli(v.title,[v.scripture,v.note,dated?kd(v.date):""].filter(Boolean).join(" · "),"https://www.youtube.com/watch?v="+encodeURIComponent(v.id))}).join("")||'<li><span class="t"><small>아직 없습니다.</small></span></li>';
-      });
-    }).catch(function(){wordLoaded=false;["sunday","friday","canvas","palm"].forEach(function(k){$("#wl-"+k).innerHTML='<li><span class="t"><small>영상 목록을 불러오지 못했습니다.</small></span></li>'})});
-    fetch(base+"qt.json?h="+h,{cache:"no-store"}).then(function(r){return r.json()}).then(function(D){
-      var L=D.posts||[];$("#wc-qt").textContent="큐티 "+L.length+"개";
-      $("#wl-qt").innerHTML=L.slice(0,5).map(function(q){return wli(q.title,[kd(q.date),q.ref].filter(Boolean).join(" · "),"https://www.youtube.com/post/"+encodeURIComponent(q.id))}).join("")||'<li><span class="t"><small>아직 없습니다.</small></span></li>';
-    }).catch(function(){wordLoaded=false;$("#wl-qt").innerHTML='<li><span class="t"><small>큐티 목록을 불러오지 못했습니다.</small></span></li>'});
+  function wordBase(){return API_URL?"":"https://midbarchurch.co.kr/"}
+  function getJSON(u){return fetch(u+(u.indexOf("?")<0?"?":"&")+"t="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}
+  function whenStr(iso){var d=new Date(iso);if(isNaN(d))return "";var z=function(n){return (n<10?"0":"")+n};return (d.getMonth()+1)+"월 "+d.getDate()+"일 "+z(d.getHours())+":"+z(d.getMinutes())}
+  function paintWord(){
+    if(WD)(WD.categories||[]).forEach(function(c){
+      var L=c.videos||[], dated=c.key==="sunday"||c.key==="friday";
+      $("#wc-"+c.key).textContent="영상 "+L.length+"개";
+      $("#wl-"+c.key).innerHTML=L.slice(0,5).map(function(v){return wli(v.title,[v.scripture,v.note,dated?kd(v.date):""].filter(Boolean).join(" · "),"https://www.youtube.com/watch?v="+encodeURIComponent(v.id))}).join("")||'<li><span class="t"><small>아직 없습니다.</small></span></li>';
+    });
+    if(QD){var L=QD.posts||[];$("#wc-qt").textContent="큐티 "+L.length+"개";
+      $("#wl-qt").innerHTML=L.slice(0,5).map(function(q){return wli(q.title,[kd(q.date),q.ref].filter(Boolean).join(" · "),"https://www.youtube.com/post/"+encodeURIComponent(q.id))}).join("")||'<li><span class="t"><small>아직 없습니다.</small></span></li>'}
+    var last=[WD&&WD.updated,QD&&QD.updated].filter(Boolean).sort().pop();
+    $("#wordUpdated").textContent=last?"마지막으로 새 내용이 들어온 때: "+whenStr(last):"";
   }
+  function loadWord(force){
+    if(wordLoaded&&!force)return Promise.resolve();wordLoaded=true;
+    var a=getJSON(wordBase()+"word.json").then(function(D){WD=D}).catch(function(){if(!WD){wordLoaded=false;["sunday","friday","canvas","palm"].forEach(function(k){$("#wl-"+k).innerHTML='<li><span class="t"><small>영상 목록을 불러오지 못했습니다.</small></span></li>'})}});
+    var b=getJSON(wordBase()+"qt.json").then(function(D){QD=D}).catch(function(){if(!QD){wordLoaded=false;$("#wl-qt").innerHTML='<li><span class="t"><small>큐티 목록을 불러오지 못했습니다.</small></span></li>'}});
+    return Promise.all([a,b]).then(paintWord);
+  }
+  function allIds(){
+    var v={},q={};
+    (WD&&WD.categories||[]).forEach(function(c){(c.videos||[]).forEach(function(x){v[x.id]=x})});
+    (QD&&QD.posts||[]).forEach(function(x){q[x.id]=x});
+    return {v:v,q:q};
+  }
+
+  /* [유튜브에서 지금 불러오기] → 저장 서버가 GitHub 작업을 바로 실행 → 끝나면 홈페이지 반영까지 확인 */
+  var rfBusy=false;
+  function rf(state,msg,sub,step){
+    var box=$("#rfBox");box.hidden=false;box.className="rf"+(state?" "+state:"");
+    $("#rfMsg").textContent=msg;$("#rfSub").textContent=sub||"";
+    $$("#rfSteps li").forEach(function(li,i){li.className=i<step?"done":(i===step&&!state?"on":"")});
+  }
+  function wait(ms){return new Promise(function(r){setTimeout(r,ms)})}
+  function poll(fn,every,limit){
+    var end=Date.now()+limit;
+    return (function loop(){return fn().then(function(v){if(v)return v;if(Date.now()>end)return null;return wait(every).then(loop)},function(){if(Date.now()>end)return null;return wait(every).then(loop)})})();
+  }
+  function finishRefresh(before){
+    return loadWord(true).then(function(){
+      var now=allIds(),nv=[],nq=[];
+      Object.keys(now.v).forEach(function(id){if(!before.v[id])nv.push(now.v[id])});
+      Object.keys(now.q).forEach(function(id){if(!before.q[id])nq.push(now.q[id])});
+      var list=nv.map(function(x){return '<li><span class="t"><b>'+E(x.title)+'</b><small>새 영상</small></span></li>'}).concat(nq.map(function(x){return '<li><span class="t"><b>'+E(x.title)+'</b><small>새 큐티 · '+E(kd(x.date))+'</small></span></li>'}));
+      $("#rfNew").innerHTML=list.join("");$("#rfNew").hidden=!list.length;
+      if(list.length)rf("ok","새 영상 "+nv.length+"개 · 새 큐티 "+nq.length+"개를 불러왔습니다.","홈페이지에도 반영되었습니다. 홈페이지를 새로 고치면 보입니다.",3);
+      else rf("ok","홈페이지에 반영되었습니다.","영상 제목이나 게시물 내용이 바뀐 것을 반영했습니다.",3);
+    });
+  }
+  $("#wordRefresh").addEventListener("click",function(){
+    if(rfBusy)return;
+    var btn=this;
+    if(DEMO){rf("ok","연습 모드에서는 실제로 불러오지 않습니다.","실제 관리자 페이지에서 누르면 1~2분 안에 유튜브의 새 영상·게시물을 가져옵니다.",3);$("#rfNew").hidden=true;return}
+    rfBusy=true;btn.disabled=true;$("#rfNew").hidden=true;
+    var t0=Date.now()-45000, before=allIds(), run=null;
+    rf("","불러오기를 요청하는 중…","잠시만 기다려 주세요.",0);
+    post({action:"refresh",password:PW}).then(function(r){
+      if(!r||!r.ok)throw new Error((r&&r.error)||"요청하지 못했습니다.");
+      rf("","유튜브에서 새 영상·게시물을 확인하는 중…","보통 30초~1분 걸립니다. 이 화면을 닫아도 계속 진행됩니다.",1);
+      // 방금 시작된 작업이 끝날 때까지 기다리기
+      return poll(function(){
+        return getJSON(GH+"/actions/workflows/update-word.yml/runs?per_page=5").then(function(d){
+          var R=(d.workflow_runs||[]).filter(function(x){return Date.parse(x.created_at)>=t0});
+          run=R[R.length-1]||null;
+          return run&&run.status==="completed"?run:null;
+        });
+      },5000,4*60*1000);
+    }).then(function(done){
+      if(!done)throw new Error("시간이 오래 걸리고 있습니다. 몇 분 뒤 이 화면을 다시 열어 확인해 주세요.");
+      if(done.conclusion!=="success")throw new Error("유튜브에서 가져오지 못했습니다. 잠시 뒤 다시 눌러 주세요. (1시간마다 자동으로도 다시 시도합니다)");
+      // 새로 저장된 것이 있는지 (작업이 끝난 뒤 '자동 갱신' 저장 기록이 생겼는지)
+      return getJSON(GH+"/commits?per_page=1&path=qt.json").then(function(a){
+        return getJSON(GH+"/commits?per_page=1&path=word.json").then(function(b){
+          var ts=[a[0],b[0]].filter(Boolean).map(function(c){return Date.parse(c.commit.committer.date)});
+          return ts.some(function(t){return t>=Date.parse(done.created_at)});
+        });
+      });
+    }).then(function(changed){
+      if(!changed){loadWord(true);rf("ok","새로 올라온 영상이나 큐티가 없습니다.","유튜브에 있는 내용이 이미 모두 홈페이지에 있습니다.",3);return}
+      rf("","홈페이지에 반영하는 중…","보통 1분 정도 걸립니다.",2);
+      var w0=WD&&WD.updated, q0=QD&&QD.updated;
+      return poll(function(){
+        return Promise.all([getJSON(wordBase()+"word.json"),getJSON(wordBase()+"qt.json")]).then(function(x){return (x[0].updated!==w0||x[1].updated!==q0)?x:null});
+      },6000,3*60*1000).then(function(x){
+        if(!x){rf("ok","불러오기는 끝났습니다.","홈페이지에 나타나기까지 몇 분 더 걸릴 수 있습니다.",3);return}
+        return finishRefresh(before);
+      });
+    }).catch(function(e){rf("bad",(e&&e.message)||"불러오지 못했습니다.","인터넷 연결을 확인하고 다시 눌러 주세요.",0)})
+    .then(function(){rfBusy=false;btn.disabled=false});
+  });
   $("#histAdd").addEventListener("click",function(){draft.history.push({label:"",text:""});renderHist();updateBar($('.savebar[data-sec="history"]'));var r=$$("#histEdit .ge-row");r[r.length-1].querySelector("input").focus()});
   function renderPrayer(){
     var P=draft.prayer;

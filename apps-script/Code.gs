@@ -14,6 +14,13 @@
 // ▼ 비밀번호 정하기 (setup 을 실행하면 안전한 곳에 저장되고, 그 뒤에는 이 줄을 지워도 됩니다)
 const INITIAL_PASSWORD = '여기에-비밀번호를-적으세요';
 
+// ▼ 관리자 페이지 [유튜브에서 지금 불러오기] 버튼용 GitHub 열쇠(토큰)
+//   따옴표 안에 github_pat_… 로 시작하는 열쇠를 붙여 넣고 setup 을 실행하면 안전한 곳에 저장됩니다.
+//   저장된 뒤에는 이 줄을 다시 비워 두세요. (비워 두어도 저장된 열쇠는 그대로 남습니다)
+const INITIAL_GITHUB_TOKEN = '';
+const GITHUB_REPO = 'MotoDNA/midbar-church';
+const GITHUB_WORKFLOW = 'update-word.yml';
+
 const DATA_SHEET = '내용';
 const LOG_SHEET = '기록';
 const MAX_CHARS = 45000;       // 시트 칸 하나에 들어가는 글자 수 한도보다 조금 작게
@@ -30,6 +37,9 @@ function setup() {
   log.getRange('A:A').setNumberFormat('@');   // 시각을 글자 그대로 보관
   if (INITIAL_PASSWORD && INITIAL_PASSWORD.indexOf('여기에') !== 0) {
     PropertiesService.getScriptProperties().setProperty('ADMIN_PASSWORD', INITIAL_PASSWORD);
+  }
+  if (INITIAL_GITHUB_TOKEN) {
+    PropertiesService.getScriptProperties().setProperty('GITHUB_TOKEN', INITIAL_GITHUB_TOKEN.trim());
   }
   if (!PropertiesService.getScriptProperties().getProperty('ADMIN_PASSWORD')) {
     throw new Error('맨 위 INITIAL_PASSWORD 를 원하는 비밀번호로 바꾼 뒤 다시 실행해 주세요.');
@@ -68,6 +78,8 @@ function doPost(e) {
       return json_(restore_(req.time));
     case 'upload':
       return json_(upload_(req));
+    case 'refresh':
+      return json_(refresh_());
     case 'trash':
       return json_(trash_(req.ids));
     default:
@@ -171,6 +183,28 @@ function trash_(ids) {
 }
 
 /* ---------------- 내부 함수 ---------------- */
+
+/* ---------------- 유튜브에서 지금 불러오기 ----------------
+ * GitHub 의 '말씀 메뉴 자동 갱신' 작업을 바로 한 번 실행시킵니다. (평소에는 1시간마다 저절로 실행)
+ * 실행 결과는 관리자 페이지가 GitHub 에서 직접 확인합니다. */
+function refresh_() {
+  const token = PropertiesService.getScriptProperties().getProperty('GITHUB_TOKEN');
+  if (!token) return { ok: false, error: '아직 GitHub 열쇠가 등록되지 않았습니다. 설치 안내의 [불러오기 버튼 켜기]를 따라 해 주세요.' };
+  const cache = CacheService.getScriptCache();
+  if (cache.get('refresh_lock')) return { ok: true, already: true };   // 1분 안에 여러 번 눌러도 한 번만
+  const res = UrlFetchApp.fetch('https://api.github.com/repos/' + GITHUB_REPO + '/actions/workflows/' + GITHUB_WORKFLOW + '/dispatches', {
+    method: 'post',
+    contentType: 'application/json',
+    headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' },
+    payload: JSON.stringify({ ref: 'main' }),
+    muteHttpExceptions: true
+  });
+  const code = res.getResponseCode();
+  if (code === 204) { cache.put('refresh_lock', '1', 60); cache.remove('videos'); return { ok: true }; }   // 첫 화면 '최신 설교'도 바로 새로
+  if (code === 401) return { ok: false, error: 'GitHub 열쇠가 맞지 않거나 기한이 지났습니다. 새 열쇠를 만들어 다시 등록해 주세요.' };
+  if (code === 403 || code === 404) return { ok: false, error: 'GitHub 열쇠에 실행 권한이 없습니다. 열쇠를 만들 때 Actions 를 [Read and write]로 골라 주세요.' };
+  return { ok: false, error: 'GitHub 에 요청하지 못했습니다. (' + code + ') 잠시 뒤 다시 눌러 주세요.' };
+}
 
 function json_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
