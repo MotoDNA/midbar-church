@@ -209,6 +209,13 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
 .ed-area a{color:#8A5A1C;text-decoration:underline}
 .ed-area img{display:block;max-width:100%;max-height:420px;border-radius:10px;margin:10px 0}
 .ed-area img[data-up]{opacity:.45}
+.ed{position:relative}
+.ed-area img{cursor:pointer}
+.ed-area img.sel{outline:3px solid var(--dawn);outline-offset:2px}
+.ed-imgbar{position:absolute;z-index:3;display:flex;gap:6px}
+.ed-imgbar button{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:999px;border:0;font:inherit;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.ed-imgbar .del{background:var(--bad);color:#fff}
+.ed-imgbar .cnl{background:#fff;color:var(--ink)}
 .ed.drag{border-color:var(--dawn);background:var(--dawn-soft)}
 .ed-up{font-size:14px;color:#8A5A1C;padding:0 12px}
 .ed-up:empty{display:none}
@@ -838,6 +845,33 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
   document.addEventListener("change",function(e){
     if(!e.target.matches("[data-edimg]"))return;
     var area=e.target.closest(".ed").querySelector(".ed-area");edAddImages(area,e.target.files);e.target.value="";
+  });
+
+  /* 편집기 안의 사진: 누르면 선택되고 [사진 삭제] 버튼이 나옴 */
+  var selImg=null;
+  function imgBarHide(){if(selImg){selImg.classList.remove("sel");selImg=null}$$(".ed-imgbar").forEach(function(b){b.remove()})}
+  function imgRemove(){
+    if(!selImg)return;var im=selImg,p=im.parentNode;imgBarHide();im.remove();
+    if(p&&p.tagName==="P"&&!p.textContent.trim()&&!p.querySelector("img"))p.remove();
+    pvSoon();toast("사진을 뺐습니다. 저장해야 홈페이지에 반영됩니다.");
+  }
+  document.addEventListener("click",function(e){
+    var im=e.target.closest&&e.target.closest(".ed-area img");
+    if(e.target.closest&&e.target.closest(".ed-imgbar")){
+      if(e.target.closest(".del"))imgRemove();else imgBarHide();return;
+    }
+    if(!im||im.hasAttribute("data-up")){imgBarHide();return}
+    imgBarHide();selImg=im;im.classList.add("sel");
+    var ed=im.closest(".ed"),r=im.getBoundingClientRect(),er=ed.getBoundingClientRect();
+    var bar=document.createElement("div");bar.className="ed-imgbar";
+    bar.innerHTML='<button type="button" class="del">× 사진 삭제</button><button type="button" class="cnl">취소</button>';
+    bar.style.top=(r.top-er.top+10)+"px";bar.style.left=(r.left-er.left+10)+"px";
+    ed.appendChild(bar);
+    var s=window.getSelection();s.removeAllRanges();
+  });
+  document.addEventListener("keydown",function(e){
+    if(selImg&&(e.key==="Backspace"||e.key==="Delete")){e.preventDefault();imgRemove()}
+    else if(selImg&&e.key==="Escape")imgBarHide();
   });
   var upSeq=0;
   function edAddImages(area,files){
