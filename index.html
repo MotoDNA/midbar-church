@@ -131,6 +131,9 @@ header.enter{animation:down .8s var(--ease) both}
 .sec-head h2{font-family:var(--f-serif);font-weight:500;font-size:clamp(32px,4.4vw,56px);line-height:1.15;letter-spacing:-.035em;margin-top:16px}
 .sec-head h2 em{font-style:normal;color:var(--mute)}
 .more{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;border-bottom:1px solid var(--ink);padding-bottom:3px}
+/* 유튜브로 가는 링크 앞에 유튜브 아이콘 (Simple Icons, 유튜브 빨강) */
+.more[href*="youtube.com"]::before,.qview-body figure a[href*="youtube.com"]::before{content:"";flex:none;display:inline-block;width:20px;height:20px;background:#FF0000;-webkit-mask:url("https://cdn.jsdelivr.net/npm/simple-icons@13.21.0/icons/youtube.svg") center/contain no-repeat;mask:url("https://cdn.jsdelivr.net/npm/simple-icons@13.21.0/icons/youtube.svg") center/contain no-repeat}
+.qview-body figure a[href*="youtube.com"]{display:inline-flex;align-items:center;gap:6px}
 .more:hover{color:var(--dawn);border-color:var(--dawn)}
 
 /* 미드바르 / 다바르 */
