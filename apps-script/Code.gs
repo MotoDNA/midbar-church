@@ -110,6 +110,7 @@ function parseTitle_(t) {
   const date = parts.filter(function (x) { return /^\d{4}\.\d{2}\.\d{2}$/.test(x); })[0] || '';
   const rest = parts.slice(2).join(' ');
   let kind = '말씀';
+  if (parts[1] && !/\d/.test(parts[1])) { return { title: parts[0], scripture: '', date: date, kind: parts[1], note: '' }; }
   if (/큐티|QT/.test(t)) kind = '큐티말씀';
   else if (/금요/.test(rest)) kind = '금요기도회';
   else if (/주일/.test(rest)) kind = '주일설교';

@@ -685,7 +685,7 @@ footer .wrap{padding-block:56px 48px}
   /* ===== 관리자 페이지에서 고친 내용 불러오기 =====
      CONTENT_API 에 구글 Apps Script 웹앱 주소를 넣으면, 관리자 페이지에서 저장한 내용이 바로 홈페이지에 나옵니다.
      비워 두면 같은 폴더의 content.json 을 읽습니다. */
-  var CONTENT_API="";
+  var CONTENT_API="https://script.google.com/macros/s/AKfycbzI2UuIeF5CSi8MND2_XJ2sgi2sk1W5aeyieoGpnE-KyKQvAYfVrrt1y0rseeoEeuyuCw/exec";
   function E(x){return String(x==null?"":x).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
   function BR(x){return E(x).replace(/\n/g,"<br>")}
   function D(d){return String(d||"").replace(/-/g,".")}
@@ -780,6 +780,7 @@ footer .wrap{padding-block:56px 48px}
   function TH(v){return v.thumb||("thumbs/"+v.id+".jpg")}
   (CONTENT_API?load(CONTENT_API+"?action=videos").then(function(V){if(!V||!V.length)throw 0;return V}).catch(function(){return load("videos.json")}):load("videos.json")).then(function(V){
     if(!V||!V.length)return;
+    V.forEach(function(v){if(v.scripture&&!/\d/.test(v.scripture)){v.kind=v.scripture;v.scripture=""}});
     V.sort(function(a,b){return (b.published||"").localeCompare(a.published||"")});
     var m=V[0], tag=m.kind+(m.note&&m.kind!=="큐티말씀"?" · "+m.note:"");
     var home=document.getElementById("svHome");
