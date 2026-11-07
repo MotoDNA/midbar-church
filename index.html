@@ -318,6 +318,9 @@ header.enter{animation:down .8s var(--ease) both}
 .bpage img{display:block;width:100%;height:auto}
 .bpage .pgno{position:absolute;right:12px;bottom:12px;font-size:12px;font-weight:700;color:#fff;background:rgba(20,22,16,.72);border-radius:999px;padding:4px 12px}
 @media (max-width:640px){.bul-pages{grid-template-columns:minmax(0,1fr);gap:16px}}
+[id^="sec-"]{scroll-margin-top:140px}
+.subtabs a[aria-current]{background:var(--ink);color:#fff}
+@media (max-width:640px){[id^="sec-"]{scroll-margin-top:122px}}
 section.page{display:none}
 section.page.on{display:block}
 
@@ -387,14 +390,14 @@ footer .wrap{padding-block:56px 48px}
     <a class="logo" href="#home" aria-label="광야교회 홈"><span class="mk"><img src="logo-mark.png" alt=""></span><b>광야교회</b><span class="en"><span>MIDBAR</span><span>CHURCH</span></span></a>
     <ul class="gnb" id="gnb">
       <li data-p="about"><a href="#about">교회소개</a>
-        <div class="dep2"><a href="#about">인사말</a><a href="#about">교회 이름의 뜻</a><a href="#about">걸어온 길</a></div></li>
+        <div class="dep2"><a href="#about/greet">인사말</a><a href="#about/name">교회 이름의 뜻</a><a href="#about/history">걸어온 길</a></div></li>
       <li data-p="worship"><a href="#worship">예배안내</a>
-        <div class="dep2"><a href="#worship">예배 시간</a><a href="#worship">오시는 길</a></div></li>
+        <div class="dep2"><a href="#worship/times">예배 시간</a><a href="#worship/place">오시는 길</a></div></li>
       <li data-p="word"><a href="#word">말씀</a>
-        <div class="dep2"><a href="#word">주일 설교</a><a href="#word">그림 묵상</a></div></li>
+        <div class="dep2"><a href="#word/sermon">주일 설교</a><a href="#word/canvas">그림 묵상</a></div></li>
       <li data-p="bulletin"><a href="#bulletin">주보</a></li>
       <li data-p="together"><a href="#together">함께하기</a>
-        <div class="dep2"><a href="#together">새가족 안내</a><a href="#together">기도 제목</a><a href="#together">교회 소식</a><a href="#together">헌금 안내</a></div></li>
+        <div class="dep2"><a href="#together/new">새가족 안내</a><a href="#together/prayer">기도 제목</a><a href="#together/news">교회 소식</a><a href="#together/offering">헌금 안내</a></div></li>
       <li><a href="https://cafe.naver.com/midbarchurch" target="_blank" rel="noopener" class="ext">네이버 카페 <span aria-hidden="true">↗</span></a></li>
     </ul>
     <div class="hd-cta">
@@ -423,7 +426,7 @@ footer .wrap{padding-block:56px 48px}
           <h1><span class="ln"><span>광야에 길을,</span></span><span class="ln"><span><em>사막에</em> 강을</span></span></h1>
           <p class="sub in d3" id="heroSub">척박한 광야 길을 걷는 듯한 일상 속에서, 광야교회가 여러분의 따뜻한 영적 오아시스가 되기를 소망합니다.</p>
           <div class="acts in d4">
-            <a class="pill solid" href="#worship">이번 주일 예배 오기<span class="ar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg></span></a>
+            <a class="pill solid" href="#worship/times">이번 주일 예배 오기<span class="ar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg></span></a>
             <a class="pill glass" href="https://www.youtube.com/@midbar-church-smilepastor" target="_blank" rel="noopener">설교 영상 보기<span class="ar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5"/></svg></span></a>
           </div>
         </div>
@@ -439,10 +442,10 @@ footer .wrap{padding-block:56px 48px}
 
   <nav class="quick" aria-label="바로가기">
     <ul class="wrap">
-      <li><a href="#worship"><span><small>매주 모이는 시간</small><b>예배 시간</b></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a></li>
-      <li><a href="#worship"><span><small>일산은광교회 예배당</small><b>오시는 길</b></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a></li>
-      <li><a href="#together"><span><small>처음 오셨나요</small><b>새가족 안내</b></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a></li>
-      <li><a href="#together"><span><small>온라인 헌금</small><b>헌금 안내</b></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a></li>
+      <li><a href="#worship/times"><span><small>매주 모이는 시간</small><b>예배 시간</b></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a></li>
+      <li><a href="#worship/place"><span><small>일산은광교회 예배당</small><b>오시는 길</b></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a></li>
+      <li><a href="#together/new"><span><small>처음 오셨나요</small><b>새가족 안내</b></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a></li>
+      <li><a href="#together/offering"><span><small>온라인 헌금</small><b>헌금 안내</b></span><svg class="go" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a></li>
     </ul>
   </nav>
 
@@ -496,10 +499,10 @@ footer .wrap{padding-block:56px 48px}
       <div>
         <div class="sec-head" style="margin-bottom:24px"><div><p class="label">소식</p><h2>교회 소식</h2></div></div>
         <ul class="board" id="homeNews">
-          <li><a href="#together"><span class="t"><i class="n">새소식</i>유튜브 채널에 매일 ‘큐티말씀’이 올라옵니다</span><span class="dt">2026.11.01</span></a></li>
-          <li><a href="#together"><span class="t"><i class="n">공지</i>추수감사주일 예배를 드렸습니다</span><span class="dt">2026.11.01</span></a></li>
-          <li><a href="#together"><span class="t">봉사자를 모집합니다</span><span class="dt">2026.11.01</span></a></li>
-          <li><a href="#together"><span class="t">심방이 필요하신 분은 알려 주세요</span><span class="dt">2026.11.01</span></a></li>
+          <li><a href="#together/news"><span class="t"><i class="n">새소식</i>유튜브 채널에 매일 ‘큐티말씀’이 올라옵니다</span><span class="dt">2026.11.01</span></a></li>
+          <li><a href="#together/news"><span class="t"><i class="n">공지</i>추수감사주일 예배를 드렸습니다</span><span class="dt">2026.11.01</span></a></li>
+          <li><a href="#together/news"><span class="t">봉사자를 모집합니다</span><span class="dt">2026.11.01</span></a></li>
+          <li><a href="#together/news"><span class="t">심방이 필요하신 분은 알려 주세요</span><span class="dt">2026.11.01</span></a></li>
         </ul>
       </div>
     </div>
@@ -511,7 +514,7 @@ footer .wrap{padding-block:56px 48px}
       <h2><span class="nw">광야교회의 성전 마련을 위해</span><br><em class="nw">함께 기도해주세요.</em></h2>
       <div class="pray-row">
         <p>재정적으로 자립하여 현장 예배 장소를 속히 마련할 수 있도록, 그리고 예배당을 무료로 내어 주신 일산은광교회 당회와 성도님들을 위해서도 함께 기도해 주세요.</p>
-        <a class="pill" href="#together">기도 제목 보기<span class="ar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg></span></a>
+        <a class="pill" href="#together/prayer">기도 제목 보기<span class="ar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg></span></a>
       </div>
     </div>
   </div>
@@ -521,9 +524,9 @@ footer .wrap{padding-block:56px 48px}
 <section class="page" id="p-about">
   <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 교회소개</p><h1>교회소개</h1></div></div>
-  <nav class="subtabs" aria-label="교회소개 메뉴"><ul class="wrap"><li><a href="#about">인사말</a></li><li><a href="#about">교회 이름의 뜻</a></li><li><a href="#about">걸어온 길</a></li></ul></nav>
+  <nav class="subtabs" aria-label="교회소개 메뉴"><ul class="wrap"><li><a href="#about/greet">인사말</a></li><li><a href="#about/name">교회 이름의 뜻</a></li><li><a href="#about/history">걸어온 길</a></li></ul></nav>
   <div class="wrap">
-    <div class="block block-grid">
+    <div id="sec-about-greet" class="block block-grid">
       <div><span class="k">인사말</span><h2>담임목사<br>인사말</h2></div>
       <div class="greet">
         <div class="photo has"><img src="pastor.jpg" alt="박규성 담임목사"></div>
@@ -534,7 +537,7 @@ footer .wrap{padding-block:56px 48px}
         </div>
       </div>
     </div>
-    <div class="block block-grid">
+    <div id="sec-about-name" class="block block-grid">
       <div><span class="k">이름</span><h2>교회 이름의 뜻</h2></div>
       <div class="prose">
         <p class="lead">광야는 하나님의 말씀이 가장 선명하게 들리는 곳입니다.</p>
@@ -542,7 +545,7 @@ footer .wrap{padding-block:56px 48px}
         <p>성경이 말하는 광야란 메마르고 버려진 척박한 땅만이 아니라, 세상의 모든 소음이 잦아들고 오직 하나님의 말씀이 가장 선명하게 들리는 곳입니다. 미드바르에서 울려 퍼지는 생명의 다바르가 여러분의 삶을 다시 일어서게 하는 힘이 되기를 소망합니다.</p>
       </div>
     </div>
-    <div class="block block-grid">
+    <div id="sec-about-history" class="block block-grid">
       <div><span class="k">연혁</span><h2>걸어온 길</h2></div>
       <ul class="rows" id="histRows">
         <li><b>2026. 09. 13</b><span>일산은광교회 당회에서 예배당 무상 사용을 허락해 주심</span></li>
@@ -557,16 +560,16 @@ footer .wrap{padding-block:56px 48px}
 <section class="page" id="p-worship">
   <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 예배안내</p><h1>예배안내</h1></div></div>
-  <nav class="subtabs" aria-label="예배안내 메뉴"><ul class="wrap"><li><a href="#worship">예배 시간</a></li><li><a href="#worship">오시는 길</a></li></ul></nav>
+  <nav class="subtabs" aria-label="예배안내 메뉴"><ul class="wrap"><li><a href="#worship/times">예배 시간</a></li><li><a href="#worship/place">오시는 길</a></li></ul></nav>
   <div class="wrap">
-    <div class="block block-grid">
+    <div id="sec-worship-times" class="block block-grid">
       <div><span class="k">시간</span><h2>예배 시간</h2></div>
       <ul class="times" id="worshipTimes">
         <li><span><b>주일 예배</b><small>인도 박규성 담임목사</small></span><span class="t">오후 5:00</span></li>
         <li><span><b>금요기도회</b><small>경배와 찬양 · 말씀</small></span><span class="t">오후 8:30</span></li>
       </ul>
     </div>
-    <div class="block block-grid">
+    <div id="sec-worship-place" class="block block-grid">
       <div><span class="k">장소</span><h2>오시는 길</h2></div>
       <div>
         <ul class="rows" id="placeRows">
@@ -585,9 +588,9 @@ footer .wrap{padding-block:56px 48px}
 <section class="page" id="p-word">
   <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 말씀</p><h1>말씀</h1></div></div>
-  <nav class="subtabs" aria-label="말씀 메뉴"><ul class="wrap"><li><a href="#word">주일 설교</a></li><li><a href="#word">그림 묵상</a></li></ul></nav>
+  <nav class="subtabs" aria-label="말씀 메뉴"><ul class="wrap"><li><a href="#word/sermon">주일 설교</a></li><li><a href="#word/canvas">그림 묵상</a></li></ul></nav>
   <div class="wrap">
-    <div class="block">
+    <div id="sec-word-sermon" class="block">
       <div class="sec-head"><div><p class="label">주일 설교</p><h2>설교 영상</h2></div><a class="more" href="https://www.youtube.com/@midbar-church-smilepastor/videos" target="_blank" rel="noopener">유튜브에서 전체 보기 ↗</a></div>
       <div class="vgrid" id="svGrid">
         <a class="vcard" href="https://www.youtube.com/watch?v=LEMtXSTmRFA" target="_blank" rel="noopener"><span class="th"><img src="thumbs/LEMtXSTmRFA.jpg" alt="감사하며 축복할 때 썸네일"></span><b>감사하며 축복할 때</b><small>주일설교 · 고린도전서 10장 16~17절 · 2026.11.01</small></a>
@@ -595,6 +598,11 @@ footer .wrap{padding-block:56px 48px}
         <a class="vcard" href="https://www.youtube.com/watch?v=1KxERtn-9qI" target="_blank" rel="noopener"><span class="th"><img src="thumbs/1KxERtn-9qI.jpg" alt="물 가에 심어진 나무 썸네일"></span><b>물 가에 심어진 나무</b><small>큐티말씀 · 예레미야 17:7-8</small></a>
       </div>
       <p class="note">유튜브에 올린 영상이 최신순으로 자동으로 정리됩니다. 큐티말씀은 매일 밤 12시 유튜브 [게시물]에도 올라옵니다.</p>
+    </div>
+    <div id="sec-word-canvas" class="block">
+      <div class="sec-head"><div><p class="label">그림 묵상</p><h2>광야캔버스</h2></div></div>
+      <p style="color:var(--mute);margin:-24px 0 28px;max-width:40rem">그림 한 점을 함께 보며 그 안에 담긴 말씀을 묵상합니다.</p>
+      <div class="vgrid" id="cvGrid"><p class="note">그림 묵상 영상을 불러오는 중입니다.</p></div>
     </div>
   </div>
 </section>
@@ -615,17 +623,17 @@ footer .wrap{padding-block:56px 48px}
 <section class="page" id="p-together">
   <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 함께하기</p><h1>함께하기</h1></div></div>
-  <nav class="subtabs" aria-label="함께하기 메뉴"><ul class="wrap"><li><a href="#together">새가족 안내</a></li><li><a href="#together">기도 제목</a></li><li><a href="#together">교회 소식</a></li><li><a href="#together">헌금 안내</a></li></ul></nav>
+  <nav class="subtabs" aria-label="함께하기 메뉴"><ul class="wrap"><li><a href="#together/new">새가족 안내</a></li><li><a href="#together/prayer">기도 제목</a></li><li><a href="#together/news">교회 소식</a></li><li><a href="#together/offering">헌금 안내</a></li></ul></nav>
   <div class="wrap">
-    <div class="block">
+    <div id="sec-together-new" class="block">
       <div class="sec-head"><div><p class="label">새가족</p><h2>처음 오신 분을<br><em>진심으로 환영합니다</em></h2></div></div>
-      <ol class="steps">
+      <ol class="steps" id="newcSteps">
         <li><span class="s">처음 오신 날</span><b>함께 예배드리기</b><p>주일 오후 5시, 편하게 오셔서 함께 예배드리세요.</p></li>
         <li><span class="s">예배 후</span><b>새가족 등록카드 작성</b><p>광야교회 등록을 원하시면 예배 후 새가족 등록카드를 작성해 주세요.</p></li>
         <li><span class="s">그다음</span><b>새가족 심방</b><p>목사님이 가정을 찾아가 함께 기도하는 새가족 등록 심방이 있습니다.</p></li>
       </ol>
     </div>
-    <div class="block block-grid">
+    <div id="sec-together-prayer" class="block block-grid">
       <div><span class="k">기도</span><h2>기도 제목</h2></div>
       <ul class="rows" id="prayerRows">
         <li><b>예배 장소</b><span>재정적으로 자립하여 현장 예배 장소를 속히 마련할 수 있도록</span></li>
@@ -636,7 +644,7 @@ footer .wrap{padding-block:56px 48px}
         <li><b>자녀</b><span>학업 중에 있는 자녀손들을 위해</span></li>
       </ul>
     </div>
-    <div class="block block-grid">
+    <div id="sec-together-news" class="block block-grid">
       <div><span class="k">소식</span><h2>교회 소식</h2></div>
       <ul class="rows" id="newsRows">
         <li><b>큐티말씀</b><span>유튜브 채널 [게시물]에 매일 밤 12시, 매일성경 본문을 따라 큐티말씀이 올라옵니다. 댓글로 함께 참여해 주세요.</span></li>
@@ -645,7 +653,7 @@ footer .wrap{padding-block:56px 48px}
         <li><b>머문 자리 정돈</b><span>일산은광교회의 섬김으로 예배드리고 있습니다. 머문 자리는 깨끗하게 정돈해 주세요.</span></li>
       </ul>
     </div>
-    <div class="block block-grid">
+    <div id="sec-together-offering" class="block block-grid">
       <div><span class="k">헌금</span><h2>헌금 안내</h2></div>
       <ul class="rows" id="offerRows">
         <li><b>은행</b><span>국민은행</span></li>
@@ -690,14 +698,27 @@ footer .wrap{padding-block:56px 48px}
     if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){v.removeAttribute("autoplay");try{v.pause()}catch(e){}}
   }
   function paint(){hd.classList.toggle("solid",window.scrollY>40)}
+  function goSub(p,sub){
+    var el=sub&&document.getElementById("sec-"+p+"-"+sub);
+    document.querySelectorAll(".subtabs a,.dep2 a").forEach(function(a){a.getAttribute("href")==="#"+p+"/"+sub?a.setAttribute("aria-current","true"):a.removeAttribute("aria-current")});
+    if(!el)return;
+    requestAnimationFrame(function(){el.scrollIntoView({block:"start",behavior:"smooth"})});
+  }
   function show(){
-    var p=(location.hash||"#home").slice(1);
+    var h=(location.hash||"#home").slice(1).split("/"),p=h[0],sub=h[1]||"";
     if(pages.indexOf(p)<0)p="home";
     cur=p;
     pages.forEach(function(x){document.getElementById("p-"+x).classList.toggle("on",x===p)});
     document.querySelectorAll("#gnb>li").forEach(function(li){li.classList.toggle("on",li.dataset.p===p)});
     closeMenu();window.scrollTo(0,0);paint();
+    goSub(p,sub);
   }
+  /* 같은 하위 메뉴를 다시 눌렀을 때도 그 자리로 이동 */
+  document.addEventListener("click",function(e){
+    var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;
+    var href=a.getAttribute("href");if(href!==location.hash)return;
+    e.preventDefault();var h=href.slice(1).split("/");if(h[1])goSub(h[0],h[1]);else window.scrollTo({top:0,behavior:"smooth"});
+  });
   var m=document.getElementById("mnav"), b=document.getElementById("burger");
   function closeMenu(){m.classList.remove("open");b.setAttribute("aria-expanded","false");document.body.style.overflow=""}
   b.addEventListener("click",function(){m.classList.add("open");b.setAttribute("aria-expanded","true");document.body.style.overflow="hidden"});
@@ -723,9 +744,10 @@ footer .wrap{padding-block:56px 48px}
     if(W.length){setHTML("homeTimes",times);setHTML("worshipTimes",times)}
     N.sort(function(a,b){return (b.pinned?1:0)-(a.pinned?1:0)||String(b.date).localeCompare(String(a.date))});
     if(N.length){
-      setHTML("homeNews",N.slice(0,4).map(function(n){return '<li><a href="#together"><span class="t">'+(n.tag?'<i class="n">'+E(n.tag)+'</i>':'')+E(n.title)+'</span><span class="dt">'+E(D(n.date))+'</span></a></li>'}).join(""));
+      setHTML("homeNews",N.slice(0,4).map(function(n){return '<li><a href="#together/news"><span class="t">'+(n.tag?'<i class="n">'+E(n.tag)+'</i>':'')+E(n.title)+'</span><span class="dt">'+E(D(n.date))+'</span></a></li>'}).join(""));
       setHTML("newsRows",N.map(function(n){return '<li><b>'+E(D(n.date))+'</b><span><strong>'+(n.tag?'['+E(n.tag)+'] ':'')+E(n.title)+'</strong>'+(n.html?'<div class="nbody">'+showHTML(n.html)+'</div>':BR(n.body))+'</span></li>'}).join(""));
     }
+    if(C.newcomer&&C.newcomer.length)setHTML("newcSteps",C.newcomer.map(function(n){return '<li><span class="s">'+E(n.step)+'</span><b>'+E(n.title)+'</b><p>'+BR(n.text)+'</p></li>'}).join(""));
     if(C.history&&C.history.length)setHTML("histRows",C.history.map(function(h){return '<li><b>'+E(h.label)+'</b><span>'+BR(h.text)+'</span></li>'}).join(""));
     if(C.prayers&&C.prayers.length)setHTML("prayerRows",C.prayers.map(function(p){return '<li><b>'+E(p.label)+'</b><span>'+BR(p.text)+'</span></li>'}).join(""));
     if(P.address)setHTML("placeRows",
@@ -853,7 +875,10 @@ footer .wrap{padding-block:56px 48px}
       document.getElementById("svList").innerHTML=V.slice(1,5).map(function(v){return '<li><a href="'+W+v.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(v))+'" alt=""></span><span><b>'+esc(v.title)+'</b><small>'+esc(meta(v))+'</small></span><span class="ar">↗</span></a></li>'}).join("");
     }
     var g=document.getElementById("svGrid");
-    if(g)g.innerHTML=V.slice(0,12).map(function(v){return '<a class="vcard" href="'+W+v.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(v))+'" alt="'+esc(v.title)+' 썸네일"></span><b>'+esc(v.title)+'</b><small>'+esc(meta(v))+'</small></a>'}).join("");
+    var isCanvas=function(v){return /캔버스|그림/.test(v.kind||"")};
+    var cv=document.getElementById("cvGrid"),CV=V.filter(isCanvas);
+    if(cv)cv.innerHTML=CV.length?CV.map(function(v){return '<a class="vcard" href="'+W+v.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(v))+'" alt="'+esc(v.title)+' 썸네일"></span><b>'+esc(v.title)+'</b><small>'+esc(meta(v))+'</small></a>'}).join(""):'<p class="note">아직 그림 묵상 영상이 없습니다.</p>';
+    if(g)g.innerHTML=V.filter(function(v){return !isCanvas(v)}).slice(0,12).map(function(v){return '<a class="vcard" href="'+W+v.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(v))+'" alt="'+esc(v.title)+' 썸네일"></span><b>'+esc(v.title)+'</b><small>'+esc(meta(v))+'</small></a>'}).join("");
   }).catch(function(){});
   window.addEventListener("hashchange",show);
   show();

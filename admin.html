@@ -58,7 +58,8 @@ h1,h2,h3,p{margin:0}
 
 /* ---------- 앱 틀 ---------- */
 .app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
-.side{background:var(--night);color:var(--night-ink);padding:24px 16px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:24px}
+.side{background:var(--night);color:var(--night-ink);padding:24px 16px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:18px;overflow-y:auto}
+.nav{gap:2px!important}
 .brand{display:flex;align-items:center;gap:12px;padding:0 8px}
 .brand .mk{width:40px;height:40px;border-radius:50%;background:#fff;display:grid;place-items:center;overflow:hidden;flex:none}
 .brand .mk img{width:36px;height:36px}
@@ -68,6 +69,9 @@ h1,h2,h3,p{margin:0}
 .nav a{display:flex;align-items:center;gap:12px;padding:12px 12px;border-radius:12px;text-decoration:none;font-size:16px;color:rgba(233,230,220,.78)}
 .nav a:hover{background:rgba(255,255,255,.06);color:#fff}
 .nav a[aria-current="page"]{background:rgba(255,255,255,.1);color:#fff;font-weight:700}
+.nav .grp{display:block;padding:14px 12px 4px;font-size:12px;letter-spacing:.14em;color:rgba(233,230,220,.42)}
+.nav a.sub{padding:9px 12px 9px 22px;font-size:15.5px}
+.nav .auto{font-size:11px;border:1px solid rgba(233,230,220,.3);border-radius:999px;padding:0 7px;margin-left:4px;color:rgba(233,230,220,.6)}
 .nav a .cnt{margin-left:auto;font-size:13px;font-weight:500;background:rgba(255,255,255,.1);border-radius:999px;padding:0 9px;font-variant-numeric:tabular-nums}
 .side-foot{margin-top:auto;display:grid;gap:8px}
 .side-foot a,.side-foot button{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:none;border:0;color:rgba(233,230,220,.7);font-size:15px;text-decoration:none;cursor:pointer;text-align:left}
@@ -79,6 +83,7 @@ h1,h2,h3,p{margin:0}
 .demo b{color:#8A5A1C}
 .demo .btn{margin-left:auto}
 .page-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.page-head .crumb{display:block;font-size:13px;color:var(--dawn);font-weight:700;letter-spacing:.06em;margin-bottom:4px}
 .page-head h1{font-family:var(--f-serif);font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.25}
 .page-head p{color:var(--mute);margin-top:6px}
 .view{display:none}
@@ -156,6 +161,8 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
 .ib.del:hover{border-color:var(--bad);color:var(--bad)}
 .ge-head{display:grid;gap:10px;padding:0 13px;font-size:14px;color:var(--mute);font-weight:500}
 .ge-head.w{grid-template-columns:1.1fr 1.4fr .9fr 138px}
+#v-newcomer .ge-row.w{grid-template-columns:.8fr 1.1fr 2fr auto}
+#v-newcomer .ge-head.w{grid-template-columns:.8fr 1.1fr 2fr 138px}
 .ge-head.p{grid-template-columns:.8fr 2.2fr 138px}
 .savebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:20px;padding:16px 18px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
 .savebar .msg{flex:1;min-width:180px;color:var(--mute);font-size:15px}
@@ -271,6 +278,8 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
   .nav{display:flex;overflow-x:auto;gap:6px;scrollbar-width:none;margin:0 -4px;padding:0 4px}
   .nav a{flex:none;padding:8px 14px;font-size:15px;background:rgba(255,255,255,.06)}
   .nav a .cnt{display:none}
+  .nav .grp{display:none}
+  .nav a.sub{padding:8px 14px}
   .side-foot{display:none}
   .m-acts{display:flex!important;gap:6px}
   .main{padding-block:20px 120px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -342,12 +351,23 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     </div>
     <nav class="nav" aria-label="관리 메뉴">
       <a href="#dash"><svg class="icon"><use href="#i-home"/></svg>한눈에 보기</a>
-      <a href="#news"><svg class="icon"><use href="#i-news"/></svg>교회 소식<span class="cnt" id="cNews">0</span></a>
-      <a href="#bulletin"><svg class="icon"><use href="#i-doc"/></svg>주보<span class="cnt" id="cBul">0</span></a>
-      <a href="#worship"><svg class="icon"><use href="#i-clock"/></svg>예배 시간<span class="cnt" id="cWorship">0</span></a>
-      <a href="#prayer"><svg class="icon"><use href="#i-pray"/></svg>기도 제목<span class="cnt" id="cPrayer">0</span></a>
-      <a href="#offering"><svg class="icon"><use href="#i-won"/></svg>헌금 안내</a>
-      <a href="#church"><svg class="icon"><use href="#i-church"/></svg>교회 정보</a>
+      <span class="grp">첫 화면</span>
+      <a href="#hero" class="sub">소개 문장</a>
+      <span class="grp">교회소개</span>
+      <a href="#greeting" class="sub">인사말</a>
+      <a href="#history" class="sub">걸어온 길</a>
+      <span class="grp">예배안내</span>
+      <a href="#worship" class="sub">예배 시간<span class="cnt" id="cWorship">0</span></a>
+      <a href="#place" class="sub">오시는 길</a>
+      <span class="grp">말씀</span>
+      <a href="#word" class="sub">설교 영상 <small class="auto">자동</small></a>
+      <span class="grp">주보</span>
+      <a href="#bulletin" class="sub">주보<span class="cnt" id="cBul">0</span></a>
+      <span class="grp">함께하기</span>
+      <a href="#newcomer" class="sub">새가족 안내</a>
+      <a href="#prayer" class="sub">기도 제목<span class="cnt" id="cPrayer">0</span></a>
+      <a href="#news" class="sub">교회 소식<span class="cnt" id="cNews">0</span></a>
+      <a href="#offering" class="sub">헌금 안내</a>
     </nav>
     <div class="side-foot">
       <a id="siteLink" href="./" target="_blank" rel="noopener"><svg class="icon"><use href="#i-ext"/></svg>홈페이지 보기</a>
@@ -374,6 +394,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
         <a class="btn gold" href="#bulletin"><svg class="icon"><use href="#i-up2"/></svg>주보 올리기</a>
         <a class="btn" href="#news" data-new="1"><svg class="icon"><use href="#i-plus"/></svg>새 소식 쓰기</a>
         <a class="btn" href="#worship">예배 시간 바꾸기</a>
+        <a class="btn" href="#prayer">기도 제목 수정</a>
       </div>
       <div class="two">
         <div class="panel"><h2>최근 교회 소식 <a href="#news">전체 보기 →</a></h2><ul class="mini" id="dashNews"></ul></div>
@@ -449,16 +470,38 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
       <div class="savebar" data-sec="offering"><span class="msg">바꾼 내용이 없습니다.</span><button class="btn ghost" type="button" data-reset="offering">되돌리기</button><button class="btn primary" type="button" data-save="offering">저장하기</button></div>
     </section>
 
-    <!-- 교회 정보 -->
-    <section class="view" id="v-church">
-      <div class="page-head"><div><h1>교회 정보</h1><p>첫 화면 소개 문장, 인사말, 예배 장소, 연혁(걸어온 길)을 수정합니다.</p></div></div>
-      <div class="form card" style="border-width:1px;border-color:var(--line)" id="churchForm">
-        <h3>첫 화면</h3>
-        <label class="field"><span>첫 화면 소개 문장 <small>큰 제목 아래 한두 줄</small></span><textarea class="inp" data-k="hero.sub" style="min-height:90px"></textarea></label>
-        <h3 style="margin-top:12px">담임목사 인사말</h3>
-        <label class="field"><span>큰 글씨 첫 문장 <small>줄을 바꾸면 홈페이지에서도 줄이 바뀝니다</small></span><textarea class="inp" data-k="greeting.lead" style="min-height:80px"></textarea></label>
-        <label class="field"><span>인사말 본문 <small>빈 줄을 넣으면 문단이 나뉩니다</small></span><textarea class="inp" data-k="greeting.body" style="min-height:200px"></textarea></label>
-        <h3 style="margin-top:12px">예배 장소</h3>
+    <!-- 첫 화면 › 소개 문장 -->
+    <section class="view" id="v-hero">
+      <div class="page-head"><div><small class="crumb">첫 화면</small><h1>소개 문장</h1><p>첫 화면 큰 제목("광야에 길을, 사막에 강을") 아래에 나오는 한두 줄입니다.</p></div></div>
+      <div class="form card" style="border-width:1px;border-color:var(--line)" data-church="hero">
+        <label class="field"><span>첫 화면 소개 문장</span><textarea class="inp" data-k="hero.sub" style="min-height:110px"></textarea></label>
+      </div>
+      <div class="savebar" data-sec="hero"><span class="msg">바꾼 내용이 없습니다.</span><button class="btn ghost" type="button" data-reset="hero">되돌리기</button><button class="btn primary" type="button" data-save="hero">저장하기</button></div>
+    </section>
+
+    <!-- 교회소개 › 인사말 -->
+    <section class="view" id="v-greeting">
+      <div class="page-head"><div><small class="crumb">교회소개</small><h1>인사말</h1><p>교회소개 페이지 맨 위, 목사님 사진 옆에 나오는 글입니다.</p></div></div>
+      <div class="form card" style="border-width:1px;border-color:var(--line)" data-church="greeting">
+        <label class="field"><span>큰 글씨 첫 문장 <small>줄을 바꾸면 홈페이지에서도 줄이 바뀝니다</small></span><textarea class="inp" data-k="greeting.lead" style="min-height:90px"></textarea></label>
+        <label class="field"><span>인사말 본문 <small>빈 줄을 넣으면 문단이 나뉩니다</small></span><textarea class="inp" data-k="greeting.body" style="min-height:260px"></textarea></label>
+      </div>
+      <div class="savebar" data-sec="greeting"><span class="msg">바꾼 내용이 없습니다.</span><button class="btn ghost" type="button" data-reset="greeting">되돌리기</button><button class="btn primary" type="button" data-save="greeting">저장하기</button></div>
+    </section>
+
+    <!-- 교회소개 › 걸어온 길 -->
+    <section class="view" id="v-history">
+      <div class="page-head"><div><small class="crumb">교회소개</small><h1>걸어온 길</h1><p>교회소개 페이지 맨 아래에 위에서부터 차례로 나옵니다. 화살표로 순서를 바꿀 수 있습니다.</p></div></div>
+      <div class="ge-head p"><span>날짜</span><span>내용</span><span></span></div>
+      <div class="grid-edit" id="histEdit"></div>
+      <div style="margin-top:12px"><button class="btn" type="button" id="histAdd"><svg class="icon"><use href="#i-plus"/></svg>연혁 추가</button></div>
+      <div class="savebar" data-sec="history"><span class="msg">바꾼 내용이 없습니다.</span><button class="btn ghost" type="button" data-reset="history">되돌리기</button><button class="btn primary" type="button" data-save="history">저장하기</button></div>
+    </section>
+
+    <!-- 예배안내 › 오시는 길 -->
+    <section class="view" id="v-place">
+      <div class="page-head"><div><small class="crumb">예배안내</small><h1>오시는 길</h1><p>예배안내 페이지의 장소·주소·교통편과, 첫 화면 오른쪽 아래의 짧은 위치입니다.</p></div></div>
+      <div class="form card" style="border-width:1px;border-color:var(--line)" data-church="place">
         <div class="row2">
           <label class="field"><span>장소 이름</span><input class="inp" data-k="place.name"></label>
           <label class="field"><span>짧은 위치 <small>첫 화면용</small></span><input class="inp" data-k="place.short"></label>
@@ -470,16 +513,28 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
         <label class="field"><span>대중교통</span><textarea class="inp" data-k="place.transit" style="min-height:100px"></textarea></label>
         <label class="field"><span>주차</span><input class="inp" data-k="place.parking"></label>
       </div>
-      <div class="savebar" data-sec="church"><span class="msg">바꾼 내용이 없습니다.</span><button class="btn ghost" type="button" data-reset="church">되돌리기</button><button class="btn primary" type="button" data-save="church">저장하기</button></div>
-      <div class="sec" style="margin-top:40px">
-        <h2>걸어온 길 (연혁)</h2>
-        <p style="color:var(--mute);margin:-4px 0 14px">홈페이지 <b>교회소개</b> 맨 아래에 위에서부터 차례로 나옵니다. 화살표로 순서를 바꿀 수 있습니다.</p>
-        <div class="ge-head p"><span>날짜</span><span>내용</span><span></span></div>
-        <div class="grid-edit" id="histEdit"></div>
-        <div style="margin-top:12px"><button class="btn" type="button" id="histAdd"><svg class="icon"><use href="#i-plus"/></svg>연혁 추가</button></div>
-        <div class="savebar" data-sec="history"><span class="msg">바꾼 내용이 없습니다.</span><button class="btn ghost" type="button" data-reset="history">되돌리기</button><button class="btn primary" type="button" data-save="history">저장하기</button></div>
-      </div>
+      <div class="savebar" data-sec="place"><span class="msg">바꾼 내용이 없습니다.</span><button class="btn ghost" type="button" data-reset="place">되돌리기</button><button class="btn primary" type="button" data-save="place">저장하기</button></div>
     </section>
+
+    <!-- 함께하기 › 새가족 안내 -->
+    <section class="view" id="v-newcomer">
+      <div class="page-head"><div><small class="crumb">함께하기</small><h1>새가족 안내</h1><p>함께하기 페이지 맨 위, 처음 오신 분께 드리는 안내 단계입니다.</p></div></div>
+      <div class="ge-head w"><span>때</span><span>제목</span><span>설명</span><span></span></div>
+      <div class="grid-edit" id="newcEdit"></div>
+      <div style="margin-top:12px"><button class="btn" type="button" id="newcAdd"><svg class="icon"><use href="#i-plus"/></svg>단계 추가</button></div>
+      <div class="savebar" data-sec="newcomer"><span class="msg">바꾼 내용이 없습니다.</span><button class="btn ghost" type="button" data-reset="newcomer">되돌리기</button><button class="btn primary" type="button" data-save="newcomer">저장하기</button></div>
+    </section>
+
+    <!-- 말씀 › 설교 영상 -->
+    <section class="view" id="v-word">
+      <div class="page-head"><div><small class="crumb">말씀</small><h1>설교 영상</h1><p>이 메뉴는 따로 고칠 것이 없습니다.</p></div>
+        <a class="btn" href="https://studio.youtube.com/" target="_blank" rel="noopener"><svg class="icon"><use href="#i-ext"/></svg>유튜브 스튜디오 열기</a></div>
+      <div class="panel" style="margin-bottom:20px">
+        <div class="note"><svg class="icon"><use href="#i-play"/></svg><span><b>유튜브에 올리면 30분 안에 홈페이지에 자동으로 나옵니다.</b><br>제목을 <b>"설교 제목 | 성경 본문 | 광야교회 박규성목사 | 2026.11.08 | 주일설교"</b>처럼 적으면 홈페이지에 제목·본문·날짜·구분이 나뉘어 보기 좋게 나옵니다. 두 번째 칸에 "광야캔버스"를 적으면 그림 묵상으로 따로 모입니다.</span></div>
+      </div>
+      <div class="panel"><h2>지금 홈페이지에 나오는 영상</h2><ul class="mini" id="wordList"><li><span class="t"><small>불러오는 중…</small></span></li></ul></div>
+    </section>
+
   </div></main>
 
   <aside class="pv" id="pv" aria-label="홈페이지 미리보기">
@@ -594,9 +649,13 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     if(all||which==="prayer")draft.prayer=clone(saved.prayers||[]);
     if(all||which==="offering")draft.offering=clone(saved.offering||{});
     if(all||which==="history")draft.history=clone(savedHistory());
-    if(all||which==="church")draft.church={hero:clone(saved.hero||{}),greeting:clone(saved.greeting||{}),place:clone(saved.place||{})};
+    if(all||!draft.church)draft.church={hero:clone(saved.hero||{}),greeting:clone(saved.greeting||{}),place:clone(saved.place||{})};
+    else if(which==="hero"||which==="greeting"||which==="place")draft.church[which]=clone(saved[which]||{});
+    if(all||which==="newcomer")draft.newcomer=clone(savedNewc());
   }
   var DEFAULT_HISTORY=[{label:"2026. 09. 13",text:"일산은광교회 당회에서 예배당 무상 사용을 허락해 주심"},{label:"2026. 09. 18",text:"개척을 위한 준비기도회로 첫 현장 예배"},{label:"기도 중",text:"단독 예배 처소 마련"}];
+  var DEFAULT_NEWC=[{step:"처음 오신 날",title:"함께 예배드리기",text:"주일 오후 5시, 편하게 오셔서 함께 예배드리세요."},{step:"예배 후",title:"새가족 등록카드 작성",text:"광야교회 등록을 원하시면 예배 후 새가족 등록카드를 작성해 주세요."},{step:"그다음",title:"새가족 심방",text:"목사님이 가정을 찾아가 함께 기도하는 새가족 등록 심방이 있습니다."}];
+  function savedNewc(){return (saved&&saved.newcomer)||DEFAULT_NEWC}
   function savedHistory(){return (saved&&saved.history)||DEFAULT_HISTORY}
   function sortedNews(){return (saved.news||[]).slice().sort(function(a,b){return (b.pinned?1:0)-(a.pinned?1:0)||String(b.date).localeCompare(String(a.date))})}
 
@@ -613,7 +672,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     $("#dashNews").innerHTML=sn.slice(0,5).map(function(n){
       return '<li><span class="t"><b>'+(n.pinned?'<span class="chip pin">고정</span> ':'')+(n.tag?'<span class="chip">'+E(n.tag)+'</span> ':'')+E(n.title)+'</b><small>'+E(kdate(n.date))+'</small></span><a class="btn sm" href="#news" data-edit="'+E(n.id)+'">수정</a></li>';
     }).join("")||'<li><span class="t"><small>아직 소식이 없습니다.</small></span></li>';
-    renderNews();renderBulletins();renderWorship();renderPrayer();renderHist();fillForm("#offerForm",draft.offering);fillChurch();
+    renderNews();renderBulletins();renderWorship();renderPrayer();renderHist();renderNewc();fillForm("#offerForm",draft.offering);fillChurch();
     $$(".savebar").forEach(updateBar);
   }
 
@@ -912,7 +971,24 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
       '<input class="inp" data-f="label" value="'+E(h.label)+'" placeholder="예) 2026. 12. 25" aria-label="날짜">'+
       '<input class="inp" data-f="text" value="'+E(h.text)+'" placeholder="있었던 일" aria-label="내용">'+rowTools(i,H.length)+'</div>'}).join(""):'<div class="empty">연혁이 없습니다. 아래 <b>연혁 추가</b>를 눌러 주세요.</div>';
   }
-  function renderSec(sec){if(sec==="worship")renderWorship();else if(sec==="history")renderHist();else renderPrayer()}
+  function renderSec(sec){if(sec==="worship")renderWorship();else if(sec==="history")renderHist();else if(sec==="newcomer")renderNewc();else renderPrayer()}
+  function renderNewc(){
+    var L=draft.newcomer||[];
+    $("#newcEdit").innerHTML=L.length?L.map(function(n,i){return '<div class="ge-row w" data-sec="newcomer" data-i="'+i+'">'+
+      '<input class="inp" data-f="step" value="'+E(n.step)+'" placeholder="예) 처음 오신 날" aria-label="때">'+
+      '<input class="inp" data-f="title" value="'+E(n.title)+'" placeholder="제목" aria-label="제목">'+
+      '<input class="inp" data-f="text" value="'+E(n.text)+'" placeholder="설명" aria-label="설명">'+rowTools(i,L.length)+'</div>'}).join(""):'<div class="empty">안내 단계가 없습니다. 아래 <b>단계 추가</b>를 눌러 주세요.</div>';
+  }
+  $("#newcAdd").addEventListener("click",function(){draft.newcomer.push({step:"",title:"",text:""});renderNewc();updateBar($('.savebar[data-sec="newcomer"]'));var r=$$("#newcEdit .ge-row");r[r.length-1].querySelector("input").focus()});
+  /* 말씀: 지금 홈페이지에 나오는 유튜브 영상 */
+  var wordLoaded=false;
+  function loadWord(){
+    if(wordLoaded)return;wordLoaded=true;
+    fetch(API_URL?API_URL+"?action=videos":"videos.json",{cache:"no-store"}).then(function(r){return r.json()}).then(function(V){
+      $("#wordList").innerHTML=(V||[]).slice(0,12).map(function(v){var sc=v.scripture&&/\d/.test(v.scripture)?v.scripture:"",k=v.scripture&&!/\d/.test(v.scripture)?v.scripture:v.kind;
+        return '<li><span class="t"><b>'+E(v.title)+'</b><small>'+E([k,sc,v.date].filter(Boolean).join(" · "))+'</small></span><a class="btn sm" href="https://www.youtube.com/watch?v='+encodeURIComponent(v.id)+'" target="_blank" rel="noopener">유튜브</a></li>'}).join("")||'<li><span class="t"><small>영상이 없습니다.</small></span></li>';
+    }).catch(function(){wordLoaded=false;$("#wordList").innerHTML='<li><span class="t"><small>영상 목록을 불러오지 못했습니다.</small></span></li>'});
+  }
   $("#histAdd").addEventListener("click",function(){draft.history.push({label:"",text:""});renderHist();updateBar($('.savebar[data-sec="history"]'));var r=$$("#histEdit .ge-row");r[r.length-1].querySelector("input").focus()});
   function renderPrayer(){
     var P=draft.prayer;
@@ -927,12 +1003,13 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     if(row){var sec=row.dataset.sec,i=+row.dataset.i,f=e.target.dataset.f;draft[sec][i][f]=e.target.value;updateBar($('.savebar[data-sec="'+sec+'"]'));return}
     var k=e.target.dataset.k;
     if(k&&e.target.closest("#offerForm")){draft.offering[k]=e.target.value;updateBar($('.savebar[data-sec="offering"]'))}
-    if(k&&e.target.closest("#churchForm")){var p=k.split(".");draft.church[p[0]][p[1]]=e.target.value;updateBar($('.savebar[data-sec="church"]'))}
+    var cf=e.target.closest("[data-church]");
+    if(k&&cf){var p=k.split(".");draft.church[p[0]][p[1]]=e.target.value;updateBar($('.savebar[data-sec="'+cf.dataset.church+'"]'))}
   });
 
   /* 폼 채우기 */
   function fillForm(sel,obj){$$(sel+" [data-k]").forEach(function(el){el.value=obj[el.dataset.k]||""})}
-  function fillChurch(){$$("#churchForm [data-k]").forEach(function(el){var p=el.dataset.k.split(".");el.value=(draft.church[p[0]]||{})[p[1]]||""})}
+  function fillChurch(){$$("[data-church] [data-k]").forEach(function(el){var p=el.dataset.k.split(".");el.value=(draft.church[p[0]]||{})[p[1]]||""})}
 
   /* 저장 막대 */
   function current(sec){
@@ -940,7 +1017,9 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     if(sec==="prayer")return [draft.prayer,saved.prayers||[]];
     if(sec==="offering")return [draft.offering,saved.offering||{}];
     if(sec==="history")return [draft.history,savedHistory()];
-    return [draft.church,{hero:saved.hero||{},greeting:saved.greeting||{},place:saved.place||{}}];
+    if(sec==="newcomer")return [draft.newcomer,savedNewc()];
+    if(sec==="hero"||sec==="greeting"||sec==="place")return [draft.church[sec],saved[sec]||{}];
+    return [null,null];
   }
   function updateBar(bar){
     if(!bar)return;var c=current(bar.dataset.sec),dirty=!same(c[0],c[1]);
@@ -961,8 +1040,10 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     }else if(sec==="offering"){
       if(!(draft.offering.account||"").trim()){toast("계좌번호를 적어 주세요.",true);return}
       next.offering=clone(draft.offering);note="헌금 안내 수정";
+    }else if(sec==="newcomer"){
+      next.newcomer=draft.newcomer.filter(function(n){return (n.title||"").trim()||(n.text||"").trim()}).map(function(n){return {step:(n.step||"").trim(),title:(n.title||"").trim(),text:(n.text||"").trim()}});note="새가족 안내 수정";
     }else{
-      next.hero=clone(draft.church.hero);next.greeting=clone(draft.church.greeting);next.place=clone(draft.church.place);note="교회 정보 수정";
+      next[sec]=clone(draft.church[sec]);note={hero:"첫 화면 소개 문장 수정",greeting:"인사말 수정",place:"오시는 길 수정"}[sec]||"교회 정보 수정";
     }
     saveAll(next,note).then(function(ok){if(ok){resetDrafts(sec);renderAll()}});
   }
@@ -1002,7 +1083,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
   }
 
   /* 화면 이동 */
-  var VIEWS=["dash","news","bulletin","worship","prayer","offering","church"];
+  var VIEWS=["dash","hero","greeting","history","worship","place","word","bulletin","newcomer","prayer","news","offering"];
 
   /* ---------- 홈페이지 미리보기 ---------- */
   var PV={
@@ -1012,7 +1093,12 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     worship:[["첫 화면 오른쪽 아래","home","heroSide"],["첫 화면 예배 시간","home","homeTimes"],["예배안내","worship","worshipTimes"]],
     prayer:[["함께하기 › 기도 제목","together","prayerRows"]],
     offering:[["함께하기 › 헌금 안내","together","offerRows"]],
-    church:[["첫 화면 소개 문장","home","heroSub"],["교회소개 › 인사말","about","greetLead"],["교회소개 › 연혁","about","histRows"],["예배안내 › 오시는 길","worship","placeRows"]]
+    hero:[["첫 화면","home","heroSub"]],
+    greeting:[["교회소개 › 인사말","about","greetLead"]],
+    history:[["교회소개 › 걸어온 길","about","histRows"]],
+    place:[["예배안내 › 오시는 길","worship","placeRows"],["첫 화면 오른쪽 아래","home","heroSide"]],
+    word:[["첫 화면 설교","home","svHome"],["말씀 페이지","word","svGrid"]],
+    newcomer:[["함께하기 › 새가족 안내","together","newcSteps"]]
   };
   var pvView="dash",pvIdx=0,pvReady=false,pvTimer=null,pvFrame=$("#pvFrame");
   var pvBase=(SITE_URL||"./").replace(/[^\/]*$/,"");
@@ -1023,6 +1109,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     if(draft.prayer)C.prayers=draft.prayer;
     if(draft.offering)C.offering=draft.offering;
     if(draft.history)C.history=draft.history;
+    if(draft.newcomer)C.newcomer=draft.newcomer;
     if(draft.church){C.hero=draft.church.hero;C.greeting=draft.church.greeting;C.place=draft.church.place}
     var f=$("#v-news form");
     if(f&&f.elements.title){
@@ -1057,10 +1144,11 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
   $("#pvClose").addEventListener("click",function(){$("#pv").classList.remove("open")});
   window.addEventListener("resize",pvSize);
   document.addEventListener("input",pvSoon);
-  document.addEventListener("click",function(e){if(e.target.closest(".ge-row .ib,[data-reset],#worshipAdd,#prayerAdd,#histAdd,.ed-b,[data-pendrm]"))pvSoon()});
+  document.addEventListener("click",function(e){if(e.target.closest(".ge-row .ib,[data-reset],#worshipAdd,#prayerAdd,#histAdd,#newcAdd,.ed-b,[data-pendrm]"))pvSoon()});
 
   function route(){
-    var v=(location.hash||"#dash").slice(1);if(VIEWS.indexOf(v)<0)v="dash";
+    var v=(location.hash||"#dash").slice(1);if(v==="church")v="hero";if(VIEWS.indexOf(v)<0)v="dash";
+    if(v==="word")loadWord();
     VIEWS.forEach(function(x){$("#v-"+x).classList.toggle("on",x===v)});
     $$(".nav a").forEach(function(a){a.getAttribute("href")==="#"+v?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current")});
     if(v!=="news"&&openNewsId==="new"){openNewsId=null}
@@ -1072,7 +1160,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
   }
   window.addEventListener("hashchange",route);
   window.addEventListener("beforeunload",function(e){
-    if(!saved)return;var d=["worship","prayer","offering","church"].some(function(s){var c=current(s);return !same(c[0],c[1])});
+    if(!saved)return;var d=["worship","prayer","offering","hero","greeting","place","history","newcomer"].some(function(s){var c=current(s);return !same(c[0],c[1])});
     if(d){e.preventDefault();e.returnValue=""}
   });
 
