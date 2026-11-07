@@ -1054,7 +1054,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
   }
   $("#newcAdd").addEventListener("click",function(){draft.newcomer.push({step:"",title:"",text:""});renderNewc();updateBar($('.savebar[data-sec="newcomer"]'));var r=$$("#newcEdit .ge-row");r[r.length-1].querySelector("input").focus()});
   /* 말씀: 홈페이지 말씀 메뉴에 지금 나오는 영상·큐티 (word.json · qt.json, 1시간마다 자동 갱신) */
-  var wordLoaded=false, WD=null, QD=null;
+  var wordLoaded=false, WJ=null, QD=null;
   var GH="https://api.github.com/repos/MotoDNA/midbar-church";
   function kd(d){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(d||"");return m?m[1]+"."+m[2]+"."+m[3]:""}
   function wli(t,sub,href){return '<li><span class="t"><b>'+E(t)+'</b><small>'+E(sub)+'</small></span><a class="btn sm" href="'+href+'" target="_blank" rel="noopener">유튜브</a></li>'}
@@ -1062,25 +1062,25 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
   function getJSON(u){return fetch(u+(u.indexOf("?")<0?"?":"&")+"t="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}
   function whenStr(iso){var d=new Date(iso);if(isNaN(d))return "";var z=function(n){return (n<10?"0":"")+n};return (d.getMonth()+1)+"월 "+d.getDate()+"일 "+z(d.getHours())+":"+z(d.getMinutes())}
   function paintWord(){
-    if(WD)(WD.categories||[]).forEach(function(c){
+    if(WJ)(WJ.categories||[]).forEach(function(c){
       var L=c.videos||[], dated=c.key==="sunday"||c.key==="friday";
       $("#wc-"+c.key).textContent="영상 "+L.length+"개";
       $("#wl-"+c.key).innerHTML=L.slice(0,5).map(function(v){return wli(v.title,[v.scripture,v.note,dated?kd(v.date):""].filter(Boolean).join(" · "),"https://www.youtube.com/watch?v="+encodeURIComponent(v.id))}).join("")||'<li><span class="t"><small>아직 없습니다.</small></span></li>';
     });
     if(QD){var L=QD.posts||[];$("#wc-qt").textContent="큐티 "+L.length+"개";
       $("#wl-qt").innerHTML=L.slice(0,5).map(function(q){return wli(q.title,[kd(q.date),q.ref].filter(Boolean).join(" · "),"https://www.youtube.com/post/"+encodeURIComponent(q.id))}).join("")||'<li><span class="t"><small>아직 없습니다.</small></span></li>'}
-    var last=[WD&&WD.updated,QD&&QD.updated].filter(Boolean).sort().pop();
+    var last=[WJ&&WJ.updated,QD&&QD.updated].filter(Boolean).sort().pop();
     $("#wordUpdated").textContent=last?"마지막으로 새 내용이 들어온 때: "+whenStr(last):"";
   }
   function loadWord(force){
     if(wordLoaded&&!force)return Promise.resolve();wordLoaded=true;
-    var a=getJSON(wordBase()+"word.json").then(function(D){WD=D}).catch(function(){if(!WD){wordLoaded=false;["sunday","friday","canvas","palm"].forEach(function(k){$("#wl-"+k).innerHTML='<li><span class="t"><small>영상 목록을 불러오지 못했습니다.</small></span></li>'})}});
+    var a=getJSON(wordBase()+"word.json").then(function(D){WJ=D}).catch(function(){if(!WJ){wordLoaded=false;["sunday","friday","canvas","palm"].forEach(function(k){$("#wl-"+k).innerHTML='<li><span class="t"><small>영상 목록을 불러오지 못했습니다.</small></span></li>'})}});
     var b=getJSON(wordBase()+"qt.json").then(function(D){QD=D}).catch(function(){if(!QD){wordLoaded=false;$("#wl-qt").innerHTML='<li><span class="t"><small>큐티 목록을 불러오지 못했습니다.</small></span></li>'}});
     return Promise.all([a,b]).then(paintWord);
   }
   function allIds(){
     var v={},q={};
-    (WD&&WD.categories||[]).forEach(function(c){(c.videos||[]).forEach(function(x){v[x.id]=x})});
+    (WJ&&WJ.categories||[]).forEach(function(c){(c.videos||[]).forEach(function(x){v[x.id]=x})});
     (QD&&QD.posts||[]).forEach(function(x){q[x.id]=x});
     return {v:v,q:q};
   }
@@ -1139,7 +1139,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     }).then(function(changed){
       if(!changed){loadWord(true);rf("ok","새로 올라온 영상이나 큐티가 없습니다.","유튜브에 있는 내용이 이미 모두 홈페이지에 있습니다.",3);return}
       rf("","홈페이지에 반영하는 중…","보통 1분 정도 걸립니다.",2);
-      var w0=WD&&WD.updated, q0=QD&&QD.updated;
+      var w0=WJ&&WJ.updated, q0=QD&&QD.updated;
       return poll(function(){
         return Promise.all([getJSON(wordBase()+"word.json"),getJSON(wordBase()+"qt.json")]).then(function(x){return (x[0].updated!==w0||x[1].updated!==q0)?x:null});
       },6000,3*60*1000).then(function(x){
