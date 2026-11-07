@@ -417,7 +417,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
 
     <!-- 교회 정보 -->
     <section class="view" id="v-church">
-      <div class="page-head"><div><h1>교회 정보</h1><p>첫 화면 소개 문장, 인사말, 예배 장소를 고칩니다.</p></div></div>
+      <div class="page-head"><div><h1>교회 정보</h1><p>첫 화면 소개 문장, 인사말, 예배 장소, 연혁(걸어온 길)을 수정합니다.</p></div></div>
       <div class="form card" style="border-width:1px;border-color:var(--line)" id="churchForm">
         <h3>첫 화면</h3>
         <label class="field"><span>첫 화면 소개 문장 <small>큰 제목 아래 한두 줄</small></span><textarea class="inp" data-k="hero.sub" style="min-height:90px"></textarea></label>
@@ -437,6 +437,14 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
         <label class="field"><span>주차</span><input class="inp" data-k="place.parking"></label>
       </div>
       <div class="savebar" data-sec="church"><span class="msg">바꾼 내용이 없습니다.</span><button class="btn ghost" type="button" data-reset="church">되돌리기</button><button class="btn primary" type="button" data-save="church">저장하기</button></div>
+      <div class="sec" style="margin-top:40px">
+        <h2>걸어온 길 (연혁)</h2>
+        <p style="color:var(--mute);margin:-4px 0 14px">홈페이지 <b>교회소개</b> 맨 아래에 위에서부터 차례로 나옵니다. 화살표로 순서를 바꿀 수 있습니다.</p>
+        <div class="ge-head p"><span>날짜</span><span>내용</span><span></span></div>
+        <div class="grid-edit" id="histEdit"></div>
+        <div style="margin-top:12px"><button class="btn" type="button" id="histAdd"><svg class="icon"><use href="#i-plus"/></svg>연혁 추가</button></div>
+        <div class="savebar" data-sec="history"><span class="msg">바꾼 내용이 없습니다.</span><button class="btn ghost" type="button" data-reset="history">되돌리기</button><button class="btn primary" type="button" data-save="history">저장하기</button></div>
+      </div>
     </section>
   </div></main>
 </div>
@@ -540,8 +548,11 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     if(all||which==="worship")draft.worship=clone(saved.worship||[]);
     if(all||which==="prayer")draft.prayer=clone(saved.prayers||[]);
     if(all||which==="offering")draft.offering=clone(saved.offering||{});
+    if(all||which==="history")draft.history=clone(savedHistory());
     if(all||which==="church")draft.church={hero:clone(saved.hero||{}),greeting:clone(saved.greeting||{}),place:clone(saved.place||{})};
   }
+  var DEFAULT_HISTORY=[{label:"2026. 09. 13",text:"일산은광교회 당회에서 예배당 무상 사용을 허락해 주심"},{label:"2026. 09. 18",text:"개척을 위한 준비기도회로 첫 현장 예배"},{label:"기도 중",text:"단독 예배 처소 마련"}];
+  function savedHistory(){return (saved&&saved.history)||DEFAULT_HISTORY}
   function sortedNews(){return (saved.news||[]).slice().sort(function(a,b){return (b.pinned?1:0)-(a.pinned?1:0)||String(b.date).localeCompare(String(a.date))})}
 
   function renderAll(){
@@ -557,7 +568,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     $("#dashNews").innerHTML=sn.slice(0,5).map(function(n){
       return '<li><span class="t"><b>'+(n.pinned?'<span class="chip pin">고정</span> ':'')+(n.tag?'<span class="chip">'+E(n.tag)+'</span> ':'')+E(n.title)+'</b><small>'+E(kdate(n.date))+'</small></span><a class="btn sm" href="#news" data-edit="'+E(n.id)+'">수정</a></li>';
     }).join("")||'<li><span class="t"><small>아직 소식이 없습니다.</small></span></li>';
-    renderNews();renderBulletins();renderWorship();renderPrayer();fillForm("#offerForm",draft.offering);fillChurch();
+    renderNews();renderBulletins();renderWorship();renderPrayer();renderHist();fillForm("#offerForm",draft.offering);fillChurch();
     $$(".savebar").forEach(updateBar);
   }
 
@@ -823,6 +834,14 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
       '<input class="inp" data-f="desc" value="'+E(w.desc)+'" placeholder="설명 (예: 인도 박규성 담임목사)" aria-label="설명">'+
       '<input class="inp" data-f="time" value="'+E(w.time)+'" placeholder="오후 5:00" aria-label="시간">'+rowTools(i,W.length)+'</div>'}).join(""):'<div class="empty">예배가 없습니다. 아래 <b>예배 추가</b>를 눌러 주세요.</div>';
   }
+  function renderHist(){
+    var H=draft.history||[];
+    $("#histEdit").innerHTML=H.length?H.map(function(h,i){return '<div class="ge-row p" data-sec="history" data-i="'+i+'">'+
+      '<input class="inp" data-f="label" value="'+E(h.label)+'" placeholder="예) 2026. 12. 25" aria-label="날짜">'+
+      '<input class="inp" data-f="text" value="'+E(h.text)+'" placeholder="있었던 일" aria-label="내용">'+rowTools(i,H.length)+'</div>'}).join(""):'<div class="empty">연혁이 없습니다. 아래 <b>연혁 추가</b>를 눌러 주세요.</div>';
+  }
+  function renderSec(sec){if(sec==="worship")renderWorship();else if(sec==="history")renderHist();else renderPrayer()}
+  $("#histAdd").addEventListener("click",function(){draft.history.push({label:"",text:""});renderHist();updateBar($('.savebar[data-sec="history"]'));var r=$$("#histEdit .ge-row");r[r.length-1].querySelector("input").focus()});
   function renderPrayer(){
     var P=draft.prayer;
     $("#prayerEdit").innerHTML=P.length?P.map(function(p,i){return '<div class="ge-row p" data-sec="prayer" data-i="'+i+'">'+
@@ -848,6 +867,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     if(sec==="worship")return [draft.worship,saved.worship||[]];
     if(sec==="prayer")return [draft.prayer,saved.prayers||[]];
     if(sec==="offering")return [draft.offering,saved.offering||{}];
+    if(sec==="history")return [draft.history,savedHistory()];
     return [draft.church,{hero:saved.hero||{},greeting:saved.greeting||{},place:saved.place||{}}];
   }
   function updateBar(bar){
@@ -864,6 +884,8 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
       next.worship=W.map(function(w){return {name:w.name.trim(),desc:(w.desc||"").trim(),time:w.time.trim()}});note="예배 시간 수정";
     }else if(sec==="prayer"){
       next.prayers=draft.prayer.filter(function(p){return (p.label||"").trim()||(p.text||"").trim()}).map(function(p){return {label:(p.label||"").trim(),text:(p.text||"").trim()}});note="기도 제목 수정";
+    }else if(sec==="history"){
+      next.history=draft.history.filter(function(h){return (h.label||"").trim()||(h.text||"").trim()}).map(function(h){return {label:(h.label||"").trim(),text:(h.text||"").trim()}});note="연혁 수정";
     }else if(sec==="offering"){
       if(!(draft.offering.account||"").trim()){toast("계좌번호를 적어 주세요.",true);return}
       next.offering=clone(draft.offering);note="헌금 안내 수정";
@@ -888,8 +910,8 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     if(t.dataset.del){confirmId=t.dataset.del;openNewsId=null;renderNews();return}
     if(t.hasAttribute("data-delno")){confirmId=null;renderNews();return}
     if(t.dataset.delok){var id=t.dataset.delok,next=clone(saved),gone=(saved.news||[]).filter(function(n){return n.id===id})[0];next.news=(next.news||[]).filter(function(n){return n.id!==id});saveAll(next,"소식 삭제: "+(gone?gone.title:"")).then(function(ok){if(ok){confirmId=null;renderNews();var gi=(gone&&gone.images)||[];if(!DEMO&&gi.length)post({action:"trash",password:PW,ids:gi}).catch(function(){})}});return}
-    if(t.dataset.mv){var row=t.closest(".ge-row"),sec=row.dataset.sec,i=+t.dataset.i,j=i+(+t.dataset.mv),L=draft[sec];if(j<0||j>=L.length)return;var tmp=L[i];L[i]=L[j];L[j]=tmp;sec==="worship"?renderWorship():renderPrayer();updateBar($('.savebar[data-sec="'+sec+'"]'));return}
-    if(t.hasAttribute("data-rm")){var r2=t.closest(".ge-row"),s2=r2.dataset.sec;draft[s2].splice(+t.dataset.i,1);s2==="worship"?renderWorship():renderPrayer();updateBar($('.savebar[data-sec="'+s2+'"]'));return}
+    if(t.dataset.mv){var row=t.closest(".ge-row"),sec=row.dataset.sec,i=+t.dataset.i,j=i+(+t.dataset.mv),L=draft[sec];if(j<0||j>=L.length)return;var tmp=L[i];L[i]=L[j];L[j]=tmp;renderSec(sec);updateBar($('.savebar[data-sec="'+sec+'"]'));return}
+    if(t.hasAttribute("data-rm")){var r2=t.closest(".ge-row"),s2=r2.dataset.sec;draft[s2].splice(+t.dataset.i,1);renderSec(s2);updateBar($('.savebar[data-sec="'+s2+'"]'));return}
     if(t.dataset.save){saveSection(t.dataset.save);return}
     if(t.dataset.reset){var s3=t.dataset.reset;resetDrafts(s3);renderAll();toast("저장하기 전 내용으로 되돌렸습니다.");return}
     if(t.dataset.restore!=null){

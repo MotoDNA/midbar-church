@@ -532,7 +532,7 @@ footer .wrap{padding-block:56px 48px}
     </div>
     <div class="block block-grid">
       <div><span class="k">연혁</span><h2>걸어온 길</h2></div>
-      <ul class="rows">
+      <ul class="rows" id="histRows">
         <li><b>2026. 09. 13</b><span>일산은광교회 당회에서 예배당 무상 사용을 허락해 주심</span></li>
         <li><b>2026. 09. 18</b><span>개척을 위한 준비기도회로 첫 현장 예배</span></li>
         <li><b>기도 중</b><span>단독 예배 처소 마련</span></li>
@@ -711,6 +711,7 @@ footer .wrap{padding-block:56px 48px}
       setHTML("homeNews",N.slice(0,4).map(function(n){return '<li><a href="#together"><span class="t">'+(n.tag?'<i class="n">'+E(n.tag)+'</i>':'')+E(n.title)+'</span><span class="dt">'+E(D(n.date))+'</span></a></li>'}).join(""));
       setHTML("newsRows",N.map(function(n){return '<li><b>'+E(D(n.date))+'</b><span><strong>'+(n.tag?'['+E(n.tag)+'] ':'')+E(n.title)+'</strong>'+(n.html?'<div class="nbody">'+showHTML(n.html)+'</div>':BR(n.body))+'</span></li>'}).join(""));
     }
+    if(C.history&&C.history.length)setHTML("histRows",C.history.map(function(h){return '<li><b>'+E(h.label)+'</b><span>'+BR(h.text)+'</span></li>'}).join(""));
     if(C.prayers&&C.prayers.length)setHTML("prayerRows",C.prayers.map(function(p){return '<li><b>'+E(p.label)+'</b><span>'+BR(p.text)+'</span></li>'}).join(""));
     if(P.address)setHTML("placeRows",
       '<li><b>장소</b><span>'+E(P.name)+'</span></li>'+
