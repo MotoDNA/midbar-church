@@ -86,6 +86,11 @@ header.solid .pill.glass{background:var(--ink);color:#fff;box-shadow:none}
 .hero video{opacity:0;transition:opacity .6s ease}
 .hero video.ready{opacity:1}
 .hero .poster{animation:settle 1.8s var(--ease) both}
+.flutter{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.flutter .bf{position:absolute;left:0;top:0;width:42px;height:34px;margin:-17px 0 0 -21px;will-change:transform;filter:drop-shadow(0 3px 6px rgba(40,25,5,.25))}
+.flutter .bf svg{width:100%;height:100%;overflow:visible}
+.flutter .w{transform-origin:20px 16px;animation:flap var(--fl,.18s) ease-in-out infinite alternate}
+@keyframes flap{from{transform:scaleX(1)}to{transform:scaleX(.18)}}
 .hero .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,8,.45) 0%,rgba(10,12,8,0) 22%,rgba(10,12,8,0) 45%,rgba(10,12,8,.62) 100%)}
 .grain{position:absolute;inset:0;pointer-events:none;opacity:.08;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
 .hero .wrap{position:relative;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-block:0 56px}
@@ -420,6 +425,7 @@ footer .wrap{padding-block:56px 48px}
     <video id="hv" src="hero.mp4" poster="poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
     <div class="scrim"></div>
     <div class="grain"></div>
+    <div class="flutter" id="flutter" aria-hidden="true"></div>
     <div class="wrap">
       <div class="hero-row">
         <div>
@@ -697,6 +703,50 @@ footer .wrap{padding-block:56px 48px}
     if(v.readyState>=2)ok();else v.addEventListener("loadeddata",ok);
     if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){v.removeAttribute("autoplay");try{v.pause()}catch(e){}}
   }
+  /* 나비: 영상 위를 천천히 날아다니는 작은 나비들 (움직임 줄이기 설정이면 표시 안 함) */
+  (function(){
+    var box=document.getElementById("flutter");
+    if(!box||PREVIEW||window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+    var hero=box.parentNode, W=0, H=0, live=false, last=0, flies=[];
+    var COLORS=[["#FFF6DF","#F6C77A"],["#FFF1D6","#EFA95A"],["#FFFFFF","#E9D9B8"],["#FFE9B0","#E9963F"]];
+    function size(){W=hero.clientWidth;H=hero.clientHeight}
+    function pick(f){f.tx=W*(.06+Math.random()*.88);f.ty=H*(.12+Math.random()*.55)}
+    function make(i){
+      var c=COLORS[i%COLORS.length], id="bfg"+i, el=document.createElement("div");
+      var wing='<path d="M20 15C16 4 4 0 2 6c-2 6 6 10 18 10Z"/><path d="M20 17c-8 0-14 4-12 9 2 4 9 1 12-7Z"/>';
+      el.className="bf";
+      el.innerHTML='<svg viewBox="0 0 40 32"><defs><radialGradient id="'+id+'" cx="50%" cy="50%" r="70%"><stop offset="0" stop-color="'+c[0]+'"/><stop offset="1" stop-color="'+c[1]+'"/></radialGradient></defs>'+
+        '<g fill="url(#'+id+')" stroke="rgba(90,55,20,.35)" stroke-width=".6"><g class="w">'+wing+'</g><g class="w"><g transform="translate(40 0) scale(-1 1)">'+wing+'</g></g></g>'+
+        '<rect x="19.2" y="8" width="1.6" height="15" rx=".8" fill="#4A3420"/></svg>';
+      var k=.6+Math.random()*.5;
+      el.style.opacity=(.65+k*.32).toFixed(2);
+      var fl=(.13+Math.random()*.08).toFixed(3)+"s";
+      el.querySelectorAll(".w").forEach(function(w){w.style.setProperty("--fl",fl)});
+      box.appendChild(el);
+      var f={el:el,k:k,x:W*Math.random(),y:H*(.15+Math.random()*.5),a:Math.random()*6.28,sp:(38+Math.random()*30)*k,ph:Math.random()*100};
+      pick(f);return f;
+    }
+    function step(now){
+      if(!live)return;
+      var dt=Math.min(.05,(now-(last||now))/1000);last=now;var t=now/1000;
+      flies.forEach(function(f){
+        var want=Math.atan2(f.ty-f.y,f.tx-f.x), d=want-f.a;
+        d=Math.atan2(Math.sin(d),Math.cos(d));
+        f.a+=d*Math.min(1,dt*1.8)+Math.sin(t*2.3+f.ph)*dt*2.2;
+        var v=f.sp*(.75+.45*Math.sin(t*1.7+f.ph));
+        f.x+=Math.cos(f.a)*v*dt; f.y+=Math.sin(f.a)*v*dt;
+        if(Math.hypot(f.tx-f.x,f.ty-f.y)<50)pick(f);
+        var bob=Math.sin(t*7+f.ph)*4*f.k, tilt=Math.cos(f.a)*28;
+        f.el.style.transform="translate3d("+f.x.toFixed(1)+"px,"+(f.y+bob).toFixed(1)+"px,0) rotate("+tilt.toFixed(1)+"deg) scale("+f.k.toFixed(2)+")";
+      });
+      requestAnimationFrame(step);
+    }
+    window.addEventListener("resize",function(){size();flies.forEach(pick)});
+    function run(on){
+      if(on&&!flies.length){size();if(!W)return;var n=W<700?3:5;for(var i=0;i<n;i++)flies.push(make(i))}
+      if(on&&!live){live=true;last=0;requestAnimationFrame(step)}else if(!on)live=false}
+    if("IntersectionObserver" in window)new IntersectionObserver(function(e){run(e[0].isIntersecting)}).observe(hero);else run(true);
+  })();
   function paint(){hd.classList.toggle("solid",window.scrollY>40)}
   function goSub(p,sub){
     var el=sub&&document.getElementById("sec-"+p+"-"+sub);
