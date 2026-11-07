@@ -95,6 +95,7 @@ header.solid .pill.glass{background:var(--ink);color:#fff;box-shadow:none}
 .hero h1 .ln{display:block;overflow:hidden;padding-bottom:.06em}
 .hero h1 .ln>span{display:block;animation:rise 1s var(--ease) both}
 .hero h1 .ln:nth-child(2)>span{animation-delay:.12s}
+.hero h1 .cite{font-family:var(--f-sans);font-size:clamp(13px,1.2vw,17px);font-weight:500;letter-spacing:.08em;color:rgba(255,255,255,.8);margin-left:.9em;vertical-align:.35em;text-shadow:0 2px 12px rgba(0,0,0,.35);white-space:nowrap}
 .hero h1 em{font-style:normal;color:rgba(255,255,255,.62)}
 .hero .sub{margin-top:22px;max-width:30rem;font-size:17px;font-weight:300;line-height:1.65;color:rgba(255,255,255,.86);text-shadow:0 2px 18px rgba(0,0,0,.42)}
 .hero .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
@@ -423,7 +424,7 @@ footer .wrap{padding-block:56px 48px}
       <div class="hero-row">
         <div>
           <p class="eyebrow in d1">대한예수교장로회 · 일산 풍동</p>
-          <h1><span class="ln"><span>광야에 길을,</span></span><span class="ln"><span><em>사막에</em> 강을</span></span></h1>
+          <h1><span class="ln"><span>광야에 길을,</span></span><span class="ln"><span><em>사막에</em> 강을<small class="cite">이사야 43:19</small></span></span></h1>
           <p class="sub in d3" id="heroSub">척박한 광야 길을 걷는 듯한 일상 속에서, 광야교회가 여러분의 따뜻한 영적 오아시스가 되기를 소망합니다.</p>
           <div class="acts in d4">
             <a class="pill solid" href="#worship/times">이번 주일 예배 오기<span class="ar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg></span></a>
@@ -434,7 +435,6 @@ footer .wrap{padding-block:56px 48px}
           주일 예배
           <b>오후 5:00</b>
           금요기도회 오후 8:30 · 다인타운 4층
-          <span class="ref">이사야 43:19</span>
         </div>
       </div>
     </div>
@@ -739,7 +739,7 @@ footer .wrap{padding-block:56px 48px}
     if(!C)return;
     var W=C.worship||[], P=C.place||{}, N=(C.news||[]).slice(), O=C.offering||{}, G=C.greeting||{};
     if(C.hero&&C.hero.sub)setHTML("heroSub",E(C.hero.sub));
-    if(W.length)setHTML("heroSide",E(W[0].name)+"<b>"+E(W[0].time)+"</b>"+W.slice(1).map(function(w){return E(w.name)+" "+E(w.time)}).concat(P.short?[E(P.short)]:[]).join(" · ")+'<span class="ref">이사야 43:19</span>');
+    if(W.length)setHTML("heroSide",E(W[0].name)+"<b>"+E(W[0].time)+"</b>"+W.slice(1).map(function(w){return E(w.name)+" "+E(w.time)}).concat(P.short?[E(P.short)]:[]).join(" · "));
     var times=W.map(function(w){return '<li><span><b>'+E(w.name)+'</b><small>'+E(w.desc)+'</small></span><span class="t">'+E(w.time)+'</span></li>'}).join("");
     if(W.length){setHTML("homeTimes",times);setHTML("worshipTimes",times)}
     N.sort(function(a,b){return (b.pinned?1:0)-(a.pinned?1:0)||String(b.date).localeCompare(String(a.date))});
