@@ -1066,6 +1066,31 @@ footer .wrap{padding-block:56px 48px}
   }
   function closeQT(){var v=document.getElementById("qview");if(v.hidden)return;v.hidden=true;document.body.style.overflow="";if(qLast&&qLast.focus)qLast.focus()}
   window.addEventListener("keydown",function(e){if(e.key==="Escape")closeQT()});
+  /* 휴대폰에서 유튜브 링크를 누르면 유튜브 앱으로 열기 (앱이 없으면 인터넷 창으로)
+     - 안드로이드: intent 주소 (앱이 없으면 browser_fallback_url 로 자동 이동)
+     - 아이폰: youtube:// 로 먼저 열어 보고, 1.5초 안에 앱이 안 열리면 인터넷 주소로 */
+  (function(){
+    var ua=navigator.userAgent||"", isAnd=/Android/i.test(ua), isIOS=/iPhone|iPad|iPod/i.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1);
+    if(PREVIEW||!(isAnd||isIOS))return;
+    document.addEventListener("click",function(e){
+      if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey)return;
+      var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;
+      var u;try{u=new URL(a.href)}catch(x){return}
+      if(!/(^|\.)youtube\.com$|^youtu\.be$/.test(u.hostname))return;
+      e.preventDefault();
+      var web=u.href, path=u.hostname==="youtu.be"?"www.youtube.com/watch?v="+u.pathname.slice(1):"www.youtube.com"+u.pathname+u.search;
+      if(isAnd){
+        location.href="intent://"+path+"#Intent;scheme=https;package=com.google.android.youtube;S.browser_fallback_url="+encodeURIComponent(web)+";end";
+        return;
+      }
+      var gone=false, t;
+      function left(){gone=true;clearTimeout(t)}
+      document.addEventListener("visibilitychange",function v(){if(document.hidden){left();document.removeEventListener("visibilitychange",v)}});
+      window.addEventListener("pagehide",left,{once:true});
+      t=setTimeout(function(){if(!gone)location.href=web},1500);
+      location.href="youtube://"+path;
+    });
+  })();
   window.addEventListener("hashchange",show);
   show();
 })();
