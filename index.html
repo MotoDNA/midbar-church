@@ -223,6 +223,8 @@ header.enter{animation:down .8s var(--ease) both}
 .greet>*{min-width:0}
 #greetBody p+p{margin-top:16px}
 #newsRows strong{display:block;font-weight:700;color:var(--ink);margin-bottom:4px}
+.nb{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#E0483B;color:#fff;font:700 11px/1 var(--f-sans);font-style:normal;letter-spacing:0;margin-left:6px;vertical-align:2px;flex:none}
+.qcard .d .nb,.vcard b .nb{vertical-align:1px}
 .copy{font:inherit;font-size:13px;font-weight:500;margin-left:10px;padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .copy:hover{border-color:var(--ink)}
 .photo{aspect-ratio:4/5;max-width:100%;border-radius:24px;background:var(--soft);border:1px dashed rgba(21,23,18,.25);display:grid;place-items:center;text-align:center;color:var(--mute);font-size:14px;padding:16px}
@@ -234,6 +236,9 @@ header.enter{animation:down .8s var(--ease) both}
 .rows span{color:#3E403A;min-width:0}
 .map{margin-top:28px;aspect-ratio:16/8;max-width:100%;border-radius:24px;overflow:hidden;background:var(--soft);border:1px solid var(--line)}
 .map iframe{display:block;width:100%;height:100%;border:0}
+.nmk{transform:translate(-50%,-100%);position:relative;padding-bottom:9px}
+.nmk span{display:block;white-space:nowrap;background:#03C75A;color:#fff;font:700 14px/1 var(--f-sans);padding:9px 14px;border-radius:999px;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.nmk::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);border:7px solid transparent;border-top:9px solid #03C75A;border-bottom:0}
 .map-acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
 @media (max-width:640px){.map{aspect-ratio:4/3;border-radius:18px}}
 .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px 24px}
@@ -619,7 +624,7 @@ footer .wrap{padding-block:56px 48px}
           <li><b>대중교통</b><span><b style="font-family:var(--f-sans);font-size:15px;font-weight:700">버스</b> ‘숲속마을1단지’ 또는 ‘숲속마을1단지.풍동성당’ 정류장 하차<br>81 · 83 · 84 · 98 · 100번<br><b style="font-family:var(--f-sans);font-size:15px;font-weight:700">지하철</b> 경의중앙선 풍산역에서 81번 버스로 갈아타기</span></li>
           <li><b>주차</b><span>주차 가능</span></li>
         </ul>
-        <div class="map" id="mapBox"><iframe id="mapFrame" title="광야교회 위치 지도" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EA%B3%A0%EC%96%91%EC%8B%9C%20%EC%9D%BC%EC%82%B0%EB%8F%99%EA%B5%AC%20%EC%88%B2%EC%86%8D%EB%A7%88%EC%9D%841%EB%A1%9C%2026&amp;hl=ko&amp;z=17&amp;output=embed"></iframe></div>
+        <div class="map" id="mapBox"></div>
         <div class="map-acts" id="mapActs"><a class="pill dark" id="mapKakao" href="https://map.kakao.com/link/search/%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EA%B3%A0%EC%96%91%EC%8B%9C%20%EC%9D%BC%EC%82%B0%EB%8F%99%EA%B5%AC%20%EC%88%B2%EC%86%8D%EB%A7%88%EC%9D%841%EB%A1%9C%2026" target="_blank" rel="noopener">카카오맵 길찾기<span class="ar">↗</span></a><a class="pill" id="mapNaver" href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EA%B3%A0%EC%96%91%EC%8B%9C%20%EC%9D%BC%EC%82%B0%EB%8F%99%EA%B5%AC%20%EC%88%B2%EC%86%8D%EB%A7%88%EC%9D%841%EB%A1%9C%2026" target="_blank" rel="noopener">네이버 지도 길찾기<span class="ar">↗</span></a></div>
       </div>
     </div>
@@ -777,6 +782,7 @@ footer .wrap{padding-block:56px 48px}
     document.querySelectorAll("#gnb>li").forEach(function(li){li.classList.toggle("on",li.dataset.p===p)});
     closeMenu();window.scrollTo(0,0);paint();
     if(p==="word")loadWord();
+    if(p==="worship")initMap();
     goSub(p,sub);
   }
   /* 같은 하위 메뉴를 다시 눌렀을 때도 그 자리로 이동 */
@@ -800,6 +806,53 @@ footer .wrap{padding-block:56px 48px}
   function E(x){return String(x==null?"":x).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
   function BR(x){return E(x).replace(/\n/g,"<br>")}
   function D(d){return String(d||"").replace(/-/g,".")}
+  /* ===== 오시는 길 지도 =====
+     NAVER_MAP_KEY 에 네이버 클라우드 Maps 의 Client ID(키 ID)를 넣으면 네이버 지도로 바뀝니다.
+     비워 두거나 네이버 지도를 불러오지 못하면 구글 지도가 대신 나옵니다. */
+  var NAVER_MAP_KEY="";
+  var CHURCH_LL=[37.6634723,126.7990264], CHURCH_NAME="광야교회", mapAddr="", mapDone=false;
+  function googleMap(q){
+    var box=document.getElementById("mapBox");if(!box)return;
+    var src="https://maps.google.com/maps?q="+encodeURIComponent(q||"경기도 고양시 일산동구 숲속마을1로 26")+"&hl=ko&z=17&output=embed";
+    var f=document.getElementById("mapFrame");
+    if(!f){box.innerHTML='<iframe id="mapFrame" title="광야교회 위치 지도" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>';f=document.getElementById("mapFrame")}
+    if(f.getAttribute("src")!==src)f.setAttribute("src",src);
+  }
+  function naverMap(){
+    var box=document.getElementById("mapBox");
+    box.innerHTML='<div id="naverMap" style="width:100%;height:100%"></div>';
+    function place(ll){
+      var pos=new naver.maps.LatLng(ll[0],ll[1]);
+      var map=new naver.maps.Map("naverMap",{center:pos,zoom:17,zoomControl:true,zoomControlOptions:{position:naver.maps.Position.TOP_RIGHT},mapDataControl:false,scaleControl:false});
+      new naver.maps.Marker({position:pos,map:map,icon:{content:'<div class="nmk"><span>'+CHURCH_NAME+'</span></div>',anchor:new naver.maps.Point(0,0)}});
+    }
+    var def=/숲속마을1로\s*26/.test(mapAddr)||!mapAddr;
+    if(def||!naver.maps.Service){place(CHURCH_LL);return}
+    naver.maps.Service.geocode({query:mapAddr},function(st,res){
+      var a=st===naver.maps.Service.Status.OK&&res.v2&&res.v2.addresses&&res.v2.addresses[0];
+      place(a?[+a.y,+a.x]:CHURCH_LL);
+    });
+  }
+  function initMap(){
+    if(mapDone)return;mapDone=true;
+    if(!NAVER_MAP_KEY){googleMap(mapAddr);return}
+    window.navermap_authFailure=function(){mapDone=false;NAVER_MAP_KEY="";googleMap(mapAddr)};
+    var sc=document.createElement("script");
+    sc.src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId="+encodeURIComponent(NAVER_MAP_KEY)+"&submodules=geocoder";
+    sc.onload=function(){try{naverMap()}catch(e){googleMap(mapAddr)}};
+    sc.onerror=function(){googleMap(mapAddr)};
+    document.head.appendChild(sc);
+  }
+
+  /* 새 글 표시(N): 올라온 지 3일 안 된 게시글·영상·큐티 */
+  var NEW_DAYS=3;
+  function isNew(d){
+    var s=String(d||""),t;
+    if(/T\d/.test(s))t=Date.parse(s);
+    else{var m=/(\d{4})[.\-]\s*(\d{1,2})[.\-]\s*(\d{1,2})/.exec(s);if(!m)return false;t=new Date(+m[1],+m[2]-1,+m[3]).getTime()}
+    if(isNaN(t))return false;var age=Date.now()-t;return age>=-864e5&&age<NEW_DAYS*864e5;
+  }
+  function NB(d){return isNew(d)?'<i class="nb" title="새 글">N</i>':""}
   function setHTML(id,h){var el=document.getElementById(id);if(el)el.innerHTML=h}
   function render(C){
     if(!C)return;
@@ -810,8 +863,8 @@ footer .wrap{padding-block:56px 48px}
     if(W.length){setHTML("homeTimes",times);setHTML("worshipTimes",times)}
     N.sort(function(a,b){return (b.pinned?1:0)-(a.pinned?1:0)||String(b.date).localeCompare(String(a.date))});
     if(N.length){
-      setHTML("homeNews",N.slice(0,4).map(function(n){return '<li><a href="#together/news"><span class="t">'+(n.tag?'<i class="n">'+E(n.tag)+'</i>':'')+E(n.title)+'</span><span class="dt">'+E(D(n.date))+'</span></a></li>'}).join(""));
-      setHTML("newsRows",N.map(function(n){return '<li><b>'+E(D(n.date))+'</b><span><strong>'+(n.tag?'['+E(n.tag)+'] ':'')+E(n.title)+'</strong>'+(n.html?'<div class="nbody">'+showHTML(n.html)+'</div>':BR(n.body))+'</span></li>'}).join(""));
+      setHTML("homeNews",N.slice(0,4).map(function(n){return '<li><a href="#together/news"><span class="t">'+(n.tag?'<i class="n">'+E(n.tag)+'</i>':'')+E(n.title)+NB(n.date)+'</span><span class="dt">'+E(D(n.date))+'</span></a></li>'}).join(""));
+      setHTML("newsRows",N.map(function(n){return '<li><b>'+E(D(n.date))+'</b><span><strong>'+(n.tag?'['+E(n.tag)+'] ':'')+E(n.title)+NB(n.date)+'</strong>'+(n.html?'<div class="nbody">'+showHTML(n.html)+'</div>':BR(n.body))+'</span></li>'}).join(""));
     }
     if(C.newcomer&&C.newcomer.length)setHTML("newcSteps",C.newcomer.map(function(n){return '<li><span class="s">'+E(n.step)+'</span><b>'+E(n.title)+'</b><p>'+BR(n.text)+'</p></li>'}).join(""));
     if(C.history&&C.history.length)setHTML("histRows",C.history.map(function(h){return '<li><b>'+E(h.label)+'</b><span>'+BR(h.text)+'</span></li>'}).join(""));
@@ -821,10 +874,9 @@ footer .wrap{padding-block:56px 48px}
       '<li><b>주소</b><span>'+E(P.address)+(P.jibun?'<br><small style="color:var(--mute)">지번: '+E(P.jibun)+'</small>':'')+'</span></li>'+
       (P.transit?'<li><b>대중교통</b><span>'+BR(P.transit)+'</span></li>':'')+
       (P.parking?'<li><b>주차</b><span>'+E(P.parking)+'</span></li>':''));
-    if(P.address){ /* 지도는 도로명 주소(건물 번호까지)로 찾습니다 */
+    if(P.address){ /* 지도·길찾기는 도로명 주소(건물 번호까지)로 찾습니다 */
       var mq=(/^(.*?(?:로|길)\s*\d+(?:-\d+)?)/.exec(P.address)||[,P.address])[1], eq=encodeURIComponent(mq);
-      var mf=document.getElementById("mapFrame"), ms="https://maps.google.com/maps?q="+eq+"&hl=ko&z=17&output=embed";
-      if(mf&&mf.getAttribute("src")!==ms)mf.setAttribute("src",ms);
+      if(mq!==mapAddr){mapAddr=mq;if(mapDone){mapDone=false;initMap()}}
       var mk=document.getElementById("mapKakao"),mn=document.getElementById("mapNaver");
       if(mk)mk.href="https://map.kakao.com/link/search/"+eq;if(mn)mn.href="https://map.naver.com/p/search/"+eq;
     }
@@ -944,8 +996,8 @@ footer .wrap{padding-block:56px 48px}
     var m=V[0], tag=m.kind+(m.note&&m.kind!=="큐티말씀"?" · "+m.note:"");
     var home=document.getElementById("svHome");
     if(home){
-      home.firstElementChild.outerHTML='<a class="sv-main" href="'+W+m.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(m))+'" alt="'+esc(m.title)+' 썸네일"><span class="pbtn"></span></span><span class="cap"><small class="k">최신 · '+esc(tag)+'</small><b>'+esc(m.title)+'</b><small>박규성 담임목사 · '+esc([m.scripture,m.date].filter(Boolean).join(" · "))+'</small></span></a>';
-      document.getElementById("svList").innerHTML=V.slice(1,5).map(function(v){return '<li><a href="'+W+v.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(v))+'" alt=""></span><span><b>'+esc(v.title)+'</b><small>'+esc(meta(v))+'</small></span><span class="ar">↗</span></a></li>'}).join("");
+      home.firstElementChild.outerHTML='<a class="sv-main" href="'+W+m.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(m))+'" alt="'+esc(m.title)+' 썸네일"><span class="pbtn"></span></span><span class="cap"><small class="k">최신 · '+esc(tag)+'</small><b>'+esc(m.title)+NB(m.published||m.date)+'</b><small>박규성 담임목사 · '+esc([m.scripture,m.date].filter(Boolean).join(" · "))+'</small></span></a>';
+      document.getElementById("svList").innerHTML=V.slice(1,5).map(function(v){return '<li><a href="'+W+v.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(v))+'" alt=""></span><span><b>'+esc(v.title)+NB(v.published||v.date)+'</b><small>'+esc(meta(v))+'</small></span><span class="ar">↗</span></a></li>'}).join("");
     }
   }).catch(function(){});
 
@@ -957,12 +1009,12 @@ footer .wrap{padding-block:56px 48px}
   function kdate(d){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(d||"");return m?m[1]+"."+m[2]+"."+m[3]:""}
   function vcard(v,key){
     var sub=[v.scripture,(key==="sunday"||key==="friday")?kdate(v.date):""].filter(Boolean).join(" · ");
-    return '<a class="vcard" href="'+W+encodeURIComponent(v.id)+'" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/'+encodeURIComponent(v.id)+'/hqdefault.jpg" alt="'+esc(v.title)+' 썸네일" loading="lazy"></span><b>'+esc(v.title)+'</b>'+
+    return '<a class="vcard" href="'+W+encodeURIComponent(v.id)+'" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/'+encodeURIComponent(v.id)+'/hqdefault.jpg" alt="'+esc(v.title)+' 썸네일" loading="lazy"></span><b>'+esc(v.title)+NB(v.date)+'</b>'+
       (v.note?'<span class="k2">'+esc(v.note)+'</span>':'')+(sub?'<small>'+esc(sub)+'</small>':'')+'</a>';
   }
   function qimg(u,s){return String(u||"").replace(/=s\d+.*$/,"")+"=s"+s}
   function qcard(q,i){
-    return '<button type="button" class="qcard" data-qt="'+i+'"><span class="th">'+(q.image?'<img src="'+esc(qimg(q.image,600))+'" alt="" loading="lazy">':'')+'</span><span class="d">'+esc(kdate(q.date))+'</span><b>'+esc(q.title)+'</b>'+(q.ref?'<small>'+esc(q.ref)+'</small>':'')+'</button>';
+    return '<button type="button" class="qcard" data-qt="'+i+'"><span class="th">'+(q.image?'<img src="'+esc(qimg(q.image,600))+'" alt="" loading="lazy">':'')+'</span><span class="d">'+esc(kdate(q.date))+NB(q.date)+'</span><b>'+esc(q.title)+'</b>'+(q.ref?'<small>'+esc(q.ref)+'</small>':'')+'</button>';
   }
   function fillWord(key,list,make){
     var box=document.getElementById("wv-"+key),btn=document.querySelector('[data-more="'+key+'"]');if(!box)return;
