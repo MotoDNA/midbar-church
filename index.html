@@ -306,6 +306,8 @@ header.enter{animation:down .8s var(--ease) both}
 .nbody a{color:var(--dawn);text-decoration:underline}
 .nbody img{display:block;max-width:100%;max-height:560px;border-radius:12px;margin:12px 0;background:var(--soft)}
 .gnb .ext{opacity:.75}
+.pv-hl{outline:3px solid var(--dawn);outline-offset:8px;border-radius:10px;animation:pvp 1.2s ease 2}
+@keyframes pvp{50%{outline-color:rgba(201,138,58,.15)}}
 section.page{display:none}
 section.page.on{display:block}
 
@@ -668,7 +670,10 @@ footer .wrap{padding-block:56px 48px}
 <script>
 (function(){
   var hd=document.getElementById("hd"), pages=["home","about","worship","word","bulletin","together"], cur="home";
+  /* 관리자 페이지 미리보기 안에서 열렸을 때 (index.html?preview) */
+  var PREVIEW=/[?&]preview\b/.test(location.search), previewData=null;
   var v=document.getElementById("hv");
+  if(PREVIEW&&v){v.parentNode.removeChild(v);v=null}
   if(v){
     var ok=function(){v.classList.add("ready")};
     if(v.readyState>=2)ok();else v.addEventListener("loadeddata",ok);
@@ -750,7 +755,16 @@ footer .wrap{padding-block:56px 48px}
     return root.innerHTML;
   }
   function load(url){return fetch(url,{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()})}
-  (CONTENT_API?load(CONTENT_API+"?action=content").catch(function(){return load("content.json")}):load("content.json")).then(render).catch(function(){});
+  (CONTENT_API?load(CONTENT_API+"?action=content").catch(function(){return load("content.json")}):load("content.json")).then(function(C){if(!previewData)render(C)}).catch(function(){});
+  window.MIDBAR_PREVIEW=function(C,view,target){
+    if(C){previewData=C;render(C)}
+    if(view&&location.hash!=="#"+view)location.hash=view;
+    setTimeout(function(){
+      document.querySelectorAll(".pv-hl").forEach(function(x){x.classList.remove("pv-hl")});
+      var el=target&&document.getElementById(target);if(!el)return;
+      el.scrollIntoView({block:"center"});void el.offsetWidth;el.classList.add("pv-hl");
+    },view?220:20);
+  };
 
   /* ===== 주보 ===== */
   var BUL=[], WK=["일","월","화","수","목","금","토"];

@@ -213,6 +213,32 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
 .ed-up{font-size:14px;color:#8A5A1C;padding:0 12px}
 .ed-up:empty{display:none}
 .ed-up:not(:empty){padding:8px 12px;border-top:1px solid var(--line)}
+/* 홈페이지 미리보기 */
+.pv{display:none;flex-direction:column;gap:12px;background:#ECEAE4;border-left:1px solid var(--line);padding:20px 18px;position:sticky;top:0;height:100vh;min-width:0}
+.pv-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.pv-head b{display:block;font-size:16px}
+.pv-head small{display:block;font-size:13px;color:var(--mute)}
+.pv-x{display:none;width:40px;height:40px;border-radius:50%;border:0;background:var(--ink);color:#fff;font-size:24px;line-height:1;cursor:pointer}
+.pv-where{display:flex;flex-wrap:wrap;gap:6px}
+.pv-where:empty{display:none}
+.pv-where button{font:inherit;font-size:13px;font-weight:500;padding:6px 12px;border-radius:999px;border:1px solid #CFCCC4;background:#fff;cursor:pointer;color:var(--ink)}
+.pv-where button[aria-pressed="true"]{background:var(--dawn);border-color:var(--dawn);color:#fff}
+.pv-where .lbl{width:100%;font-size:13px;color:var(--mute)}
+.pv-phone{position:relative;flex:1;min-height:0;border-radius:28px;background:#1C1E18;padding:10px;box-shadow:0 10px 30px rgba(0,0,0,.18);overflow:hidden}
+.pv-phone iframe{position:absolute;left:10px;top:10px;width:390px;border:0;border-radius:20px;background:#fff;transform-origin:0 0}
+.pv-open{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--mute);text-decoration:none;align-self:center}
+.pv-open:hover{color:var(--ink)}
+.pv-fab{position:fixed;right:calc(20px + env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:30;display:inline-flex;align-items:center;gap:8px;min-height:52px;padding:0 20px;border-radius:999px;border:0;background:var(--dawn);color:#fff;font:inherit;font-size:16px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.2);cursor:pointer}
+@media (min-width:1280px){
+  .app{grid-template-columns:248px minmax(0,1fr) 380px}
+  .pv{display:flex}
+  .pv-fab{display:none}
+}
+@media (max-width:1279px){
+  .pv.open{display:flex;position:fixed;inset:0;z-index:45;height:auto;padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));border:0}
+  .pv.open .pv-x{display:block}
+  .pv.open .pv-phone{width:min(100%,420px);align-self:center}
+}
 /* 기록 */
 .hist li{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line);font-size:15px}
 .hist li:first-child{border-top:0}
@@ -281,6 +307,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
   <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></symbol>
   <symbol id="i-up2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></symbol>
   <symbol id="i-photo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m21 16-5-5-9 8"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
   <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></symbol>
 </svg>
 
@@ -447,6 +474,17 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
       </div>
     </section>
   </div></main>
+
+  <aside class="pv" id="pv" aria-label="홈페이지 미리보기">
+    <div class="pv-head">
+      <div><b>홈페이지 미리보기</b><small>저장하기 전 내용도 미리 보입니다</small></div>
+      <button type="button" class="pv-x" id="pvClose" aria-label="미리보기 닫기">×</button>
+    </div>
+    <div class="pv-where" id="pvWhere"></div>
+    <div class="pv-phone" id="pvPhone"><iframe id="pvFrame" title="홈페이지 미리보기" loading="lazy"></iframe></div>
+    <a class="pv-open" id="pvOpen" href="./" target="_blank" rel="noopener"><svg class="icon"><use href="#i-ext"/></svg>이 부분을 새 창에서 크게 보기</a>
+  </aside>
+  <button type="button" class="pv-fab" id="pvFab"><svg class="icon"><use href="#i-eye"/></svg>홈페이지 미리보기</button>
 </div>
 
 <div class="busy" id="busy"><div><div class="spin" style="margin:0 auto" aria-label="저장하는 중"></div><div class="busy-msg" id="busyMsg"></div></div></div>
@@ -512,7 +550,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
       if(!r||!r.ok)throw new Error((r&&r.error)||"저장하지 못했습니다.");
       saved=clone(next);if(r.updated)saved.updated=r.updated;
       DEMO?renderHistory():loadHistory();
-      renderAll();toast("저장했습니다. 홈페이지에 반영됐습니다.");
+      renderAll();toast("저장했습니다. 홈페이지에 반영됐습니다.");setTimeout(function(){pvPush(true)},50);
       return true;
     }).catch(function(e){busy(false);toast((e&&e.message)||"인터넷 연결을 확인하고 다시 저장해 주세요.",true);return false});
   }
@@ -538,7 +576,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
 
   function start(){
     showApp();busy(true);
-    fetchContent().then(function(c){busy(false);saved=c||{};resetDrafts();renderAll();loadHistory();route()})
+    fetchContent().then(function(c){busy(false);saved=c||{};resetDrafts();renderAll();loadHistory();route();pvPush(true)})
       .catch(function(){busy(false);toast("홈페이지 내용을 불러오지 못했습니다. 잠시 후 새로 고침해 주세요.",true)});
   }
 
@@ -931,6 +969,62 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
 
   /* 화면 이동 */
   var VIEWS=["dash","news","bulletin","worship","prayer","offering","church"];
+
+  /* ---------- 홈페이지 미리보기 ---------- */
+  var PV={
+    dash:[["첫 화면","home","heroSub"],["첫 화면 주보","home","homeBul"],["첫 화면 소식","home","homeNews"]],
+    news:[["첫 화면 소식 목록","home","homeNews"],["함께하기 › 교회 소식","together","newsRows"]],
+    bulletin:[["첫 화면 주보","home","homeBul"],["주보 게시판","bulletin","bulList"]],
+    worship:[["첫 화면 오른쪽 아래","home","heroSide"],["첫 화면 예배 시간","home","homeTimes"],["예배안내","worship","worshipTimes"]],
+    prayer:[["함께하기 › 기도 제목","together","prayerRows"]],
+    offering:[["함께하기 › 헌금 안내","together","offerRows"]],
+    church:[["첫 화면 소개 문장","home","heroSub"],["교회소개 › 인사말","about","greetLead"],["교회소개 › 연혁","about","histRows"],["예배안내 › 오시는 길","worship","placeRows"]]
+  };
+  var pvView="dash",pvIdx=0,pvReady=false,pvTimer=null,pvFrame=$("#pvFrame");
+  var pvBase=(SITE_URL||"./").replace(/[^\/]*$/,"");
+  function pvContent(){
+    if(!saved)return null;
+    var C=clone(saved);
+    if(draft.worship)C.worship=draft.worship;
+    if(draft.prayer)C.prayers=draft.prayer;
+    if(draft.offering)C.offering=draft.offering;
+    if(draft.history)C.history=draft.history;
+    if(draft.church){C.hero=draft.church.hero;C.greeting=draft.church.greeting;C.place=draft.church.place}
+    var f=$("#v-news form");
+    if(f&&f.elements.title){
+      var area=f.querySelector(".ed-area"),html=area?cleanHTML(area.innerHTML):"";
+      var it={id:f.dataset.id||"pv-new",date:f.elements.date.value,tag:f.elements.tag.value,title:f.elements.title.value.trim()||"(제목을 적어 주세요)",body:area?area.innerText.trim():"",html:html,pinned:f.elements.pinned.checked};
+      C.news=(C.news||[]).filter(function(n){return n.id!==it.id});C.news.unshift(it);
+    }
+    return C;
+  }
+  function pvSize(){
+    var ph=$("#pvPhone");if(!ph||!ph.offsetWidth)return;
+    var w=ph.clientWidth-20,h=ph.clientHeight-20,k=Math.min(1,w/390);
+    pvFrame.style.transform="scale("+k+")";pvFrame.style.height=Math.round(h/k)+"px";
+  }
+  function pvChips(){
+    var list=PV[pvView]||[];
+    $("#pvWhere").innerHTML=list.length?'<span class="lbl">이 화면의 내용이 나오는 곳</span>'+list.map(function(x,i){return '<button type="button" data-pvi="'+i+'" aria-pressed="'+(i===pvIdx)+'">'+E(x[0])+'</button>'}).join(""):"";
+    var t=list[pvIdx];$("#pvOpen").href=pvBase+"index.html"+(t&&t[1]!=="home"?"#"+t[1]:"");
+  }
+  function pvPush(jump){
+    if(!pvReady||!pvFrame.contentWindow||!pvFrame.contentWindow.MIDBAR_PREVIEW)return;
+    var t=(PV[pvView]||[])[pvIdx];
+    try{pvFrame.contentWindow.MIDBAR_PREVIEW(pvContent(),jump&&t?t[1]:null,jump&&t?t[2]:null)}catch(e){}
+  }
+  function pvSoon(){clearTimeout(pvTimer);pvTimer=setTimeout(function(){pvPush(false)},300)}
+  function pvVisible(){var p=$("#pv");return p&&p.offsetWidth>0}
+  function pvLoad(){if(pvFrame.getAttribute("src"))return;pvFrame.src=pvBase+"index.html?preview";}
+  pvFrame.addEventListener("load",function(){pvReady=true;pvSize();setTimeout(function(){pvPush(true)},400)});
+  function pvSetView(v){pvView=v;pvIdx=0;pvChips();if(pvVisible()){pvLoad();pvSize();pvPush(true)}}
+  document.addEventListener("click",function(e){var b=e.target.closest("[data-pvi]");if(!b)return;pvIdx=+b.dataset.pvi;pvChips();pvPush(true)});
+  $("#pvFab").addEventListener("click",function(){$("#pv").classList.add("open");pvLoad();setTimeout(function(){pvSize();pvPush(true)},30)});
+  $("#pvClose").addEventListener("click",function(){$("#pv").classList.remove("open")});
+  window.addEventListener("resize",pvSize);
+  document.addEventListener("input",pvSoon);
+  document.addEventListener("click",function(e){if(e.target.closest(".ge-row .ib,[data-reset],#worshipAdd,#prayerAdd,#histAdd,.ed-b,[data-pendrm]"))pvSoon()});
+
   function route(){
     var v=(location.hash||"#dash").slice(1);if(VIEWS.indexOf(v)<0)v="dash";
     VIEWS.forEach(function(x){$("#v-"+x).classList.toggle("on",x===v)});
@@ -938,6 +1032,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     if(v!=="news"&&openNewsId==="new"){openNewsId=null}
     if(v==="news")renderNews();
     if(v==="bulletin")prepBulForm();
+    pvSetView(v);
     window.scrollTo(0,0);
     var cur=$('.nav a[aria-current]');if(cur&&window.innerWidth<=900){var n=cur.parentNode;n.scrollLeft=cur.offsetLeft-16}
   }
