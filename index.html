@@ -949,10 +949,12 @@ footer .wrap{padding-block:56px 48px}
   function kd(s){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(s||"");if(!m)return E(s);var d=new Date(+m[1],m[2]-1,+m[3]);return (+m[2])+"월 "+(+m[3])+"일 ("+WK[d.getDay()]+")"}
   function fimg(f){return f.src||("https://drive.google.com/thumbnail?id="+encodeURIComponent(f.drive)+"&sz=w2000")}
   function flink(f){return f.src||("https://drive.google.com/file/d/"+encodeURIComponent(f.drive)+"/view")}
+  /* 목록용 날짜: 2026년 11월 8일 */
+  function kdy(s){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(s||"");return m?m[1]+"년 "+(+m[2])+"월 "+(+m[3])+"일":E(s)}
   function bcard(b,label){
     var f=(b.files||[])[0]||{}, n=(b.files||[]).length;
     return '<button type="button" class="bcard" data-bul="'+E(b.id)+'"><span class="pg"><img src="'+E(fimg(f))+'" alt="'+E(kd(b.date))+' 주보" loading="lazy">'+(n>1?'<span class="cnt">'+n+'쪽</span>':'')+'</span>'+
-      (label?'<span class="k">'+E(label)+'</span>':'')+'<b>'+kd(b.date)+'</b><small>'+E([b.no,b.title].filter(Boolean).join(" · "))+'</small></button>';
+      (label?'<span class="k">'+E(label)+'</span>':'')+'<b>'+kdy(b.date)+' 주보</b><small>'+E([b.no,b.title].filter(Boolean).join(" · "))+'</small></button>';
   }
   function renderBulletins(list){
     BUL=(list||[]).slice().sort(function(a,b){return String(b.date).localeCompare(String(a.date))});
@@ -967,7 +969,7 @@ footer .wrap{padding-block:56px 48px}
       setHTML("homeBul",BUL.slice(0,12).map(function(b,i){
         var fs=b.files||[], f=fs[0]||{}, sub=[b.no,b.title].filter(Boolean).join(" · ");
         return '<button type="button" class="bslide" data-bul="'+E(b.id)+'"><span class="pg">'+(f.src||f.drive?'<img src="'+E(fimg(f))+'" alt="'+E(kd(b.date))+' 주보" loading="lazy">':'')+
-          (i===0?'<span class="new">최신</span>':'')+(fs.length>1?'<span class="cnt">'+fs.length+'쪽</span>':'')+'</span><b>'+kd(b.date)+' 주보</b>'+(sub?'<small>'+E(sub)+'</small>':'')+'</button>';
+          (i===0?'<span class="new">최신</span>':'')+(fs.length>1?'<span class="cnt">'+fs.length+'쪽</span>':'')+'</span><b>'+kdy(b.date)+' 주보</b>'+(sub?'<small>'+E(sub)+'</small>':'')+'</button>';
       }).join(""));
     }else{
       setHTML("homeBul",'<div class="bempty"><span><b>'+kd(nextSun)+' 주보</b>아직 올라오지 않았습니다.</span></div>');
