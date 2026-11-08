@@ -359,6 +359,23 @@ header.enter{animation:down .8s var(--ease) both}
 .bul-meta{margin-top:10px;color:var(--mute);font-size:15px}
 .bul-meta b{color:var(--ink);font-weight:500}
 .bul-wait{display:block;margin-top:4px;font-size:14px;color:var(--dawn)}
+.bcar-acts{display:flex;align-items:center;gap:10px}
+.bcar-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:22px;line-height:1;cursor:pointer;display:grid;place-items:center;padding-bottom:2px}
+.bcar-btn:hover:not(:disabled){border-color:var(--ink)}
+.bcar-btn:disabled{opacity:.3;cursor:default}
+.bcar{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 48px)/3);gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;padding:4px 2px 8px;margin:-4px -2px 0;overscroll-behavior-x:contain}
+.bcar::-webkit-scrollbar{display:none}
+.bcar>*{min-width:0;scroll-snap-align:start}
+.bslide{display:block;width:100%;padding:0;border:0;background:none;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.bslide .pg{position:relative;display:block;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 0 0 1px var(--line),0 10px 30px rgba(20,22,16,.06);transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+.bslide:hover .pg{transform:translateY(-3px);box-shadow:0 0 0 1px var(--line),0 16px 40px rgba(20,22,16,.12)}
+.bslide .pg img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:10px}
+.bslide .cnt{position:absolute;right:12px;bottom:12px;font-size:12px;font-weight:700;color:#fff;background:rgba(20,22,16,.72);border-radius:999px;padding:3px 10px}
+.bslide .new{position:absolute;left:12px;top:12px;font-size:12px;font-weight:700;color:#fff;background:var(--dawn);border-radius:999px;padding:3px 10px}
+.bslide b{display:block;margin-top:14px;font-family:var(--f-serif);font-weight:500;font-size:21px;letter-spacing:-.02em}
+.bslide small{display:block;color:var(--mute);font-size:14px;margin-top:2px}
+@media (max-width:900px){.bcar{grid-auto-columns:calc((100% - 24px)/2)}}
+@media (max-width:640px){.bcar{grid-auto-columns:82%;gap:16px}.bcar-acts .bcar-btn{display:none}}
 .bul-pages{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start}
 .bul-pages.one{grid-template-columns:minmax(0,640px);justify-content:center}
 .bpage{position:relative;display:block;width:100%;padding:0;border:0;background:#fff;border-radius:14px;overflow:hidden;cursor:zoom-in;box-shadow:0 0 0 1px var(--line),0 10px 30px rgba(20,22,16,.07);transition:transform .3s var(--ease),box-shadow .3s}
@@ -532,8 +549,8 @@ footer .wrap{padding-block:56px 48px}
   </div>
 
   <div class="wrap sec" style="padding-top:0">
-    <div class="sec-head"><div><p class="label">주보</p><h2>주보</h2><p class="bul-meta" id="homeBulMeta"></p></div><a class="pill dark" href="#bulletin">지난 주보 보기<span class="ar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg></span></a></div>
-    <div class="bul-pages" id="homeBul"></div>
+    <div class="sec-head"><div><p class="label">주보</p><h2>주보</h2></div><div class="bcar-acts"><button type="button" class="bcar-btn" id="bulPrev" aria-label="최근 주보 쪽으로" disabled>‹</button><button type="button" class="bcar-btn" id="bulNext" aria-label="지난 주보 쪽으로">›</button><a class="pill dark" href="#bulletin">지난 주보 보기<span class="ar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg></span></a></div></div>
+    <div class="bcar" id="homeBul"></div>
   </div>
 
   <div class="wrap sec" style="padding-top:0">
@@ -945,22 +962,31 @@ footer .wrap{padding-block:56px 48px}
     for(var i=0;i<asc.length;i++){if(String(asc[i].date)>=today){up=asc[i];break}}
     var cut=up?up.date:nextSun, prev=null;
     for(i=0;i<BUL.length;i++){if(String(BUL[i].date)<cut){prev=BUL[i];break}}
-    /* 첫 화면: 이번 주 주보(없으면 가장 최근 주보)의 모든 쪽을 펼쳐서 보여 줌 */
-    var show=up||BUL[0], meta="";
-    if(show){
-      var fs=show.files||[];
-      meta='<b>'+kd(show.date)+'</b>'+([show.no,show.title].filter(Boolean).length?' · '+E([show.no,show.title].filter(Boolean).join(" · ")):'')+
-        (up?'':'<span class="bul-wait">'+kd(nextSun)+' 주보는 아직 올라오지 않아, 가장 최근 주보를 보여 드립니다.</span>');
-      setHTML("homeBul",fs.map(function(f,i){
-        return '<button type="button" class="bpage" data-bul="'+E(show.id)+'" data-pg="'+i+'" aria-label="'+(i+1)+'쪽 크게 보기"><img src="'+E(fimg(f))+'" alt="'+E(kd(show.date))+' 주보 '+(i+1)+'쪽" loading="lazy"><span class="pgno">'+(i+1)+' / '+fs.length+'쪽 · 크게 보기</span></button>';
+    /* 첫 화면: 주보를 최신순으로 옆으로 넘겨 보기 (한 화면에 3주치) */
+    if(BUL.length){
+      setHTML("homeBul",BUL.slice(0,12).map(function(b,i){
+        var fs=b.files||[], f=fs[0]||{}, sub=[b.no,b.title].filter(Boolean).join(" · ");
+        return '<button type="button" class="bslide" data-bul="'+E(b.id)+'"><span class="pg">'+(f.src||f.drive?'<img src="'+E(fimg(f))+'" alt="'+E(kd(b.date))+' 주보" loading="lazy">':'')+
+          (i===0?'<span class="new">최신</span>':'')+(fs.length>1?'<span class="cnt">'+fs.length+'쪽</span>':'')+'</span><b>'+kd(b.date)+' 주보</b>'+(sub?'<small>'+E(sub)+'</small>':'')+'</button>';
       }).join(""));
-      document.getElementById("homeBul").classList.toggle("one",fs.length===1);
     }else{
       setHTML("homeBul",'<div class="bempty"><span><b>'+kd(nextSun)+' 주보</b>아직 올라오지 않았습니다.</span></div>');
     }
-    setHTML("homeBulMeta",meta);
+    bulArrows();
     setHTML("bulList",BUL.length?BUL.map(function(b){return bcard(b,"")}).join(""):'<p class="note">아직 올라온 주보가 없습니다.</p>');
   }
+  /* 주보 슬라이드 화살표: 한 번에 한 화면(3주치)씩 넘김 */
+  function bulArrows(){
+    var t=document.getElementById("homeBul"),pv=document.getElementById("bulPrev"),nx=document.getElementById("bulNext");if(!t||!pv)return;
+    var max=t.scrollWidth-t.clientWidth-2;pv.disabled=t.scrollLeft<=2;nx.disabled=t.scrollLeft>=max;
+  }
+  (function(){
+    var t=document.getElementById("homeBul");if(!t)return;
+    t.addEventListener("scroll",function(){window.requestAnimationFrame(bulArrows)},{passive:true});
+    window.addEventListener("resize",bulArrows);
+    document.getElementById("bulPrev").addEventListener("click",function(){t.scrollBy({left:-t.clientWidth,behavior:"smooth"})});
+    document.getElementById("bulNext").addEventListener("click",function(){t.scrollBy({left:t.clientWidth,behavior:"smooth"})});
+  })();
   var lastFocus=null;
   function openBul(id){
     var b=BUL.filter(function(x){return x.id===id})[0];if(!b)return;
