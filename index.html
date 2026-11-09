@@ -116,12 +116,13 @@ header.enter{animation:down .8s var(--ease) both}
 
 /* ---------- 바로가기 줄 ---------- */
 .quick{background:var(--surface);border-bottom:1px solid var(--line)}
-.quick ul{display:grid;grid-template-columns:repeat(4,1fr)}
+.quick ul{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
 .quick li+li{border-left:1px solid var(--line)}
 .quick a{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:26px 28px;min-height:88px;transition:background .25s}
 .quick a:hover{background:var(--soft)}
 .quick a:hover .go{transform:translateX(3px)}
-.quick small{display:block;font-size:12px;color:var(--mute);letter-spacing:.04em}
+.quick a>span{min-width:0}
+.quick small{display:block;font-size:12px;color:var(--mute);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .quick b{display:block;font-family:var(--f-serif);font-size:19px;font-weight:500;letter-spacing:-.02em}
 .quick .go{color:var(--dawn);transition:transform .25s var(--ease);flex:none}
 
@@ -409,7 +410,7 @@ footer .wrap{padding-block:56px 48px}
   .burger{display:block}
   .hero-row{flex-direction:column;align-items:flex-start;gap:28px}
   .hero .side{width:100%;max-width:360px}
-  .quick ul{grid-template-columns:repeat(2,1fr)}
+  .quick ul{grid-template-columns:repeat(2,minmax(0,1fr))}
   .quick li:nth-child(3){border-left:0}
   .quick li:nth-child(n+3){border-top:1px solid var(--line)}
   .word,.sermon,.two{grid-template-columns:1fr;gap:48px}
@@ -428,6 +429,8 @@ footer .wrap{padding-block:56px 48px}
   .hero .acts .pill{justify-content:space-between}
   .quick a{padding:18px 16px;min-height:76px}
   .quick b{font-size:17px}
+  .quick small{letter-spacing:0}
+  .quick a{gap:8px}
   .sec{padding-block:88px}
   .feat{border-radius:20px}
   .feat .in-c{padding:22px}
