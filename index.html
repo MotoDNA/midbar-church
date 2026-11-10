@@ -279,7 +279,7 @@ header.enter{animation:down .8s var(--ease) both}
 .qtext .ds{color:var(--mute);padding-left:1.4em}
 .vcard{display:block}
 .vcard .th{position:relative;aspect-ratio:16/10;max-width:100%;border-radius:20px;overflow:hidden;background:var(--night)}
-.vcard .th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.6) brightness(.5);transition:transform .7s var(--ease)}
+.vcard .th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
 .vcard:hover .th img{transform:scale(1.05)}
 .vcard .th span{position:absolute;left:18px;bottom:16px;right:18px;font-family:var(--f-serif);color:#fff;font-size:20px;letter-spacing:-.02em;line-height:1.3}
 .vcard b{display:block;margin-top:14px;font-weight:500}
@@ -1023,6 +1023,14 @@ footer .wrap{padding-block:56px 48px}
   var W="https://www.youtube.com/watch?v=";
   function meta(v){return [v.kind,v.scripture,v.date].filter(Boolean).join(" · ")}
   function TH(v){return v.thumb||("thumbs/"+v.id+".jpg")}
+  /* 유튜브 썸네일: 가장 선명한 1280px(maxres)부터, 없으면 640px → 480px 로 자동으로 내려감 */
+  function YT(id){return "https://i.ytimg.com/vi/"+encodeURIComponent(id)+"/maxresdefault.jpg"}
+  window.ytFix=function(img){
+    var s=img.getAttribute("src")||"",next=/maxresdefault/.test(s)?"sddefault":/sddefault/.test(s)?"hqdefault":"";
+    if(next)img.setAttribute("src",s.replace(/(maxres|sd)default/,next));
+  };
+  function ytOk(img){if(img.naturalWidth&&img.naturalWidth<=120)window.ytFix(img)}
+  window.ytOk=ytOk;
   (CONTENT_API?load(CONTENT_API+"?action=videos").then(function(V){if(!V||!V.length)throw 0;return V}).catch(function(){return load("videos.json")}):load("videos.json")).then(function(V){
     if(!V||!V.length)return;
     V.forEach(function(v){if(v.scripture&&!/\d/.test(v.scripture)){v.kind=v.scripture;v.scripture=""}});
@@ -1030,8 +1038,8 @@ footer .wrap{padding-block:56px 48px}
     var m=V[0], tag=m.kind+(m.note&&m.kind!=="큐티말씀"?" · "+m.note:"");
     var home=document.getElementById("svHome");
     if(home){
-      home.firstElementChild.outerHTML='<a class="sv-main" href="'+W+m.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(m))+'" alt="'+esc(m.title)+' 썸네일"><span class="pbtn"></span></span><span class="cap"><small class="k">최신 · '+esc(tag)+'</small><b>'+esc(m.title)+NB(m.published||m.date)+'</b><small>박규성 담임목사 · '+esc([m.scripture,m.date].filter(Boolean).join(" · "))+'</small></span></a>';
-      document.getElementById("svList").innerHTML=V.slice(1,5).map(function(v){return '<li><a href="'+W+v.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(v))+'" alt=""></span><span><b>'+esc(v.title)+NB(v.published||v.date)+'</b><small>'+esc(meta(v))+'</small></span><span class="ar">↗</span></a></li>'}).join("");
+      home.firstElementChild.outerHTML='<a class="sv-main" href="'+W+m.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(m))+'" alt="'+esc(m.title)+' 썸네일" onload="ytOk(this)" onerror="ytFix(this)"><span class="pbtn"></span></span><span class="cap"><small class="k">최신 · '+esc(tag)+'</small><b>'+esc(m.title)+NB(m.published||m.date)+'</b><small>박규성 담임목사 · '+esc([m.scripture,m.date].filter(Boolean).join(" · "))+'</small></span></a>';
+      document.getElementById("svList").innerHTML=V.slice(1,5).map(function(v){return '<li><a href="'+W+v.id+'" target="_blank" rel="noopener"><span class="th"><img src="'+E(TH(v))+'" alt="" onload="ytOk(this)" onerror="ytFix(this)"></span><span><b>'+esc(v.title)+NB(v.published||v.date)+'</b><small>'+esc(meta(v))+'</small></span><span class="ar">↗</span></a></li>'}).join("");
     }
   }).catch(function(){});
 
@@ -1043,7 +1051,7 @@ footer .wrap{padding-block:56px 48px}
   function kdate(d){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(d||"");return m?m[1]+"."+m[2]+"."+m[3]:""}
   function vcard(v,key){
     var sub=[v.scripture,(key==="sunday"||key==="friday")?kdate(v.date):""].filter(Boolean).join(" · ");
-    return '<a class="vcard" href="'+W+encodeURIComponent(v.id)+'" target="_blank" rel="noopener"><span class="th"><img src="https://i.ytimg.com/vi/'+encodeURIComponent(v.id)+'/hqdefault.jpg" alt="'+esc(v.title)+' 썸네일" loading="lazy"></span><b>'+esc(v.title)+NB(v.date)+'</b>'+
+    return '<a class="vcard" href="'+W+encodeURIComponent(v.id)+'" target="_blank" rel="noopener"><span class="th"><img src="'+YT(v.id)+'" alt="'+esc(v.title)+' 썸네일" loading="lazy" onload="ytOk(this)" onerror="ytFix(this)"></span><b>'+esc(v.title)+NB(v.date)+'</b>'+
       (v.note?'<span class="k2">'+esc(v.note)+'</span>':'')+(sub?'<small>'+esc(sub)+'</small>':'')+'</a>';
   }
   function qimg(u,s){return String(u||"").replace(/=s\d+.*$/,"")+"=s"+s}
