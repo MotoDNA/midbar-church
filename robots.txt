@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /apps-script/
+Disallow: /tools/
+
+Sitemap: https://midbarchurch.co.kr/sitemap.xml
