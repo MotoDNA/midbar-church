@@ -342,6 +342,19 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
 .m-acts{display:none}
 .m-acts a,.m-acts button{display:grid;place-items:center;width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.08);color:var(--night-ink);border:0;cursor:pointer}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* 목사님 사진 · 교회앨범 */
+.gp{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+.gp-th{flex:none;width:132px;aspect-ratio:4/5;border-radius:14px;overflow:hidden;background:var(--bg);border:1px solid var(--line)}
+.gp-th img{width:100%;height:100%;object-fit:cover;display:block}
+.gp h3{margin:0 0 4px}
+.gp .hint{color:var(--mute);font-size:15px;margin:0}
+.gp-pick{position:relative;overflow:hidden;cursor:pointer}
+.gp-pick input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.pend.alb .pf .th{height:110px}
+.pend.alb .pf img{object-position:center}
+.bl .bi .th.alb{aspect-ratio:4/3}
+.bl .bi .th.alb img{object-position:center}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -404,12 +417,14 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
       <a href="#word/canvas" class="sub">광야캔버스 <small class="auto">자동</small></a>
       <a href="#word/palm" class="sub">뿌리깊은 종려나무 <small class="auto">자동</small></a>
       <a href="#word/qt" class="sub">매일성경큐티 <small class="auto">자동</small></a>
+      <a href="#word/cali" class="sub">말씀기도캘리 <small class="auto">자동</small></a>
       <span class="grp">주보</span>
       <a href="#bulletin" class="sub">주보<span class="cnt" id="cBul">0</span></a>
       <span class="grp">함께하기</span>
       <a href="#newcomer" class="sub">새가족 안내</a>
       <a href="#prayer" class="sub">기도 제목<span class="cnt" id="cPrayer">0</span></a>
       <a href="#news" class="sub">교회 소식<span class="cnt" id="cNews">0</span></a>
+      <a href="#album" class="sub">교회앨범<span class="cnt" id="cAlbum">0</span></a>
       <a href="#offering" class="sub">헌금 안내</a>
     </nav>
     <div class="side-foot">
@@ -479,6 +494,25 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
       <div class="sec"><h2>올린 주보</h2><p class="hint" style="margin:-4px 0 14px;color:var(--mute);font-size:15px">주보를 누르면 위 칸에서 날짜·호수·메모와 사진을 고칠 수 있습니다.</p><div class="bl" id="bulList"></div></div>
     </section>
 
+    <!-- 교회앨범 -->
+    <section class="view" id="v-album">
+      <div class="page-head"><div><small class="crumb">함께하기</small><h1>교회앨범</h1><p>함께하기 페이지 <b>교회 소식</b> 아래에 최신 앨범부터 나옵니다. 사진은 한 번에 여러 장 고를 수 있습니다.</p></div></div>
+      <form class="form card" id="albForm" novalidate>
+        <div class="bul-mode"><h3 id="albFormTitle">새 앨범 올리기</h3><span class="tag" id="albFormTag" hidden>수정 중</span></div>
+        <div class="row2">
+          <label class="field"><span>날짜</span><input class="inp" type="date" name="date" required></label>
+          <label class="field"><span>앨범 제목</span><input class="inp" name="title" placeholder="예) 11월 8일 주일예배" required></label>
+        </div>
+        <div class="field"><span>사진 <small>첫 번째 사진이 대표 사진이 됩니다. ‹ › 로 순서를 바꿀 수 있습니다</small></span>
+          <label class="drop" id="albDrop"><input type="file" id="albFiles" accept="image/*" multiple><svg class="icon"><use href="#i-photo"/></svg><span><b>여기를 눌러 사진 고르기</b><small>여러 장을 한꺼번에 고를 수 있습니다</small></span></label>
+          <div class="pend alb" id="albPend"></div>
+        </div>
+        <div class="ferr" aria-live="polite"></div>
+        <div class="form-acts"><button class="btn primary" type="submit" id="albSubmit">홈페이지에 앨범 올리기</button><button class="btn" type="button" id="albCancel" hidden>수정 취소</button></div>
+      </form>
+      <div class="sec"><h2>올린 앨범</h2><p class="hint" style="margin:-4px 0 14px;color:var(--mute);font-size:15px">앨범을 누르면 위 칸에서 제목·날짜를 고치고 사진을 더하거나 뺄 수 있습니다.</p><div class="bl" id="albList"></div></div>
+    </section>
+
     <!-- 예배 시간 -->
     <section class="view" id="v-worship">
       <div class="page-head"><div><h1>예배 시간</h1><p>맨 위 예배가 홈페이지 첫 화면에 크게 나옵니다. 화살표로 순서를 바꿀 수 있습니다.</p></div></div>
@@ -525,6 +559,13 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     <!-- 교회소개 › 인사말 -->
     <section class="view" id="v-greeting">
       <div class="page-head"><div><small class="crumb">교회소개</small><h1>인사말</h1><p>교회소개 페이지 맨 위, 목사님 사진 옆에 나오는 글입니다.</p></div></div>
+      <div class="form card gp-card" style="border-width:1px;border-color:var(--line)">
+        <div class="gp"><span class="gp-th"><img id="gpImg" src="pastor.jpg" alt="지금 홈페이지에 나오는 목사님 사진"></span>
+          <div><h3>목사님 사진</h3><p class="hint">세로 사진(가로:세로 = 4:5)이 가장 잘 어울립니다. 사진을 고르면 <b>바로 홈페이지에 반영</b>됩니다.</p>
+            <div class="form-acts" style="margin-top:12px"><label class="btn primary gp-pick"><input type="file" accept="image/*" id="gpFile"><svg class="icon"><use href="#i-photo"/></svg>사진 바꾸기</label><button type="button" class="btn ghost" id="gpReset" hidden>처음 사진으로 되돌리기</button></div>
+            <div class="ferr" id="gpErr" aria-live="polite"></div></div></div>
+      </div>
+      <div style="height:16px"></div>
       <div class="form card" style="border-width:1px;border-color:var(--line)" data-church="greeting">
         <label class="field"><span>큰 글씨 첫 문장 <small>줄을 바꾸면 홈페이지에서도 줄이 바뀝니다</small></span><textarea class="inp" data-k="greeting.lead" style="min-height:90px"></textarea></label>
         <label class="field"><span>인사말 본문 <small>빈 줄을 넣으면 문단이 나뉩니다</small></span><textarea class="inp" data-k="greeting.body" style="min-height:260px"></textarea></label>
@@ -582,6 +623,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
       <div class="panel wp" id="wp-canvas"><div class="wp-head"><h2>광야캔버스</h2><span class="cnt-pill" id="wc-canvas"></span></div><p class="wp-how">유튜브 제목에 <b>광야캔버스</b>를 넣거나, 재생목록 <b>[광야캔버스-그림으로 나누는 묵상]</b>에 넣으면 들어옵니다.</p><ul class="mini" id="wl-canvas"><li><span class="t"><small>불러오는 중…</small></span></li></ul></div>
       <div class="panel wp" id="wp-palm"><div class="wp-head"><h2>뿌리깊은 종려나무</h2><span class="cnt-pill" id="wc-palm"></span></div><p class="wp-how">유튜브 제목에 <b>종려나무</b>를 넣거나, 재생목록 <b>[뿌리 깊은 종려나무-큐티 말씀 묵상]</b>에 넣으면 들어옵니다.</p><ul class="mini" id="wl-palm"><li><span class="t"><small>불러오는 중…</small></span></li></ul></div>
       <div class="panel wp" id="wp-qt"><div class="wp-head"><h2>매일성경큐티</h2><span class="cnt-pill" id="wc-qt"></span></div><p class="wp-how">유튜브 <b>게시물</b> 첫 줄을 <b>261108 | 제목 (본문)</b>처럼 날짜 6자리로 시작하면 들어옵니다. 한 번 들어온 큐티는 유튜브에서 지워도 홈페이지에 남습니다.</p><ul class="mini" id="wl-qt"><li><span class="t"><small>불러오는 중…</small></span></li></ul></div>
+      <div class="panel wp" id="wp-cali"><div class="wp-head"><h2>말씀기도캘리</h2><span class="cnt-pill" id="wc-cali"></span></div><p class="wp-how">네이버 카페 <b>[말씀기도캘리]</b> 게시판에 그림을 올리면 <b>1시간 안에</b> 홈페이지 말씀 메뉴 맨 아래에 나옵니다. 글은 <b>전체공개</b>로 올려 주세요. 한 번 들어온 캘리는 카페에서 지워도 홈페이지에 남습니다.</p><ul class="mini" id="wl-cali"><li><span class="t"><small>불러오는 중…</small></span></li></ul></div>
     </section>
 
   </div></main>
@@ -721,7 +763,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     $("#dashNews").innerHTML=sn.slice(0,5).map(function(n){
       return '<li><span class="t"><b>'+(n.pinned?'<span class="chip pin">고정</span> ':'')+(n.tag?'<span class="chip">'+E(n.tag)+'</span> ':'')+E(n.title)+'</b><small>'+E(kdate(n.date))+'</small></span><a class="btn sm" href="#news" data-edit="'+E(n.id)+'">수정</a></li>';
     }).join("")||'<li><span class="t"><small>아직 소식이 없습니다.</small></span></li>';
-    renderNews();renderBulletins();renderWorship();renderPrayer();renderHist();renderNewc();fillForm("#offerForm",draft.offering);fillChurch();
+    renderNews();renderBulletins();renderAlbums();renderGP();renderWorship();renderPrayer();renderHist();renderNewc();fillForm("#offerForm",draft.offering);fillChurch();
     $$(".savebar").forEach(updateBar);
   }
 
@@ -895,6 +937,124 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
   });
 
 
+
+  /* ---------- 인사말 목사님 사진 (고르면 바로 저장) ---------- */
+  function gpSrc(g){g=g||{};return g.photo?driveImg(g.photo,600):(g.photoSrc||"pastor.jpg")}
+  function renderGP(){var g=(saved&&saved.greeting)||{};$("#gpImg").src=gpSrc(g);$("#gpReset").hidden=!(g.photo||g.photoSrc)}
+  function setPhoto(id,src){
+    var old=(saved.greeting||{}).photo,next=clone(saved);next.greeting=next.greeting||{};
+    if(id)next.greeting.photo=id;else delete next.greeting.photo;
+    if(src)next.greeting.photoSrc=src;else delete next.greeting.photoSrc;
+    return saveAll(next,id||src?"목사님 사진 바꾸기":"목사님 사진 처음으로").then(function(ok){
+      if(ok){if(draft.church&&draft.church.greeting){if(id)draft.church.greeting.photo=id;else delete draft.church.greeting.photo;if(src)draft.church.greeting.photoSrc=src;else delete draft.church.greeting.photoSrc}
+        if(!DEMO&&old&&old!==id)post({action:"trash",password:PW,ids:[old]}).catch(function(){});renderGP();updateBar($('.savebar[data-sec="greeting"]'))}
+      else if(!DEMO&&id)post({action:"trash",password:PW,ids:[id]}).catch(function(){});
+    });
+  }
+  $("#gpFile").addEventListener("change",function(e){
+    var file=e.target.files[0];e.target.value="";$("#gpErr").textContent="";if(!file)return;
+    if(!/^image\//.test(file.type)){$("#gpErr").textContent="사진 파일만 올릴 수 있습니다.";return}
+    busy(true,"사진 올리는 중…");
+    shrink(file,DEMO?600:1400,.88).then(function(u){
+      if(DEMO){busy(false);return setPhoto(null,u)}
+      return post({action:"upload",password:PW,name:"pastor-"+today()+"-"+Date.now().toString(36)+".jpg",mime:"image/jpeg",data:u.split(",")[1]}).then(function(r){
+        busy(false);if(!r||!r.ok)throw new Error((r&&r.error)||"사진을 올리지 못했습니다.");return setPhoto(r.id,null);
+      });
+    }).catch(function(x){busy(false);$("#gpErr").textContent=(x&&x.message)||"사진을 올리지 못했습니다."});
+  });
+  $("#gpReset").addEventListener("click",function(){setPhoto(null,null)});
+
+  /* ---------- 교회앨범 ---------- */
+  var apend=[], albEditId=null, albConfirm=null;
+  function sortedAlb(){return (saved&&saved.albums||[]).slice().sort(function(a,b){return String(b.date).localeCompare(String(a.date))})}
+  function prepAlbForm(){var f=$("#albForm");if(!f.elements.date.value)f.elements.date.value=today()}
+  function renderAPend(){
+    $("#albPend").innerHTML=apend.map(function(p,i){
+      var mv=apend.length>1?'<div class="mv"><button type="button" data-apmv="'+i+'" data-dir="-1" aria-label="앞으로"'+(i===0?' disabled':'')+'>‹</button><button type="button" data-apmv="'+i+'" data-dir="1" aria-label="뒤로"'+(i===apend.length-1?' disabled':'')+'>›</button></div>':'';
+      return '<div class="pf'+(albEditId&&!p.keep?' new':'')+'"><span class="th">'+(p.preview?'<img src="'+E(p.preview)+'" alt="">':'…')+'</span><small>'+(i===0?'대표 사진':(i+1)+'번째')+'</small><button type="button" class="rm" data-aprm="'+i+'" aria-label="빼기">×</button>'+mv+'</div>';
+    }).join("");
+  }
+  function addAlbFiles(list){
+    var err=$("#albForm .ferr");err.textContent="";
+    Array.prototype.forEach.call(list,function(file){
+      if(!/^image\//.test(file.type)){err.textContent="사진 파일만 올릴 수 있습니다.";return}
+      var item={file:file,preview:""};apend.push(item);
+      shrink(file,360,.7).then(function(u){item.preview=u;renderAPend()}).catch(function(e){err.textContent=e.message;apend.splice(apend.indexOf(item),1);renderAPend()});
+    });
+    renderAPend();
+  }
+  $("#albFiles").addEventListener("change",function(e){addAlbFiles(e.target.files);e.target.value=""});
+  (function(){var d=$("#albDrop");
+    ["dragenter","dragover"].forEach(function(t){d.addEventListener(t,function(e){e.preventDefault();d.classList.add("on")})});
+    ["dragleave","drop"].forEach(function(t){d.addEventListener(t,function(e){e.preventDefault();d.classList.remove("on")})});
+    d.addEventListener("drop",function(e){if(e.dataTransfer&&e.dataTransfer.files)addAlbFiles(e.dataTransfer.files)});
+  })();
+  function aimg(p,w){return p.src||driveImg(p.drive,w||600)}
+  function albMode(a){
+    var f=$("#albForm");albEditId=a?a.id:null;apend=[];albConfirm=null;
+    f.reset();f.querySelector(".ferr").textContent="";f.classList.toggle("editing",!!a);
+    $("#albFormTitle").textContent=a?"앨범 고치기":"새 앨범 올리기";$("#albFormTag").hidden=!a;$("#albCancel").hidden=!a;
+    $("#albSubmit").textContent=a?"고친 내용 저장하기":"홈페이지에 앨범 올리기";
+    if(a){f.elements.date.value=a.date||"";f.elements.title.value=a.title||"";apend=(a.photos||[]).map(function(x){return {keep:x,preview:aimg(x,400)}})}
+    else prepAlbForm();
+    renderAPend();renderAlbums();if(a)f.scrollIntoView({behavior:"smooth",block:"start"});
+  }
+  $("#albCancel").addEventListener("click",function(){albMode(null)});
+  function renderAlbums(){
+    var A=sortedAlb();$("#cAlbum").textContent=A.length;
+    $("#albList").innerHTML=A.length?A.map(function(a){
+      var c=(a.photos||[])[0];
+      return '<div class="bi'+(albEditId===a.id?' on':'')+'"><button type="button" class="open" data-albedit="'+E(a.id)+'"><span class="th alb">'+(c?'<img src="'+E(aimg(c,500))+'" alt="" loading="lazy">':'')+'</span><b>'+E(a.title)+'</b><small>'+E(kdate(a.date))+' · 사진 '+(a.photos||[]).length+'장</small></button>'+
+        (albConfirm===a.id?'<div class="confirm"><span>이 앨범을 삭제할까요?</span><button class="btn sm danger" type="button" data-albdelok="'+E(a.id)+'">삭제</button><button class="btn sm" type="button" data-albdelno>취소</button></div>'
+        :'<div class="acts"><button class="btn sm" type="button" data-albedit="'+E(a.id)+'">수정</button><button class="btn sm ghost" type="button" data-albdel="'+E(a.id)+'">삭제</button></div>')+'</div>';
+    }).join(""):'<div class="empty" style="grid-column:1/-1">아직 올린 앨범이 없습니다.</div>';
+  }
+  document.addEventListener("click",function(e){
+    var t=e.target.closest&&e.target.closest("[data-aprm],[data-apmv],[data-albedit],[data-albdel],[data-albdelok],[data-albdelno]");if(!t)return;
+    if(t.dataset.aprm){apend.splice(+t.dataset.aprm,1);renderAPend();return}
+    if(t.dataset.apmv){var i=+t.dataset.apmv,j=i+(+t.dataset.dir);if(j>=0&&j<apend.length){var x=apend[i];apend[i]=apend[j];apend[j]=x;renderAPend()}return}
+    if(t.dataset.albedit){var a=sortedAlb().filter(function(x){return x.id===t.dataset.albedit})[0];if(a)albMode(a);return}
+    if(t.dataset.albdel){albConfirm=t.dataset.albdel;renderAlbums();return}
+    if(t.hasAttribute("data-albdelno")){albConfirm=null;renderAlbums();return}
+    if(t.dataset.albdelok){
+      var id=t.dataset.albdelok,old=(saved.albums||[]).filter(function(x){return x.id===id})[0],next=clone(saved);
+      next.albums=(next.albums||[]).filter(function(x){return x.id!==id});
+      saveAll(next,"앨범 삭제: "+(old?old.title:"")).then(function(ok){if(ok){if(albEditId===id)albMode(null);albConfirm=null;renderAlbums();
+        var ids=((old&&old.photos)||[]).map(function(p){return p.drive}).filter(Boolean);if(!DEMO&&ids.length)post({action:"trash",password:PW,ids:ids}).catch(function(){})}});
+    }
+  });
+  $("#albForm").addEventListener("submit",function(e){
+    e.preventDefault();
+    var f=e.target,err=f.querySelector(".ferr"),date=f.elements.date.value,title=f.elements.title.value.trim();err.textContent="";
+    if(!date){err.textContent="날짜를 골라 주세요.";return}
+    if(!title){err.textContent="앨범 제목을 적어 주세요.";f.elements.title.focus();return}
+    if(!apend.length){err.textContent="사진을 골라 주세요.";return}
+    var editId=albEditId,orig=editId&&(saved.albums||[]).filter(function(a){return a.id===editId})[0];
+    var photos=[],uploaded=[],i=0,news=apend.filter(function(p){return !p.keep}).length,k=0;
+    function step(){
+      if(i>=apend.length)return Promise.resolve();
+      var p=apend[i];
+      if(p.keep){photos.push(p.keep);i++;return step()}
+      k++;busy(true,"사진 "+k+" / "+news+"장 올리는 중…");
+      return shrink(p.file,DEMO?900:2000,DEMO?.6:.85).then(function(u){
+        if(DEMO){photos.push({src:u});return}
+        return post({action:"upload",password:PW,name:"album-"+date+"-"+Date.now().toString(36)+".jpg",mime:"image/jpeg",data:u.split(",")[1]}).then(function(r){
+          if(!r||!r.ok)throw new Error((r&&r.error)||"사진을 올리지 못했습니다.");uploaded.push(r.id);photos.push({drive:r.id});
+        });
+      }).then(function(){i++;return step()});
+    }
+    step().then(function(){
+      busy(false);
+      var next=clone(saved);next.albums=next.albums||[];
+      var rec={id:editId||("a"+date.replace(/-/g,"")+Math.random().toString(36).slice(2,6)),date:date,title:title,photos:photos};
+      if(editId)next.albums=next.albums.map(function(a){return a.id===editId?rec:a});else next.albums.push(rec);
+      return saveAll(next,(editId?"앨범 수정: ":"앨범 올리기: ")+title).then(function(ok){
+        if(ok){var gone=orig?(orig.photos||[]).filter(function(x){return x.drive&&!photos.some(function(y){return y.drive===x.drive})}).map(function(x){return x.drive}):[];
+          if(!DEMO&&gone.length)post({action:"trash",password:PW,ids:gone}).catch(function(){});albMode(null)}
+        else if(uploaded.length)post({action:"trash",password:PW,ids:uploaded}).catch(function(){});
+      });
+    }).catch(function(x){busy(false);err.textContent=(x&&x.message)||"올리지 못했습니다. 인터넷 연결을 확인해 주세요.";if(uploaded.length)post({action:"trash",password:PW,ids:uploaded}).catch(function(){})});
+  });
   /* ---------- 소식 편집기 ---------- */
   function driveImg(id,w){return "https://drive.google.com/thumbnail?id="+encodeURIComponent(id)+"&sz=w"+(w||1600)}
   function cleanHTML(html){
@@ -1054,7 +1214,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
   }
   $("#newcAdd").addEventListener("click",function(){draft.newcomer.push({step:"",title:"",text:""});renderNewc();updateBar($('.savebar[data-sec="newcomer"]'));var r=$$("#newcEdit .ge-row");r[r.length-1].querySelector("input").focus()});
   /* 말씀: 홈페이지 말씀 메뉴에 지금 나오는 영상·큐티 (word.json · qt.json, 1시간마다 자동 갱신) */
-  var wordLoaded=false, WJ=null, QD=null;
+  var wordLoaded=false, WJ=null, QD=null, CD=null;
   var GH="https://api.github.com/repos/MotoDNA/midbar-church";
   function kd(d){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(d||"");return m?m[1]+"."+m[2]+"."+m[3]:""}
   function wli(t,sub,href){return '<li><span class="t"><b>'+E(t)+'</b><small>'+E(sub)+'</small></span><a class="btn sm" href="'+href+'" target="_blank" rel="noopener">유튜브</a></li>'}
@@ -1069,6 +1229,8 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     });
     if(QD){var L=QD.posts||[];$("#wc-qt").textContent="큐티 "+L.length+"개";
       $("#wl-qt").innerHTML=L.slice(0,5).map(function(q){return wli(q.title,[kd(q.date),q.ref].filter(Boolean).join(" · "),"https://www.youtube.com/post/"+encodeURIComponent(q.id))}).join("")||'<li><span class="t"><small>아직 없습니다.</small></span></li>'}
+    if(CD){var CL=CD.posts||[];$("#wc-cali").textContent="캘리 "+CL.length+"개";
+      $("#wl-cali").innerHTML=CL.slice(0,5).map(function(c){return '<li><span class="t"><b>'+E(c.title)+'</b><small>'+E(kd(c.date))+'</small></span><a class="btn sm" href="https://cafe.naver.com/f-e/cafes/31786576/articles/'+encodeURIComponent(c.id)+'" target="_blank" rel="noopener">카페</a></li>'}).join("")||'<li><span class="t"><small>아직 없습니다.</small></span></li>'}
     var last=[WJ&&WJ.updated,QD&&QD.updated].filter(Boolean).sort().pop();
     $("#wordUpdated").textContent=last?"마지막으로 새 내용이 들어온 때: "+whenStr(last):"";
   }
@@ -1076,7 +1238,8 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     if(wordLoaded&&!force)return Promise.resolve();wordLoaded=true;
     var a=getJSON(wordBase()+"word.json").then(function(D){WJ=D}).catch(function(){if(!WJ){wordLoaded=false;["sunday","friday","canvas","palm"].forEach(function(k){$("#wl-"+k).innerHTML='<li><span class="t"><small>영상 목록을 불러오지 못했습니다.</small></span></li>'})}});
     var b=getJSON(wordBase()+"qt.json").then(function(D){QD=D}).catch(function(){if(!QD){wordLoaded=false;$("#wl-qt").innerHTML='<li><span class="t"><small>큐티 목록을 불러오지 못했습니다.</small></span></li>'}});
-    return Promise.all([a,b]).then(paintWord);
+    var c=getJSON(wordBase()+"cali.json").then(function(D){CD=D}).catch(function(){if(!CD){$("#wl-cali").innerHTML='<li><span class="t"><small>캘리 목록을 불러오지 못했습니다.</small></span></li>'}});
+    return Promise.all([a,b,c]).then(paintWord);
   }
   function allIds(){
     var v={},q={};
@@ -1245,7 +1408,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
   }
 
   /* 화면 이동 */
-  var VIEWS=["dash","hero","greeting","history","worship","place","word","bulletin","newcomer","prayer","news","offering"];
+  var VIEWS=["dash","hero","greeting","history","worship","place","word","bulletin","newcomer","prayer","news","album","offering"];
 
   /* ---------- 홈페이지 미리보기 ---------- */
   var PV={
@@ -1257,9 +1420,10 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     offering:[["함께하기 › 헌금 안내","together","offerRows"]],
     hero:[["첫 화면","home","heroSub"]],
     greeting:[["교회소개 › 인사말","about","greetLead"]],
+    album:[["함께하기 › 교회앨범","together/album","albumGrid"]],
     history:[["교회소개 › 걸어온 길","about","histRows"]],
     place:[["예배안내 › 오시는 길","worship","placeRows"],["첫 화면 오른쪽 아래","home","heroSide"]],
-    word:[["첫 화면 설교","home","svHome"],["주일설교","word/sunday","sec-word-sunday"],["금요기도회","word/friday","sec-word-friday"],["광야캔버스","word/canvas","sec-word-canvas"],["종려나무","word/palm","sec-word-palm"],["매일성경큐티","word/qt","sec-word-qt"]],
+    word:[["첫 화면 설교","home","svHome"],["주일설교","word/sunday","sec-word-sunday"],["금요기도회","word/friday","sec-word-friday"],["광야캔버스","word/canvas","sec-word-canvas"],["종려나무","word/palm","sec-word-palm"],["매일성경큐티","word/qt","sec-word-qt"],["말씀기도캘리","word/cali","sec-word-cali"]],
     newcomer:[["함께하기 › 새가족 안내","together","newcSteps"]]
   };
   var pvView="dash",pvIdx=0,pvReady=false,pvTimer=null,pvFrame=$("#pvFrame");
@@ -1317,6 +1481,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     if(v!=="news"&&openNewsId==="new"){openNewsId=null}
     if(v==="news")renderNews();
     if(v==="bulletin")prepBulForm();
+    if(v==="album")prepAlbForm();
     pvSetView(v);
     window.scrollTo(0,0);
     if(v==="word"){if(!$("#wp-"+sub))sub="sunday";$$(".wp").forEach(function(x){x.classList.toggle("on",x.id==="wp-"+sub)})}

@@ -48,7 +48,7 @@
    ],
    "description": "하나님을 가장 깊이 만나는 곳, 광야교회입니다. 히브리어로 광야는 '미드바르'이며 '말씀(다바르)'에서 비롯된 말입니다. 2026년 9월 18일 개척 준비기도회로 첫 현장 예배를 드렸습니다.",
    "url": "https://midbarchurch.co.kr/",
-   "logo": "https://midbarchurch.co.kr/logo-mark.png",
+   "logo": "https://midbarchurch.co.kr/logo-mark-512.png",
    "image": "https://midbarchurch.co.kr/og-image.jpg",
    "address": {
     "@type": "PostalAddress",
@@ -606,6 +606,45 @@ footer .wrap{padding-block:56px 48px}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
+
+/* ---------- 교회소개: 사명선언문 · 비전 · 로고 ---------- */
+.about-fig{margin:28px 0 0}
+.about-fig .zoom{display:block;width:100%;max-width:440px;padding:0;border:0;background:none;cursor:zoom-in;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(21,23,18,.12)}
+.about-fig img{display:block;width:100%;height:auto}
+.vision{display:grid;gap:14px;margin-top:24px}
+.vision li{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start}
+.vision i{font-style:normal;font-family:var(--f-serif);font-size:30px;line-height:1;color:var(--dawn);text-align:center;padding-top:2px}
+.vision b{display:block;font-weight:500;color:var(--ink)}
+.vision b small{color:var(--mute);font-weight:400}
+.vision span{color:#3E403A;font-size:15px;line-height:1.7}
+.logo-fig{margin:0 0 24px;max-width:300px}
+.logo-fig img{display:block;width:100%;height:auto}
+/* ---------- 교회앨범 ---------- */
+.agrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px 20px;align-items:start}
+.acard{display:block;width:100%;padding:0;border:0;background:none;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.acard .th{position:relative;display:block;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:var(--soft)}
+.acard .th img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s var(--ease)}
+.acard:hover .th img{transform:scale(1.04)}
+.acard .cnt{position:absolute;right:10px;bottom:10px;background:rgba(14,15,12,.7);color:#fff;font-size:12px;padding:3px 9px;border-radius:999px}
+.acard .d{display:block;margin-top:14px;font-size:13px;letter-spacing:.06em;color:var(--dawn)}
+.acard b{display:block;margin-top:4px;font-weight:500;line-height:1.45}
+/* ---------- 사진 크게 보기 ---------- */
+.lbox{position:fixed;inset:0;z-index:60;background:rgba(10,11,9,.98);color:#fff;display:flex;flex-direction:column}
+.lb-bar{display:flex;align-items:center;gap:16px;padding:calc(env(safe-area-inset-top,0px) + 14px) 20px 14px}
+.lb-bar>div{flex:1;min-width:0}
+.lb-bar small{display:block;font-size:13px;color:rgba(255,255,255,.6)}
+.lb-bar b{display:block;font-weight:500;font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb-n{font-size:14px;color:rgba(255,255,255,.7)}
+.lb-x{flex:none;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;font-size:26px;line-height:1;cursor:pointer}
+.lb-stage{flex:1;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;padding:0 64px 16px;touch-action:pan-y}
+.lb-stage img{max-width:100%;max-height:100%;object-fit:contain;display:block;border-radius:6px}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:30px;line-height:1;cursor:pointer}
+.lb-nav.prev{left:10px}.lb-nav.next{right:10px}
+.lb-nav[hidden]{display:none}
+.lb-foot{padding:0 20px calc(env(safe-area-inset-bottom,0px) + 16px);text-align:center}
+.lb-foot a{color:rgba(255,255,255,.75);font-size:14px;text-decoration:underline}
+@media (max-width:1024px){.agrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.agrid{gap:24px 14px}.lb-stage{padding:0 0 12px}.lb-nav{width:40px;height:40px;font-size:24px;background:rgba(0,0,0,.45)}.about-fig .zoom{max-width:100%}.vision li{grid-template-columns:34px 1fr;gap:10px}.vision i{font-size:24px}}
 </style>
 
 <header id="hd" class="enter">
@@ -613,14 +652,14 @@ footer .wrap{padding-block:56px 48px}
     <a class="logo" href="#home" aria-label="광야교회 홈"><span class="mk"><img src="logo-mark.png" alt=""></span><b>광야교회</b><span class="en"><span>MIDBAR</span><span>CHURCH</span></span></a>
     <ul class="gnb" id="gnb">
       <li data-p="about"><a href="#about">교회소개</a>
-        <div class="dep2"><a href="#about/greet">인사말</a><a href="#about/name">교회 이름의 뜻</a><a href="#about/history">걸어온 길</a></div></li>
+        <div class="dep2"><a href="#about/greet">인사말</a><a href="#about/name">교회 이름의 뜻</a><a href="#about/mission">사명선언문</a><a href="#about/vision">MIDBAR VISION</a><a href="#about/logo">광야교회 로고</a><a href="#about/history">걸어온 길</a></div></li>
       <li data-p="worship"><a href="#worship">예배안내</a>
         <div class="dep2"><a href="#worship/times">예배 시간</a><a href="#worship/place">오시는 길</a></div></li>
       <li data-p="word"><a href="#word">말씀</a>
-        <div class="dep2"><a href="#word/sunday">주일설교</a><a href="#word/friday">금요기도회</a><a href="#word/canvas">광야캔버스</a><a href="#word/palm">뿌리깊은 종려나무</a><a href="#word/qt">매일성경큐티</a></div></li>
+        <div class="dep2"><a href="#word/sunday">주일설교</a><a href="#word/friday">금요기도회</a><a href="#word/canvas">광야캔버스</a><a href="#word/palm">뿌리깊은 종려나무</a><a href="#word/qt">매일성경큐티</a><a href="#word/cali">말씀기도캘리</a></div></li>
       <li data-p="bulletin"><a href="#bulletin">주보</a></li>
       <li data-p="together"><a href="#together">함께하기</a>
-        <div class="dep2"><a href="#together/new">새가족 안내</a><a href="#together/prayer">기도 제목</a><a href="#together/news">교회 소식</a><a href="#together/offering">헌금 안내</a></div></li>
+        <div class="dep2"><a href="#together/new">새가족 안내</a><a href="#together/prayer">기도 제목</a><a href="#together/news">교회 소식</a><a href="#together/album">교회앨범</a><a href="#together/offering">헌금 안내</a></div></li>
       <li><a href="https://cafe.naver.com/midbarchurch" target="_blank" rel="noopener" class="ext">네이버 카페 <span aria-hidden="true">↗</span></a></li>
     </ul>
     <div class="hd-cta">
@@ -746,12 +785,12 @@ footer .wrap{padding-block:56px 48px}
 <section class="page" id="p-about">
   <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 교회소개</p><h1>교회소개</h1></div></div>
-  <nav class="subtabs" aria-label="교회소개 메뉴"><ul class="wrap"><li><a href="#about/greet">인사말</a></li><li><a href="#about/name">교회 이름의 뜻</a></li><li><a href="#about/history">걸어온 길</a></li></ul></nav>
+  <nav class="subtabs" aria-label="교회소개 메뉴"><ul class="wrap"><li><a href="#about/greet">인사말</a></li><li><a href="#about/name">교회 이름의 뜻</a></li><li><a href="#about/mission">사명선언문</a></li><li><a href="#about/vision">MIDBAR VISION</a></li><li><a href="#about/logo">광야교회 로고</a></li><li><a href="#about/history">걸어온 길</a></li></ul></nav>
   <div class="wrap">
     <div id="sec-about-greet" class="block block-grid">
       <div><span class="k">인사말</span><h2>담임목사<br>인사말</h2></div>
       <div class="greet">
-        <div class="photo has"><img src="pastor.jpg" alt="박규성 담임목사"></div>
+        <div class="photo has"><img id="greetPhoto" src="pastor.jpg" alt="박규성 담임목사"></div>
         <div class="prose">
           <p class="lead" id="greetLead">하나님을 가장 깊이 만나는 곳,<br>광야교회입니다.</p>
           <div id="greetBody" style="margin-top:24px"><p>광야교회는 아직 이 땅에 건물이 없습니다. 그러나 하나님의 은혜로 일산은광교회에서 예배당을 무상으로 사용할 수 있도록 허락해 주셔서, 2026년 9월 18일 개척을 위한 준비기도회를 시작으로 현장에서 예배를 드리게 되었습니다.</p><p>척박한 광야 길을 걷는 듯한 일상 속에서, 광야교회가 여러분의 따뜻한 영적 오아시스가 되기를 소망합니다. 함께 은혜를 나누고 서로를 위로하며, 평안이 넘치는 신앙 공동체를 함께 만들어가요.</p></div>
@@ -765,6 +804,28 @@ footer .wrap{padding-block:56px 48px}
         <p class="lead">광야는 하나님의 말씀이 가장 선명하게 들리는 곳입니다.</p>
         <p style="margin-top:24px">히브리어로 광야는 ‘미드바르’입니다. 이 단어의 어원은 ‘말씀’ 혹은 ‘말씀하시다’라는 뜻의 히브리어 동사 ‘다바르’에서 비롯되었습니다.</p>
         <p>성경이 말하는 광야란 메마르고 버려진 척박한 땅만이 아니라, 세상의 모든 소음이 잦아들고 오직 하나님의 말씀이 가장 선명하게 들리는 곳입니다. 미드바르에서 울려 퍼지는 생명의 다바르가 여러분의 삶을 다시 일어서게 하는 힘이 되기를 소망합니다.</p>
+      </div>
+    </div>
+    <div id="sec-about-mission" class="block block-grid">
+      <div><span class="k">사명</span><h2>사명선언문</h2></div>
+      <div class="prose">
+        <p class="lead">광야같은 세상에 복음으로 길을 내며<br>삶으로 예수를 보여주는 사랑의 공동체</p>
+        <figure class="about-fig"><button type="button" class="zoom" data-zoom="about/mission.jpg" data-zoomt="사명선언문"><img src="about/mission.jpg" alt="사명선언문: 광야같은 세상에 복음으로 길을 내며 삶으로 예수를 보여주는 사랑의 공동체. MIDBAR VISION — Mission(사명), Improvement(회복), Discipleship(제자), Bible(말씀), Adoration(예배), Revival(부흥)" loading="lazy" width="1200" height="2150"></button></figure>
+      </div>
+    </div>
+    <div id="sec-about-vision" class="block block-grid">
+      <div><span class="k">비전</span><h2>MIDBAR VISION</h2></div>
+      <div class="prose">
+        <p class="lead">광야같은 세상에 복음을 전하며(M) 삶을 회복한(I) 그리스도의 제자(D)가 되어 말씀(B)과 예배(A)로 부흥(R)의 길을 만드는 교회입니다.</p>
+        <ul class="vision"><li><i>M</i><span><b>Mission <small>(사명)</small></b>우리는 뜨거운 사명감으로 광야같은 세상에 복음을 전하여 영혼을 구원하는 일에 일평생 헌신하는 사명공동체입니다.</span></li><li><i>I</i><span><b>Improvement <small>(회복)</small></b>우리는 메마른 광야의 오아시스와 같이 상한 영혼과 병든 육신들이 치유되는 기적을 맛보는 회복공동체입니다.</span></li><li><i>D</i><span><b>Discipleship <small>(제자)</small></b>우리는 예수 그리스도를 본받는 제자로 훈련받아 삶의 현장을 통해 예수 그리스도를 보여주는 제자공동체입니다.</span></li><li><i>B</i><span><b>Bible <small>(말씀)</small></b>우리는 진리의 말씀 위에 굳게 서서 날마다 같은 말씀으로 하나되고 말씀대로 실천하여 승리하는 말씀공동체입니다.</span></li><li><i>A</i><span><b>Adoration <small>(예배)</small></b>우리는 온 맘과 정성을 다해 하나님이 주인 되심을 찬양하고 믿음의 기도를 통해 응답받는 예배공동체입니다.</span></li><li><i>R</i><span><b>Revival <small>(부흥)</small></b>우리는 척박한 광야에 길을 내시는 하나님을 신뢰하며 영적성장과 공동체성장을 함께 이루어가는 부흥공동체입니다.</span></li></ul>
+        <figure class="about-fig"><button type="button" class="zoom" data-zoom="about/vision.jpg" data-zoomt="MIDBAR VISION"><img src="about/vision.jpg" alt="MIDBAR VISION. 광야같은 세상에 복음을 전하며(M) 삶을 회복한(I) 그리스도의 제자(D)가 되어 말씀(B)과 예배(A)로 부흥(R)의 길을 만드는 교회입니다. Mission(사명): 우리는 뜨거운 사명감으로 광야같은 세상에 복음을 전하여 영혼을 구원하는 일에 일평생 헌신하는 사명공동체입니다. Improvement(회복): 우리는 메마른 광야의 오아시스와 같이 상한 영혼과 병든 육신들이 치유되는 기적을 맛보는 회복공동체입니다. Discipleship(제자): 우리는 예수 그리스도를 본받는 제자로 훈련받아 삶의 현장을 통해 예수 그리스도를 보여주는 제자공동체입니다. Bible(말씀): 우리는 진리의 말씀 위에 굳게 서서 날마다 같은 말씀으로 하나되고 말씀대로 실천하여 승리하는 말씀공동체입니다. Adoration(예배): 우리는 온 맘과 정성을 다해 하나님이 주인 되심을 찬양하고 믿음의 기도를 통해 응답받는 예배공동체입니다. Revival(부흥): 우리는 척박한 광야에 길을 내시는 하나님을 신뢰하며 영적성장과 공동체성장을 함께 이루어가는 부흥공동체입니다." loading="lazy" width="1200" height="2150"></button></figure>
+      </div>
+    </div>
+    <div id="sec-about-logo" class="block block-grid">
+      <div><span class="k">로고</span><h2>광야교회 로고</h2></div>
+      <div class="prose">
+        <figure class="logo-fig"><img src="about/logo-full.png" alt="대한예수교장로회 광야교회 MIDBAR CHURCH 로고" loading="lazy"></figure>
+        <p>Midbar Church의 M자를 형상화 했으며, 광야에 길을 만드시고(M의 왼쪽 붉은색 부분), 사막에 강을 만드시며(M의 오른쪽 푸른색 부분) 새 일을 행하실 하나님께서 광야교회를 불기둥(M의 왼쪽)과 구름기둥(M의 오른쪽)으로 보호해 주셔서 십자가의 은혜로 구원의 싹을 틔워가는 교회를 의미합니다.</p>
       </div>
     </div>
     <div id="sec-about-history" class="block block-grid">
@@ -811,7 +872,7 @@ footer .wrap{padding-block:56px 48px}
 <section class="page" id="p-word">
   <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 말씀</p><h1>말씀</h1></div></div>
-  <nav class="subtabs" aria-label="말씀 메뉴"><ul class="wrap"><li><a href="#word/sunday">주일설교</a></li><li><a href="#word/friday">금요기도회</a></li><li><a href="#word/canvas">광야캔버스</a></li><li><a href="#word/palm">뿌리깊은 종려나무</a></li><li><a href="#word/qt">매일성경큐티</a></li></ul></nav>
+  <nav class="subtabs" aria-label="말씀 메뉴"><ul class="wrap"><li><a href="#word/sunday">주일설교</a></li><li><a href="#word/friday">금요기도회</a></li><li><a href="#word/canvas">광야캔버스</a></li><li><a href="#word/palm">뿌리깊은 종려나무</a></li><li><a href="#word/qt">매일성경큐티</a></li><li><a href="#word/cali">말씀기도캘리</a></li></ul></nav>
   <div class="wrap">
     <div id="sec-word-sunday" class="block">
       <div class="sec-head"><div><p class="label">주일설교</p><h2>주일 예배 설교</h2></div><a class="more" href="https://www.youtube.com/@midbar-church-smilepastor/videos" target="_blank" rel="noopener">유튜브에서 보기 ↗</a></div>
@@ -843,6 +904,12 @@ footer .wrap{padding-block:56px 48px}
       <div class="qgrid" id="wv-qt"><p class="note">큐티를 불러오는 중입니다.</p></div>
       <button type="button" class="more-btn" data-more="qt" hidden>지난 큐티 더 보기</button>
     </div>
+    <div id="sec-word-cali" class="block">
+      <div class="sec-head"><div><p class="label">말씀기도캘리</p><h2>말씀과 기도를 손글씨로</h2></div><a class="more" href="https://cafe.naver.com/f-e/cafes/31786576/menus/18" target="_blank" rel="noopener">네이버 카페에서 보기 ↗</a></div>
+      <p class="lead-s">박규성 목사가 말씀 한 구절과 기도문을 손글씨로 적어 나눕니다. 그림을 누르면 크게 볼 수 있습니다.</p>
+      <div class="qgrid" id="wv-cali"><p class="note">말씀기도캘리를 불러오는 중입니다.</p></div>
+      <button type="button" class="more-btn" data-more="cali" hidden>지난 캘리 더 보기</button>
+    </div>
   </div>
 </section>
 
@@ -862,7 +929,7 @@ footer .wrap{padding-block:56px 48px}
 <section class="page" id="p-together">
   <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 함께하기</p><h1>함께하기</h1></div></div>
-  <nav class="subtabs" aria-label="함께하기 메뉴"><ul class="wrap"><li><a href="#together/new">새가족 안내</a></li><li><a href="#together/prayer">기도 제목</a></li><li><a href="#together/news">교회 소식</a></li><li><a href="#together/offering">헌금 안내</a></li></ul></nav>
+  <nav class="subtabs" aria-label="함께하기 메뉴"><ul class="wrap"><li><a href="#together/new">새가족 안내</a></li><li><a href="#together/prayer">기도 제목</a></li><li><a href="#together/news">교회 소식</a></li><li><a href="#together/album">교회앨범</a></li><li><a href="#together/offering">헌금 안내</a></li></ul></nav>
   <div class="wrap">
     <div id="sec-together-new" class="block">
       <div class="sec-head"><div><p class="label">새가족</p><h2>처음 오신 분을<br><em>진심으로 환영합니다</em></h2></div></div>
@@ -892,6 +959,12 @@ footer .wrap{padding-block:56px 48px}
         <li><b>머문 자리 정돈</b><span>일산은광교회의 섬김으로 예배드리고 있습니다. 머문 자리는 깨끗하게 정돈해 주세요.</span></li>
       </ul>
     </div>
+    <div id="sec-together-album" class="block">
+      <div class="sec-head"><div><p class="label">앨범</p><h2>교회앨범</h2></div></div>
+      <p class="lead-s">예배와 모임의 순간들을 모았습니다. 사진을 누르면 크게 볼 수 있습니다.</p>
+      <div class="agrid" id="albumGrid"><p class="note">아직 올라온 앨범이 없습니다.</p></div>
+      <button type="button" class="more-btn" data-more="album" hidden>지난 앨범 더 보기</button>
+    </div>
     <div id="sec-together-offering" class="block block-grid">
       <div><span class="k">헌금</span><h2>헌금 안내</h2></div>
       <ul class="rows" id="offerRows">
@@ -906,6 +979,11 @@ footer .wrap{padding-block:56px 48px}
 </section>
 </main>
 
+<div class="lbox" id="lbox" hidden role="dialog" aria-modal="true" aria-labelledby="lbTitle">
+  <div class="lb-bar"><div><small id="lbSub"></small><b id="lbTitle"></b></div><span class="lb-n" id="lbN"></span><button type="button" class="lb-x" id="lbClose" aria-label="닫기">×</button></div>
+  <div class="lb-stage"><button type="button" class="lb-nav prev" id="lbPrev" aria-label="이전 사진">‹</button><img id="lbImg" alt=""><button type="button" class="lb-nav next" id="lbNext" aria-label="다음 사진">›</button></div>
+  <div class="lb-foot" id="lbFoot"></div>
+</div>
 <div class="qview" id="qview" hidden role="dialog" aria-modal="true" aria-labelledby="qvTitle">
   <div class="qview-card">
     <div class="qview-bar"><div><small id="qvDate"></small><b id="qvTitle"></b><span id="qvRef"></span></div><button type="button" class="qview-x" id="qvClose" aria-label="닫기">×</button></div>
@@ -947,6 +1025,7 @@ footer .wrap{padding-block:56px 48px}
     if(p==="word"){sub={sermon:"sunday"}[sub]||sub;wordJump={sub:sub,t:Date.now()};if(sub)loadWord()}
     var el=sub&&document.getElementById("sec-"+p+"-"+sub);
     document.querySelectorAll(".subtabs a,.dep2 a").forEach(function(a){a.getAttribute("href")==="#"+p+"/"+sub?a.setAttribute("aria-current","true"):a.removeAttribute("aria-current")});
+    var on=document.querySelector("#p-"+p+' .subtabs a[aria-current]');if(on){var ul=on.closest("ul");ul.scrollLeft=on.offsetLeft-(ul.clientWidth-on.offsetWidth)/2}
     if(!el)return;
     requestAnimationFrame(function(){el.scrollIntoView({block:"start",behavior:"smooth"})});
   }
@@ -1066,9 +1145,60 @@ footer .wrap{padding-block:56px 48px}
       (O.kinds?'<li><b>헌금 종류</b><span>'+E(O.kinds)+'</span></li>':''));
     renderBulletins(C.bulletins);
     if(G.lead)setHTML("greetLead",BR(G.lead));
+    var gp=document.getElementById("greetPhoto");
+    if(gp){var want=G.photo&&/^[\w-]{10,}$/.test(G.photo)?"https://drive.google.com/thumbnail?id="+encodeURIComponent(G.photo)+"&sz=w800":(G.photoSrc||"pastor.jpg");if(gp.getAttribute("src")!==want)gp.setAttribute("src",want)}
+    ALBUMS=(C.albums||[]).slice().sort(function(a,b){return String(b.date).localeCompare(String(a.date))});renderAlbums();
     if(G.body)setHTML("greetBody",String(G.body).split(/\n\s*\n/).map(function(p){return '<p>'+BR(p.trim())+'</p>'}).join(""));
     if(P.address)setHTML("footAddr",'<span>대한예수교장로회 광야교회</span><span>담임목사 박규성</span><span>'+E(P.address)+'</span>');
   }
+
+  /* ---------- 사진 크게 보기 (교회앨범 · 말씀기도캘리 · 사명선언문) ---------- */
+  var LB={list:[],i:0,sub:"",title:"",link:null,last:null};
+  function lbShow(){
+    var it=LB.list[LB.i];if(!it)return;
+    document.getElementById("lbImg").src=it.src;document.getElementById("lbImg").alt=LB.title+" "+(LB.i+1);
+    document.getElementById("lbN").textContent=LB.list.length>1?(LB.i+1)+" / "+LB.list.length:"";
+    document.getElementById("lbPrev").hidden=LB.list.length<2;document.getElementById("lbNext").hidden=LB.list.length<2;
+    var n=LB.list[LB.i+1];if(n){var pre=new Image();pre.src=n.src}
+  }
+  function lbOpen(list,i,title,sub,link){
+    LB={list:list,i:i||0,title:title||"",sub:sub||"",link:link,last:document.activeElement};
+    document.getElementById("lbTitle").textContent=LB.title;document.getElementById("lbSub").textContent=LB.sub;
+    document.getElementById("lbFoot").innerHTML=link?'<a href="'+esc(link.href)+'" target="_blank" rel="noopener">'+esc(link.text)+'</a>':"";
+    lbShow();var b=document.getElementById("lbox");b.hidden=false;document.body.style.overflow="hidden";document.getElementById("lbClose").focus();
+  }
+  function lbClose(){var b=document.getElementById("lbox");if(b.hidden)return;b.hidden=true;document.getElementById("lbImg").removeAttribute("src");document.body.style.overflow="";if(LB.last&&LB.last.focus)LB.last.focus()}
+  function lbGo(d){if(LB.list.length<2)return;LB.i=(LB.i+d+LB.list.length)%LB.list.length;lbShow()}
+  document.getElementById("lbClose").addEventListener("click",lbClose);
+  document.getElementById("lbPrev").addEventListener("click",function(){lbGo(-1)});
+  document.getElementById("lbNext").addEventListener("click",function(){lbGo(1)});
+  document.getElementById("lbox").addEventListener("click",function(e){if(e.target.classList.contains("lb-stage"))lbClose()});
+  window.addEventListener("keydown",function(e){if(document.getElementById("lbox").hidden)return;if(e.key==="Escape")lbClose();else if(e.key==="ArrowLeft")lbGo(-1);else if(e.key==="ArrowRight")lbGo(1)});
+  (function(){var st=document.querySelector(".lb-stage"),x0=null,y0=0;
+    st.addEventListener("touchstart",function(e){x0=e.touches[0].clientX;y0=e.touches[0].clientY},{passive:true});
+    st.addEventListener("touchend",function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;x0=null;if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy))lbGo(dx<0?1:-1)},{passive:true});
+  })();
+  document.addEventListener("click",function(e){var z=e.target.closest&&e.target.closest("[data-zoom]");if(z){lbOpen([{src:z.dataset.zoom}],0,z.dataset.zoomt||"","광야교회")}});
+
+  /* ---------- 교회앨범 (관리자 페이지에서 올림, 사진은 구글 드라이브) ---------- */
+  var ALBUMS=[], albumShown=6;
+  function dimg(id,w){return "https://drive.google.com/thumbnail?id="+encodeURIComponent(id)+"&sz=w"+w}
+  function aphoto(p,w){return p.src||dimg(p.drive,w)}
+  function renderAlbums(){
+    var box=document.getElementById("albumGrid"),btn=document.querySelector('[data-more="album"]');if(!box)return;
+    var L=ALBUMS.filter(function(a){return (a.photos||[]).length});
+    box.innerHTML=L.length?L.slice(0,albumShown).map(function(a,i){
+      var c=a.photos[a.cover||0]||a.photos[0];
+      return '<button type="button" class="acard" data-album="'+i+'"><span class="th"><img src="'+esc(aphoto(c,800))+'" alt="'+esc(a.title)+'" loading="lazy"><span class="cnt">사진 '+a.photos.length+'장</span></span><span class="d">'+esc(kdate(a.date))+NB(a.date)+'</span><b>'+esc(a.title)+'</b></button>';
+    }).join(""):'<p class="note">아직 올라온 앨범이 없습니다.</p>';
+    if(btn)btn.hidden=L.length<=albumShown;
+  }
+  document.addEventListener("click",function(e){
+    var mb=e.target.closest&&e.target.closest('[data-more="album"]');if(mb){albumShown+=6;renderAlbums();return}
+    var ac=e.target.closest&&e.target.closest("[data-album]");if(!ac)return;
+    var L=ALBUMS.filter(function(a){return (a.photos||[]).length}),a=L[+ac.dataset.album];if(!a)return;
+    lbOpen(a.photos.map(function(p){return {src:aphoto(p,2000)}}),0,a.title,kdate(a.date)+" · 교회앨범");
+  });
   /* 소식 본문(관리자 편집기에서 쓴 글): 허용한 태그만 남기고, 사진은 구글 드라이브 주소로 표시 */
   function showHTML(html){
     var doc=new DOMParser().parseFromString("<div>"+html+"</div>","text/html"),root=doc.body.firstChild;
@@ -1202,7 +1332,7 @@ footer .wrap{padding-block:56px 48px}
   var wordLoaded=false, QT=[], shown={}, wordJump=null;
   /* 영상이 늦게 채워지면 위치가 밀리므로, 방금 누른 하위 메뉴 자리로 한 번 더 맞춥니다 */
   function reJump(){if(!wordJump||!wordJump.sub||Date.now()-wordJump.t>5000)return;var el=document.getElementById("sec-word-"+wordJump.sub);if(el)el.scrollIntoView({block:"start"})}
-  var PAGE={sunday:6,friday:6,canvas:6,palm:6,qt:8};
+  var PAGE={sunday:6,friday:6,canvas:6,palm:6,qt:8,cali:8}, CALI=[];
   function kdate(d){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(d||"");return m?m[1]+"."+m[2]+"."+m[3]:""}
   function vcard(v,key){
     var sub=[v.scripture,(key==="sunday"||key==="friday")?kdate(v.date):""].filter(Boolean).join(" · ");
@@ -1228,10 +1358,18 @@ footer .wrap{padding-block:56px 48px}
     }).catch(function(){["sunday","friday","canvas","palm"].forEach(function(k){var b=document.getElementById("wv-"+k);if(b)b.innerHTML='<p class="note">영상을 불러오지 못했습니다. 위의 \'유튜브에서 보기\'를 눌러 주세요.</p>'})});
     load("qt.json?t="+Math.floor(Date.now()/6e4)).then(function(D){QT=D.posts||[];fillWord("qt",QT,qcard);reJump()})
       .catch(function(){var b=document.getElementById("wv-qt");if(b)b.innerHTML='<p class="note">큐티를 불러오지 못했습니다. 위의 \'유튜브 게시물에서 보기\'를 눌러 주세요.</p>'});
+    load("cali.json?t="+Math.floor(Date.now()/6e4)).then(function(D){CALI=D.posts||[];fillWord("cali",CALI,ccard);reJump()})
+      .catch(function(){var b=document.getElementById("wv-cali");if(b)b.innerHTML='<p class="note">말씀기도캘리를 불러오지 못했습니다. 위의 \'네이버 카페에서 보기\'를 눌러 주세요.</p>'});
+  }
+  function ccard(c,i){
+    return '<button type="button" class="qcard" data-cali="'+i+'"><span class="th"><img src="'+esc((c.images||[])[0]||"")+'" alt="'+esc(c.title)+' 말씀기도캘리" loading="lazy"></span><span class="d">'+esc(kdate(c.date))+NB(c.date)+'</span><b>'+esc(c.title)+'</b></button>';
   }
   document.addEventListener("click",function(e){
     var mb=e.target.closest&&e.target.closest("[data-more]");
-    if(mb){var k=mb.dataset.more;shown[k]=(shown[k]||PAGE[k])+PAGE[k]*2;if(k==="qt")fillWord("qt",QT,qcard);else fillWord(k,WORD[k]||[],function(v){return vcard(v,k)});return}
+    if(mb&&mb.dataset.more==="album")return;
+    var cc=e.target.closest&&e.target.closest("[data-cali]");
+    if(cc){var c=CALI[+cc.dataset.cali];if(c)lbOpen((c.images||[]).map(function(u){return {src:u}}),0,c.title,kdate(c.date)+" · 말씀기도캘리",{href:"https://cafe.naver.com/f-e/cafes/31786576/articles/"+c.id,text:"네이버 카페에서 보기 ↗"});return}
+    if(mb){var k=mb.dataset.more;shown[k]=(shown[k]||PAGE[k])+PAGE[k]*2;if(k==="qt")fillWord("qt",QT,qcard);else if(k==="cali")fillWord("cali",CALI,ccard);else fillWord(k,WORD[k]||[],function(v){return vcard(v,k)});return}
     var qc=e.target.closest&&e.target.closest("[data-qt]");
     if(qc){openQT(QT[+qc.dataset.qt]);return}
     if(e.target.id==="qvClose"||e.target.id==="qview")closeQT();

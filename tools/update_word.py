@@ -4,6 +4,7 @@
 유튜브 채널을 읽어서 두 파일을 만듭니다. (API 키 필요 없음, 표준 라이브러리만 사용)
   word.json : 재생목록별 영상 (주일설교 / 금요기도회 / 광야캔버스 / 뿌리 깊은 종려나무)
   qt.json   : 커뮤니티 '게시물'에 올라온 매일성경 큐티 (한 번 가져온 글은 계속 보관)
+  cali.json : 네이버 카페 [말씀기도캘리] 게시판 글 (그림은 cali/ 폴더에 내려받아 보관)
 
 GitHub Actions(.github/workflows/update-word.yml)가 1시간마다 실행합니다.
 """
@@ -260,6 +261,70 @@ def save(name, data):
     print(name, "저장")
 
 
+# ---------- 네이버 카페 [말씀기도캘리] ----------
+CAFE_ID = 31786576          # cafe.naver.com/midbarchurch
+CALI_MENU = 18              # 말씀기도캘리 게시판
+NAVER_HEAD = {"User-Agent": UA, "Referer": "https://cafe.naver.com/midbarchurch"}
+
+
+def nget(url, raw=False):
+    for n in range(3):
+        try:
+            req = urllib.request.Request(url, headers=NAVER_HEAD)
+            with urllib.request.urlopen(req, timeout=30) as r:
+                b = r.read()
+                return b if raw else json.loads(b.decode("utf-8"))
+        except Exception:
+            if n == 2:
+                raise
+            time.sleep(3 + n * 3)
+
+
+def cali_posts(old_by_id):
+    url = ("https://apis.naver.com/cafe-web/cafe2/ArticleListV2dot1.json?search.clubid=%d"
+           "&search.menuid=%d&search.boardtype=I&search.page=1&search.perPage=50&ad=false" % (CAFE_ID, CALI_MENU))
+    arts = nget(url)["message"]["result"]["articleList"]
+    os.makedirs(os.path.join(ROOT, "cali"), exist_ok=True)
+    out = []
+    for a in arts:
+        if not a.get("openArticle"):
+            continue
+        aid = int(a["articleId"])
+        title = re.sub(r"^\s*\[[^\]]*\]\s*", "", a.get("subject", "")).strip()
+        date = datetime.fromtimestamp(a["writeDateTimestamp"] / 1000, KST).strftime("%Y-%m-%d")
+        prev = old_by_id.get(aid)
+        if prev and prev.get("images") and all(os.path.exists(os.path.join(ROOT, i)) for i in prev["images"]):
+            prev.update({"title": title, "date": date})
+            out.append(prev)
+            continue
+        srcs = []
+        try:
+            d = nget("https://apis.naver.com/cafe-web/cafe-articleapi/v2.1/cafes/%d/articles/%d?useCafeId=true" % (CAFE_ID, aid))
+            html = d["result"]["article"].get("contentHtml", "")
+            srcs = [u for u in re.findall(r'src="([^"]+)"', html) if "pstatic.net" in u and "phinf" in u]
+        except Exception as e:
+            print("카페 글", aid, "본문 실패:", e, file=sys.stderr)
+        if not srcs and a.get("representImage"):
+            srcs = [a["representImage"]]
+        imgs = []
+        for n, u in enumerate(srcs[:10]):
+            u = u.replace("&amp;", "&").split("?")[0] + "?type=w800"
+            name = "cali/%d-%d.jpg" % (aid, n + 1)
+            try:
+                b = nget(u, raw=True)
+                if b[:2] != b"\xff\xd8" and b[:4] != b"\x89PNG":
+                    raise RuntimeError("그림이 아님")
+                with open(os.path.join(ROOT, name), "wb") as f:
+                    f.write(b)
+                imgs.append(name)
+            except Exception as e:
+                print("카페 그림", aid, "실패:", e, file=sys.stderr)
+        if imgs:
+            out.append({"id": aid, "title": title, "date": date, "images": imgs})
+        time.sleep(1)
+    return out
+
+
 def main():
     now = datetime.now(KST).strftime("%Y-%m-%dT%H:%M:%S+09:00")
     ok = True
@@ -331,6 +396,19 @@ def main():
     except Exception as e:
         ok = False
         print("게시물 실패:", e, file=sys.stderr)
+
+    # 3) 네이버 카페 [말씀기도캘리] → cali.json (예전 글도 계속 보관)
+    try:
+        old = load("cali.json", {"posts": []})
+        by_id = {int(p["id"]): p for p in old.get("posts", [])}
+        for p in cali_posts(by_id):
+            by_id[int(p["id"])] = p
+        posts = sorted(by_id.values(), key=lambda p: (p["date"], p["id"]), reverse=True)
+        print("말씀기도캘리", len(posts), "개")
+        save("cali.json", {"updated": now, "posts": posts})
+    except Exception as e:
+        ok = False
+        print("카페 실패:", e, file=sys.stderr)
 
     sys.exit(0 if ok else 1)
 
