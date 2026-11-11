@@ -213,6 +213,13 @@ header .wrap{display:flex;align-items:center;justify-content:space-between;heigh
 .logo{display:flex;align-items:center;gap:12px}
 .logo .mk{width:44px;height:44px;border-radius:50%;background:#fff;display:grid;place-items:center;overflow:hidden;flex:none;box-shadow:0 2px 10px rgba(0,0,0,.12)}
 .logo .mk img{width:40px;height:40px;display:block}
+.logo .lw{height:54px;width:auto;display:block}
+.logo .lw-w{filter:drop-shadow(0 1px 6px rgba(0,0,0,.35))}
+@media (max-width:760px){.logo .lw{height:42px}}
+.logo .lw-c{display:none}
+header.solid .logo .lw-c{display:block}
+header.solid .logo .lw-w{display:none}
+.f-logo{height:clamp(44px,5vw,68px);width:auto;display:block}
 .logo b{font-family:var(--f-serif);font-size:20px;font-weight:700;letter-spacing:-.02em}
 .logo .en{display:flex;flex-direction:column;justify-content:center;font-size:9.5px;line-height:1.25;letter-spacing:.16em;font-weight:500;opacity:.75;margin-left:-4px}
 .gnb{display:flex;gap:4px}
@@ -649,7 +656,7 @@ footer .wrap{padding-block:56px 48px}
 
 <header id="hd" class="enter">
   <div class="wrap">
-    <a class="logo" href="#home" aria-label="광야교회 홈"><span class="mk"><img src="logo-mark.png?v=3" alt=""></span><b>광야교회</b><span class="en"><span>MIDBAR</span><span>CHURCH</span></span></a>
+    <a class="logo" href="#home" aria-label="대한예수교장로회 광야교회 MIDBAR CHURCH 홈"><img class="lw lw-c" src="logo-wide.png?v=1" alt="대한예수교장로회 광야교회 MIDBAR CHURCH" width="602" height="160"><img class="lw lw-w" src="logo-wide-white.png?v=1" alt="" aria-hidden="true" width="602" height="160"></a>
     <ul class="gnb" id="gnb">
       <li data-p="about"><a href="#about">교회소개</a>
         <div class="dep2"><a href="#about/greet">인사말</a><a href="#about/name">교회 이름의 뜻</a><a href="#about/mission">사명선언문</a><a href="#about/vision">MIDBAR VISION</a><a href="#about/logo">광야교회 로고</a><a href="#about/history">걸어온 길</a></div></li>
@@ -998,7 +1005,7 @@ footer .wrap{padding-block:56px 48px}
 <footer>
   <div class="wrap">
     <div class="f-top">
-      <div class="f-brand"><span class="mk"><img src="logo-mark.png?v=3" alt="광야교회 로고"></span><div class="f-word">광야교회</div></div>
+      <div class="f-brand"><img class="f-logo" src="logo-wide-white.png?v=1" alt="대한예수교장로회 광야교회 MIDBAR CHURCH" width="602" height="160" loading="lazy"></div>
       <div class="f-links"><a href="#about">교회소개</a><a href="#worship">예배안내</a><a href="#word">말씀</a><a href="#bulletin">주보</a><a href="#together">함께하기</a><a href="https://cafe.naver.com/midbarchurch" target="_blank" rel="noopener">네이버 카페 ↗</a><a href="https://www.youtube.com/@midbar-church-smilepastor" target="_blank" rel="noopener">유튜브 ↗</a></div>
     </div>
     <div class="f-bot">
