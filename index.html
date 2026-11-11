@@ -1024,11 +1024,37 @@ footer .wrap{padding-block:56px 48px}
   function goSub(p,sub){
     if(p==="word"){sub={sermon:"sunday"}[sub]||sub;wordJump={sub:sub,t:Date.now()};if(sub)loadWord()}
     var el=sub&&document.getElementById("sec-"+p+"-"+sub);
-    document.querySelectorAll(".subtabs a,.dep2 a").forEach(function(a){a.getAttribute("href")==="#"+p+"/"+sub?a.setAttribute("aria-current","true"):a.removeAttribute("aria-current")});
-    var on=document.querySelector("#p-"+p+' .subtabs a[aria-current]');if(on){var ul=on.closest("ul");ul.scrollLeft=on.offsetLeft-(ul.clientWidth-on.offsetWidth)/2}
+    markSub(p,sub||firstSub(p),false);
     if(!el)return;
+    spyLock=Date.now()+1200;
     requestAnimationFrame(function(){el.scrollIntoView({block:"start",behavior:"smooth"})});
   }
+  /* 위쪽 하위 메뉴 표시: 지금 보고 있는 칸에 맞춰 따라 움직임 */
+  var spyLock=0,spySub="";
+  function firstSub(p){var a=document.querySelector("#p-"+p+" .subtabs a");return a?a.getAttribute("href").split("/")[1]:""}
+  function markSub(p,sub,smooth){
+    var key=p+"/"+sub;if(key===spySub&&smooth)return;spySub=key;
+    document.querySelectorAll(".subtabs a,.dep2 a").forEach(function(a){a.getAttribute("href")==="#"+key?a.setAttribute("aria-current","true"):a.removeAttribute("aria-current")});
+    var on=document.querySelector("#p-"+p+' .subtabs a[aria-current]');if(!on)return;
+    var ul=on.closest("ul"),x=on.offsetLeft-(ul.clientWidth-on.offsetWidth)/2;
+    if(smooth&&ul.scrollTo)ul.scrollTo({left:x,behavior:"smooth"});else ul.scrollLeft=x;
+  }
+  function spy(){
+    if(Date.now()<spyLock)return;
+    var page=document.getElementById("p-"+cur),bar=page&&page.querySelector(".subtabs");if(!bar)return;
+    var links=bar.querySelectorAll("a"),line=bar.getBoundingClientRect().bottom+Math.min(160,innerHeight*.25),pick="",first="";
+    var atEnd=innerHeight+scrollY>=document.documentElement.scrollHeight-4;
+    links.forEach(function(a){
+      var sub=a.getAttribute("href").split("/")[1],el=document.getElementById("sec-"+cur+"-"+sub);if(!el||!el.offsetHeight)return;
+      if(!first)first=sub;
+      var t=el.getBoundingClientRect().top;
+      if(t<=line||(atEnd&&t<innerHeight-60))pick=sub;
+    });
+    markSub(cur,pick||first,true);
+  }
+  var spyRaf=0;
+  window.addEventListener("scroll",function(){if(!spyRaf)spyRaf=requestAnimationFrame(function(){spyRaf=0;spy()})},{passive:true});
+  window.addEventListener("scrollend",function(){spyLock=0;spy()});
   var PT={about:"교회소개",worship:"예배안내 · 오시는 길",word:"말씀",bulletin:"주보",together:"함께하기"};
   function show(){
     var h=(location.hash||"#home").slice(1).split("/"),p=h[0],sub=h[1]||"";
