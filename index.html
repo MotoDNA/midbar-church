@@ -1350,6 +1350,9 @@ footer .wrap{padding-block:56px 48px}
   function ytOk(img){if(img.naturalWidth&&img.naturalWidth<=120)window.ytFix(img)}
   window.ytOk=ytOk;
   (CONTENT_API?load(CONTENT_API+"?action=videos").then(function(V){if(!V||!V.length)throw 0;return V}).catch(function(){return load("videos.json")}):load("videos.json")).then(function(V){
+    /* 숏츠(세로 영상)는 첫 화면 설교란에서 뺍니다 — 숏츠 목록은 word.json(1시간마다 갱신) */
+    return load("word.json?t="+Math.floor(Date.now()/6e4)).then(function(D){var S=D.shorts||[];return V.filter(function(v){return S.indexOf(v.id)<0})},function(){return V});
+  }).then(function(V){
     if(!V||!V.length)return;
     V.forEach(function(v){if(v.scripture&&!/\d/.test(v.scripture)){v.kind=v.scripture;v.scripture=""}});
     V.sort(function(a,b){return (b.published||"").localeCompare(a.published||"")});

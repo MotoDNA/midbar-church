@@ -162,6 +162,26 @@ def page_all(url, limit=10):
     return items
 
 
+def shorts_ids(limit=10):
+    """채널 '숏츠' 탭의 영상 번호 (홈페이지 첫 화면 설교란에서 빼기 위해)"""
+    html = get(CHANNEL + "/shorts")
+    d = initial_data(html)
+    key, ver = api_key(html)
+    ids = []
+    def grab(o):
+        for r in walk(o, "reelWatchEndpoint", []):
+            if r.get("videoId") and r["videoId"] not in ids:
+                ids.append(r["videoId"])
+    grab(d)
+    tok, n = next_token(d), 0
+    while tok and n < limit:
+        n += 1
+        more = browse_more(tok, key, ver)
+        grab(more)
+        tok = next_token(more)
+    return ids
+
+
 def playlists():
     d = initial_data(get(CHANNEL + "/playlists"))
     out = []
@@ -379,7 +399,15 @@ def main():
             print(name, len(vids), "개")
         if sum(len(c["videos"]) for c in cats) == 0:
             raise RuntimeError("영상을 하나도 찾지 못했습니다.")
-        save("word.json", {"updated": now, "categories": cats})
+        shorts = list(load("word.json", {}).get("shorts", []))
+        try:
+            for i in shorts_ids():
+                if i not in shorts:
+                    shorts.append(i)
+        except Exception as e:
+            print("숏츠 목록 실패:", e, file=sys.stderr)
+        print("숏츠", len(shorts), "개")
+        save("word.json", {"updated": now, "categories": cats, "shorts": shorts})
     except Exception as e:
         ok = False
         print("영상 목록 실패:", e, file=sys.stderr)
