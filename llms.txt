@@ -6,7 +6,7 @@
 - 교회 이름: 광야교회 (미드바르, Midbar Church)
 - 교단: 대한예수교장로회
 - 담임목사: 박규성
-- 홈페이지: https://midbarchurch.co.kr/
+- 홈페이지: https://midbarchurch.org/
 - 유튜브: https://www.youtube.com/@midbar-church-smilepastor
 - 네이버 카페: https://cafe.naver.com/midbarchurch
 
@@ -42,11 +42,11 @@ Midbar Church의 M자를 형상화했습니다. 광야에 길을 만드시고(M�
 - 2026.09.18 개척을 위한 준비기도회로 첫 현장 예배
 
 ## 홈페이지 메뉴
-- 교회소개: 인사말, 교회 이름의 뜻, 사명선언문, MIDBAR VISION, 광야교회 로고, 걸어온 길 (https://midbarchurch.co.kr/#about)
-- 예배안내: 예배 시간, 오시는 길과 지도 (https://midbarchurch.co.kr/#worship)
-- 말씀: 주일설교, 금요기도회, 광야캔버스(그림으로 나누는 묵상), 뿌리깊은 종려나무(큐티 말씀 묵상), 매일성경큐티, 말씀기도캘리(손글씨 말씀·기도문) (https://midbarchurch.co.kr/#word) — 유튜브 영상·게시물과 네이버 카페 말씀기도캘리가 1시간마다 자동으로 올라옵니다.
-- 주보: 매주 주일 주보 (https://midbarchurch.co.kr/#bulletin)
-- 함께하기: 처음 오신 분 안내, 기도 제목, 교회 소식, 교회앨범, 헌금 안내 (https://midbarchurch.co.kr/#together)
+- 교회소개: 인사말, 교회 이름의 뜻, 사명선언문, MIDBAR VISION, 광야교회 로고, 걸어온 길 (https://midbarchurch.org/#about)
+- 예배안내: 예배 시간, 오시는 길과 지도 (https://midbarchurch.org/#worship)
+- 말씀: 주일설교, 금요기도회, 광야캔버스(그림으로 나누는 묵상), 뿌리깊은 종려나무(큐티 말씀 묵상), 매일성경큐티, 말씀기도캘리(손글씨 말씀·기도문) (https://midbarchurch.org/#word) — 유튜브 영상·게시물과 네이버 카페 말씀기도캘리가 1시간마다 자동으로 올라옵니다.
+- 주보: 매주 주일 주보 (https://midbarchurch.org/#bulletin)
+- 함께하기: 처음 오신 분 안내, 기도 제목, 교회 소식, 교회앨범, 헌금 안내 (https://midbarchurch.org/#together)
 
 ## 헌금 안내
 - 국민은행 293201-04-362488 (예금주: 대한예수교장로회광야교회)

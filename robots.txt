@@ -4,4 +4,4 @@ Disallow: /admin.html
 Disallow: /apps-script/
 Disallow: /tools/
 
-Sitemap: https://midbarchurch.co.kr/sitemap.xml
+Sitemap: https://midbarchurch.org/sitemap.xml

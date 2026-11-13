@@ -1218,7 +1218,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
   var GH="https://api.github.com/repos/MotoDNA/midbar-church";
   function kd(d){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(d||"");return m?m[1]+"."+m[2]+"."+m[3]:""}
   function wli(t,sub,href){return '<li><span class="t"><b>'+E(t)+'</b><small>'+E(sub)+'</small></span><a class="btn sm" href="'+href+'" target="_blank" rel="noopener">유튜브</a></li>'}
-  function wordBase(){return API_URL?"":"https://midbarchurch.co.kr/"}
+  function wordBase(){return API_URL?"":"https://midbarchurch.org/"}
   function getJSON(u){return fetch(u+(u.indexOf("?")<0?"?":"&")+"t="+Date.now(),{cache:"no-store"}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}
   function whenStr(iso){var d=new Date(iso);if(isNaN(d))return "";var z=function(n){return (n<10?"0":"")+n};return (d.getMonth()+1)+"월 "+d.getDate()+"일 "+z(d.getHours())+":"+z(d.getMinutes())}
   function paintWord(){
