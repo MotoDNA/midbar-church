@@ -1,10 +1,17 @@
 {
- "updated": "2026-11-16T02:42:26+09:00",
+ "updated": "2026-11-16T20:17:01+09:00",
  "categories": [
   {
    "key": "sunday",
    "name": "주일설교",
    "videos": [
+    {
+     "id": "sexCjcuHsVk",
+     "title": "인생이 불확실할 때",
+     "scripture": "전도서 11:1~6",
+     "date": "2026-11-15",
+     "note": ""
+    },
     {
      "id": "0ISw6iI3Rrk",
      "title": "돈 때문에 걱정될 때",
