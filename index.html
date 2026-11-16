@@ -85,7 +85,7 @@
    "amenityFeature": [
     {
      "@type": "LocationFeatureSpecification",
-     "name": "주차 가능",
+     "name": "지하주차 가능 (만차 시 인근 풍산동 행정복지센터·농협 유료주차)",
      "value": true
     }
    ],
@@ -132,7 +132,10 @@
      },
      "isAccessibleForFree": true
     }
-   ]
+   ],
+   "publicAccess": true,
+   "slogan": "광야에 길을, 사막에 강을 (이사야 43:19)",
+   "knowsLanguage": "ko"
   },
   {
    "@type": "Person",
@@ -153,6 +156,108 @@
    "publisher": {
     "@id": "https://midbarchurch.org/#church"
    }
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://midbarchurch.org/#webpage",
+   "url": "https://midbarchurch.org/",
+   "name": "광야교회 미드바르 | 일산 풍동 대한예수교장로회 교회",
+   "inLanguage": "ko-KR",
+   "isPartOf": {
+    "@id": "https://midbarchurch.org/#website"
+   },
+   "about": {
+    "@id": "https://midbarchurch.org/#church"
+   },
+   "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [
+     "#sec-together-faq",
+     "#greetLead"
+    ]
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "@id": "https://midbarchurch.org/#faq",
+   "inLanguage": "ko-KR",
+   "isPartOf": {
+    "@id": "https://midbarchurch.org/#webpage"
+   },
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "광야교회는 어디에 있나요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "경기도 고양시 일산동구 숲속마을1로 26 다인타운 4층(지번 풍동 1293)에 있는 일산은광교회 예배당을 임시 예배당으로 빌려 예배드립니다."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "광야교회 예배 시간은 언제인가요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "주일 예배는 일요일 오후 5:00, 금요기도회는 금요일 오후 8:30입니다. 새벽기도회는 매일 00시부터 유튜브 광야교회 게시물로 온라인 큐티를 나눕니다."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "주차할 수 있나요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "지하주차를 할 수 있습니다. 만차일 때는 인근 풍산동 행정복지센터나 농협(유료) 주차장을 이용해 주세요."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "대중교통으로는 어떻게 가나요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "버스는 ‘숲속마을1단지’ 또는 ‘숲속마을1단지.풍동성당’ 정류장에서 내리면 됩니다(81 · 83 · 84 · 98 · 100번). 지하철은 경의중앙선 풍산역에서 81번 버스로 갈아타세요."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "광야교회는 어느 교단인가요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "대한예수교장로회(통합) 소속 교회입니다. 담임목사는 박규성 목사입니다."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "처음 가면 어떻게 하면 되나요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "주일예배나 금요기도회에 편하게 오셔서 함께 예배드리면 됩니다. 등록을 원하시면 예배 후 새가족 등록카드를 작성해 주시고, 이후 목사님이 가정을 찾아가 함께 기도하는 새가족 심방이 있습니다."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "설교 영상은 어디서 볼 수 있나요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "유튜브 광야교회 채널(@midbar-church-smilepastor)과 홈페이지 말씀 메뉴에서 주일설교, 금요기도회, 광야캔버스, 뿌리깊은 종려나무, 매일성경큐티를 볼 수 있습니다."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "온라인 헌금은 어떻게 하나요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "국민은행 293201-04-362488(예금주 대한예수교장로회광야교회)로 보내 주세요. 보내는 분 이름은 ‘이름 + 헌금 종류 첫 글자 + 휴대폰 끝 4자리’로 적어 주세요. 예) 홍길동십9191"
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "‘광야교회(미드바르)’라는 이름은 무슨 뜻인가요?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "히브리어로 광야는 ‘미드바르’이며 ‘말씀(다바르)’에서 비롯된 말입니다. 이사야 43:19 “광야에 길을, 사막에 강을” 말씀처럼, 광야에서 하나님을 가장 깊이 만나는 교회가 되고자 합니다."
+     }
+    }
+   ]
   }
  ]
 }
@@ -653,6 +758,16 @@ footer .wrap{padding-block:56px 48px}
 .lb-foot a{color:rgba(255,255,255,.75);font-size:14px;text-decoration:underline}
 @media (max-width:1024px){.agrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){.agrid{gap:24px 14px}.lb-stage{padding:0 0 12px}.lb-nav{width:40px;height:40px;font-size:24px;background:rgba(0,0,0,.45)}.about-fig .zoom{max-width:100%}.vision li{grid-template-columns:34px 1fr;gap:10px}.vision i{font-size:24px}}
+
+/* ---------- 자주 묻는 질문 ---------- */
+.faqs{display:grid;gap:10px}
+.faq{border:1px solid var(--line,#e4ded2);border-radius:14px;background:#fff;padding:0 20px}
+.faq summary{list-style:none;cursor:pointer;padding:18px 28px 18px 0;position:relative;font-size:17px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary b{font-weight:500}
+.faq summary::after{content:"+";position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:22px;color:var(--dawn,#b5793b);transition:transform .2s}
+.faq[open] summary::after{content:"−"}
+.faq p{margin:0 0 18px;color:#3E403A;line-height:1.75;font-size:15.5px;white-space:pre-line}
 </style>
 
 <header id="hd" class="enter">
@@ -667,7 +782,7 @@ footer .wrap{padding-block:56px 48px}
         <div class="dep2"><a href="#word/sunday">주일설교</a><a href="#word/friday">금요기도회</a><a href="#word/canvas">광야캔버스</a><a href="#word/palm">뿌리깊은 종려나무</a><a href="#word/qt">매일성경큐티</a><a href="#word/cali">말씀기도캘리</a></div></li>
       <li data-p="bulletin"><a href="#bulletin">주보</a></li>
       <li data-p="together"><a href="#together">함께하기</a>
-        <div class="dep2"><a href="#together/new">새가족 안내</a><a href="#together/prayer">기도 제목</a><a href="#together/news">교회 소식</a><a href="#together/album">교회앨범</a><a href="#together/offering">헌금 안내</a></div></li>
+        <div class="dep2"><a href="#together/new">새가족 안내</a><a href="#together/faq">자주 묻는 질문</a><a href="#together/prayer">기도 제목</a><a href="#together/news">교회 소식</a><a href="#together/album">교회앨범</a><a href="#together/offering">헌금 안내</a></div></li>
       <li><a href="https://cafe.naver.com/midbarchurch" target="_blank" rel="noopener" class="ext">네이버 카페 <span aria-hidden="true">↗</span></a></li>
     </ul>
     <div class="hd-cta">
@@ -937,7 +1052,7 @@ footer .wrap{padding-block:56px 48px}
 <section class="page" id="p-together">
   <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 함께하기</p><h1>함께하기</h1></div></div>
-  <nav class="subtabs" aria-label="함께하기 메뉴"><ul class="wrap"><li><a href="#together/new">새가족 안내</a></li><li><a href="#together/prayer">기도 제목</a></li><li><a href="#together/news">교회 소식</a></li><li><a href="#together/album">교회앨범</a></li><li><a href="#together/offering">헌금 안내</a></li></ul></nav>
+  <nav class="subtabs" aria-label="함께하기 메뉴"><ul class="wrap"><li><a href="#together/new">새가족 안내</a></li><li><a href="#together/faq">자주 묻는 질문</a></li><li><a href="#together/prayer">기도 제목</a></li><li><a href="#together/news">교회 소식</a></li><li><a href="#together/album">교회앨범</a></li><li><a href="#together/offering">헌금 안내</a></li></ul></nav>
   <div class="wrap">
     <div id="sec-together-new" class="block">
       <div class="sec-head"><div><p class="label">새가족</p><h2>처음 오신 분을<br><em>진심으로 환영합니다</em></h2></div></div>
@@ -946,6 +1061,10 @@ footer .wrap{padding-block:56px 48px}
         <li><span class="s">예배 후</span><b>새가족 등록카드 작성</b><p>광야교회 등록을 원하시면 예배 후 새가족 등록카드를 작성해 주세요.</p></li>
         <li><span class="s">그다음</span><b>새가족 심방</b><p>목사님이 가정을 찾아가 함께 기도하는 새가족 등록 심방이 있습니다.</p></li>
       </ol>
+    </div>
+    <div id="sec-together-faq" class="block block-grid">
+      <div><span class="k">FAQ</span><h2>자주 묻는 질문</h2></div>
+      <div class="faqs" id="faqList"><details class="faq" open><summary><b>광야교회는 어디에 있나요?</b></summary><p>경기도 고양시 일산동구 숲속마을1로 26 다인타운 4층(지번 풍동 1293)에 있는 일산은광교회 예배당을 임시 예배당으로 빌려 예배드립니다.</p></details><details class="faq"><summary><b>광야교회 예배 시간은 언제인가요?</b></summary><p>주일 예배는 일요일 오후 5:00, 금요기도회는 금요일 오후 8:30입니다. 새벽기도회는 매일 00시부터 유튜브 광야교회 게시물로 온라인 큐티를 나눕니다.</p></details><details class="faq"><summary><b>주차할 수 있나요?</b></summary><p>지하주차를 할 수 있습니다. 만차일 때는 인근 풍산동 행정복지센터나 농협(유료) 주차장을 이용해 주세요.</p></details><details class="faq"><summary><b>대중교통으로는 어떻게 가나요?</b></summary><p>버스는 ‘숲속마을1단지’ 또는 ‘숲속마을1단지.풍동성당’ 정류장에서 내리면 됩니다(81 · 83 · 84 · 98 · 100번). 지하철은 경의중앙선 풍산역에서 81번 버스로 갈아타세요.</p></details><details class="faq"><summary><b>광야교회는 어느 교단인가요?</b></summary><p>대한예수교장로회(통합) 소속 교회입니다. 담임목사는 박규성 목사입니다.</p></details><details class="faq"><summary><b>처음 가면 어떻게 하면 되나요?</b></summary><p>주일예배나 금요기도회에 편하게 오셔서 함께 예배드리면 됩니다. 등록을 원하시면 예배 후 새가족 등록카드를 작성해 주시고, 이후 목사님이 가정을 찾아가 함께 기도하는 새가족 심방이 있습니다.</p></details><details class="faq"><summary><b>설교 영상은 어디서 볼 수 있나요?</b></summary><p>유튜브 광야교회 채널(@midbar-church-smilepastor)과 홈페이지 말씀 메뉴에서 주일설교, 금요기도회, 광야캔버스, 뿌리깊은 종려나무, 매일성경큐티를 볼 수 있습니다.</p></details><details class="faq"><summary><b>온라인 헌금은 어떻게 하나요?</b></summary><p>국민은행 293201-04-362488(예금주 대한예수교장로회광야교회)로 보내 주세요. 보내는 분 이름은 ‘이름 + 헌금 종류 첫 글자 + 휴대폰 끝 4자리’로 적어 주세요. 예) 홍길동십9191</p></details><details class="faq"><summary><b>‘광야교회(미드바르)’라는 이름은 무슨 뜻인가요?</b></summary><p>히브리어로 광야는 ‘미드바르’이며 ‘말씀(다바르)’에서 비롯된 말입니다. 이사야 43:19 “광야에 길을, 사막에 강을” 말씀처럼, 광야에서 하나님을 가장 깊이 만나는 교회가 되고자 합니다.</p></details></div>
     </div>
     <div id="sec-together-prayer" class="block block-grid">
       <div><span class="k">기도</span><h2>기도 제목</h2></div>
@@ -1063,7 +1182,7 @@ footer .wrap{padding-block:56px 48px}
   var spyRaf=0;
   window.addEventListener("scroll",function(){if(!spyRaf)spyRaf=requestAnimationFrame(function(){spyRaf=0;spy()})},{passive:true});
   window.addEventListener("scrollend",function(){spyLock=0;spy()});
-  var PT={about:"교회소개",worship:"예배안내 · 오시는 길",word:"말씀",bulletin:"주보",together:"함께하기"};
+  var PT={about:"교회소개",worship:"예배안내 · 오시는 길",word:"말씀",bulletin:"주보",together:"함께하기 · 자주 묻는 질문"};
   function show(){
     var h=(location.hash||"#home").slice(1).split("/"),p=h[0],sub=h[1]||"";
     if(pages.indexOf(p)<0)p="home";
@@ -1181,11 +1300,29 @@ footer .wrap{padding-block:56px 48px}
     if(G.lead)setHTML("greetLead",BR(G.lead));
     var gp=document.getElementById("greetPhoto");
     if(gp){var want=G.photo&&/^[\w-]{10,}$/.test(G.photo)?"https://drive.google.com/thumbnail?id="+encodeURIComponent(G.photo)+"&sz=w800":(G.photoSrc||"pastor.jpg");if(gp.getAttribute("src")!==want)gp.setAttribute("src",want)}
-    ALBUMS=(C.albums||[]).slice().sort(function(a,b){return String(b.date).localeCompare(String(a.date))});renderAlbums();
+    ALBUMS=(C.albums||[]).slice().sort(function(a,b){return String(b.date).localeCompare(String(a.date))});renderAlbums();renderFaq(C);
     if(G.body)setHTML("greetBody",String(G.body).split(/\n\s*\n/).map(function(p){return '<p>'+BR(p.trim())+'</p>'}).join(""));
     if(P.address)setHTML("footAddr",'<span>대한예수교장로회 광야교회</span><span>담임목사 박규성</span><span>'+E(P.address)+'</span>');
   }
 
+
+  /* ---------- 자주 묻는 질문: 관리자에서 고친 예배 시간·장소·헌금 안내를 그대로 반영 ---------- */
+  function renderFaq(C){
+    var box=document.getElementById("faqList");if(!box)return;
+    var W=C.worship||[],P=C.place||{},O=C.offering||{},N=C.newcomer||[],L=[];
+    function wl(w){return (w.name||"")+(w.time?" "+w.time:"")+(w.desc?" ("+w.desc+")":"")}
+    if(P.address)L.push(["광야교회는 어디에 있나요?",P.address+(P.jibun?" (지번 "+P.jibun+")":"")+(P.name?"\n"+P.name+"에서 예배드립니다.":"")]);
+    if(W.length)L.push(["광야교회 예배 시간은 언제인가요?",W.map(wl).join("\n")]);
+    if(P.parking)L.push(["주차할 수 있나요?",P.parking]);
+    if(P.transit)L.push(["대중교통으로는 어떻게 가나요?",P.transit]);
+    L.push(["광야교회는 어느 교단인가요?","대한예수교장로회(통합) 소속 교회입니다. 담임목사는 박규성 목사입니다."]);
+    if(N.length)L.push(["처음 가면 어떻게 하면 되나요?",N.map(function(n,i){return (i+1)+". "+(n.title||"")+(n.text?" — "+n.text:"")}).join("\n")]);
+    L.push(["설교 영상은 어디서 볼 수 있나요?","유튜브 광야교회 채널(@midbar-church-smilepastor)과 홈페이지 말씀 메뉴에서 주일설교, 금요기도회, 광야캔버스, 뿌리깊은 종려나무, 매일성경큐티를 볼 수 있습니다."]);
+    if(O.account)L.push(["온라인 헌금은 어떻게 하나요?",(O.bank||"")+" "+O.account+(O.holder?" (예금주 "+O.holder+")":"")+(O.howto?"\n보내는 분 이름: "+O.howto:"")+(O.example?"\n"+O.example:"")]);
+    L.push(["‘광야교회(미드바르)’라는 이름은 무슨 뜻인가요?","히브리어로 광야는 ‘미드바르’이며 ‘말씀(다바르)’에서 비롯된 말입니다. 이사야 43:19 “광야에 길을, 사막에 강을” 말씀처럼, 광야에서 하나님을 가장 깊이 만나는 교회가 되고자 합니다."]);
+    var open={};box.querySelectorAll("details").forEach(function(d,i){if(d.open)open[i]=1});
+    box.innerHTML=L.map(function(x,i){return '<details class="faq"'+(open[i]?" open":"")+'><summary><b>'+esc(x[0])+'</b></summary><p>'+esc(x[1])+'</p></details>'}).join("");
+  }
   /* ---------- 사진 크게 보기 (교회앨범 · 말씀기도캘리 · 사명선언문) ---------- */
   var LB={list:[],i:0,sub:"",title:"",link:null,last:null};
   function lbShow(){

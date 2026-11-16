@@ -1,7 +1,45 @@
+# 광야교회 홈페이지 — 검색엔진과 AI 검색(답변 엔진) 모두 환영합니다
 User-agent: *
 Allow: /
 Disallow: /admin.html
 Disallow: /apps-script/
 Disallow: /tools/
+
+# 네이버 · 다음 · 빙
+User-agent: Yeti
+Allow: /
+Disallow: /admin.html
+User-agent: Daum
+Allow: /
+Disallow: /admin.html
+User-agent: Bingbot
+Allow: /
+Disallow: /admin.html
+
+# AI 검색·답변 서비스 (ChatGPT, Claude, Perplexity, Gemini 등)
+User-agent: GPTBot
+Allow: /
+Disallow: /admin.html
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin.html
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin.html
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin.html
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /admin.html
+User-agent: Claude-User
+Allow: /
+Disallow: /admin.html
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin.html
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin.html
 
 Sitemap: https://midbarchurch.org/sitemap.xml
