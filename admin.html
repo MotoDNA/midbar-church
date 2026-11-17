@@ -440,7 +440,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
       <a href="#bulletin" class="sub">주보<span class="cnt" id="cBul">0</span></a>
       <span class="grp">함께하기</span>
       <a href="#newcomer" class="sub">새가족 안내</a>
-      <a href="#cards" class="sub">새가족 카드<span class="cnt new" id="cCards" hidden>0</span></a>
+      <a href="#cards" class="sub">온라인 새가족 등록<span class="cnt new" id="cCards" hidden>0</span></a>
       <a href="#prayer" class="sub">기도 제목<span class="cnt" id="cPrayer">0</span></a>
       <a href="#news" class="sub">교회 소식<span class="cnt" id="cNews">0</span></a>
       <a href="#album" class="sub">교회앨범<span class="cnt" id="cAlbum">0</span></a>
@@ -515,11 +515,11 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
 
     <!-- 새가족 카드 -->
     <section class="view" id="v-cards">
-      <div class="page-head"><div><small class="crumb">함께하기</small><h1>새가족 카드</h1><p>홈페이지 <b>함께하기 → 새가족 카드</b>에서 보낸 카드가 최신순으로 쌓입니다. 전화번호를 누르면 바로 전화가 걸립니다.</p></div>
+      <div class="page-head"><div><small class="crumb">함께하기</small><h1>온라인 새가족 등록</h1><p>홈페이지 <b>함께하기 → 온라인 새가족 등록</b>에서 보낸 등록이 최신순으로 쌓입니다. 전화번호를 누르면 바로 전화가 걸립니다.</p></div>
         <button class="btn" type="button" id="cardsReload">새로 고침</button></div>
       <div class="panel" style="margin-bottom:20px">
         <h2>알림 받을 메일</h2>
-        <p class="hint" style="color:var(--mute);font-size:15px;margin:4px 0 12px">카드가 들어오면 이 주소로 바로 메일이 갑니다. 휴대폰 메일 앱 알림을 켜 두시면 좋습니다.</p>
+        <p class="hint" style="color:var(--mute);font-size:15px;margin:4px 0 12px">새가족 등록이 들어오면 이 주소로 바로 메일이 갑니다. 휴대폰 메일 앱 알림을 켜 두시면 좋습니다.</p>
         <form class="nt-form" id="notifyForm"><input class="inp" type="email" name="email" placeholder="example@hanmail.net" autocomplete="email"><button class="btn primary" type="submit">저장</button></form>
         <div class="ferr" id="notifyMsg" aria-live="polite"></div>
       </div>
@@ -979,30 +979,30 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     var box=$("#cardsList");
     var nNew=CARDS.filter(function(c){return c.status==="새로 옴"}).length,cc=$("#cCards");
     cc.textContent=nNew;cc.hidden=!nNew;
-    if(!CARDS.length){box.innerHTML='<div class="empty">아직 받은 새가족 카드가 없습니다.</div>';return}
+    if(!CARDS.length){box.innerHTML='<div class="empty">아직 받은 새가족 등록이 없습니다.</div>';return}
     box.innerHTML=CARDS.map(function(c){
-      var isNew=c.status==="새로 옴",rows=[["처음 오신 날",c.visit],["통화 편한 시간",c.callTime],["함께 오신 가족",c.family],["소개해 주신 분",c.referrer],["기도 제목",c.prayer]].filter(function(r){return r[1]});
+      var isNew=c.status==="새로 옴",rows=[["방문 예정일",c.visit],["통화 편한 시간",c.callTime],["함께 오실 가족",c.family],["초신자",c.newbie],["이전 교회·직분",c.prevChurch],["소개해 주신 분",c.referrer],["기도 제목",c.prayer]].filter(function(r){return r[1]});
       return '<div class="ccard'+(isNew?' isnew':'')+'"><div class="top"><b>'+E(c.name)+'</b><a class="tel" href="'+E(telHref(c.phone))+'">'+E(c.phone)+'</a><span class="st">'+E(isNew?"새로 옴":c.status)+'</span><span class="time">'+E(c.time)+'</span></div>'+
         (rows.length?'<dl>'+rows.map(function(r){return '<dt>'+E(r[0])+'</dt><dd>'+E(r[1])+'</dd>'}).join("")+'</dl>':'')+
-        (cardDel===c.id?'<div class="confirm"><span>이 카드를 완전히 삭제할까요?</span><button class="btn sm danger" type="button" data-carddelok="'+E(c.id)+'">삭제</button><button class="btn sm" type="button" data-carddelno>취소</button></div>'
+        (cardDel===c.id?'<div class="confirm"><span>이 등록을 완전히 삭제할까요?</span><button class="btn sm danger" type="button" data-carddelok="'+E(c.id)+'">삭제</button><button class="btn sm" type="button" data-carddelno>취소</button></div>'
         :'<div class="acts"><a class="btn sm primary" href="'+E(telHref(c.phone))+'">전화 걸기</a>'+(isNew?'<button class="btn sm" type="button" data-cardst="'+E(c.id)+'" data-to="통화 완료">통화 완료로 표시</button>':'<button class="btn sm ghost" type="button" data-cardst="'+E(c.id)+'" data-to="새로 옴">새로 옴으로 되돌리기</button>')+'<button class="btn sm ghost" type="button" data-carddel="'+E(c.id)+'">삭제</button></div>')+'</div>';
     }).join("");
   }
   function loadCards(){
-    if(DEMO){CARDS=CARDS.length?CARDS:[{id:"demo1",time:"2026-11-17 16:50",name:"홍길동",phone:"010-1234-5678",visit:"2026-11-15",callTime:"평일 저녁",family:"배우자, 자녀 1명",referrer:"",prayer:"가정의 평안을 위해",status:"새로 옴"}];renderCards();return}
+    if(DEMO){CARDS=CARDS.length?CARDS:[{id:"demo1",time:"2026-11-17 16:50",name:"홍길동",phone:"010-1234-5678",visit:"2026-11-15",callTime:"평일 저녁",family:"배우자, 자녀 1명",newbie:"예",prevChurch:"",referrer:"",prayer:"가정의 평안을 위해",status:"새로 옴"}];renderCards();return}
     $("#cardsList").innerHTML='<div class="empty">불러오는 중…</div>';
     post({action:"cards",password:PW}).then(function(r){
       if(!r||!r.ok)throw new Error((r&&r.error)||"");
       CARDS=r.items||[];renderCards();
       var f=$("#notifyForm");if(document.activeElement!==f.elements.email)f.elements.email.value=r.notify||"";
-    }).catch(function(x){$("#cardsList").innerHTML='<div class="empty">카드를 불러오지 못했습니다. '+E((x&&x.message)||"저장 서버를 새 버전으로 배포했는지 확인해 주세요.")+'</div>'});
+    }).catch(function(x){$("#cardsList").innerHTML='<div class="empty">등록 목록을 불러오지 못했습니다. '+E((x&&x.message)||"저장 서버를 새 버전으로 배포했는지 확인해 주세요.")+'</div>'});
   }
   $("#cardsReload").addEventListener("click",loadCards);
   $("#notifyForm").addEventListener("submit",function(e){
     e.preventDefault();var em=e.target.elements.email.value.trim(),msg=$("#notifyMsg");msg.textContent="";
     if(DEMO){msg.textContent="연습 모드에서는 저장하지 않습니다.";return}
     busy(true,"저장 중…");
-    post({action:"notify",password:PW,email:em}).then(function(r){busy(false);msg.textContent=r&&r.ok?(em?"저장했습니다. 이제 카드가 오면 "+em+" 로 메일이 갑니다.":"알림 메일을 껐습니다."):((r&&r.error)||"저장하지 못했습니다.")})
+    post({action:"notify",password:PW,email:em}).then(function(r){busy(false);msg.textContent=r&&r.ok?(em?"저장했습니다. 이제 새가족 등록이 오면 "+em+" 로 메일이 갑니다.":"알림 메일을 껐습니다."):((r&&r.error)||"저장하지 못했습니다.")})
       .catch(function(){busy(false);msg.textContent="저장하지 못했습니다."});
   });
   document.addEventListener("click",function(e){

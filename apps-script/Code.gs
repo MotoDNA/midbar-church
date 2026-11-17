@@ -64,7 +64,7 @@ function doPost(e) {
   try { req = JSON.parse((e && e.postData && e.postData.contents) || '{}'); }
   catch (err) { return json_({ ok: false, error: '요청 형식이 올바르지 않습니다.' }); }
 
-  // 홈페이지 '온라인 새가족 카드' 제출은 비밀번호 없이 받습니다
+  // 홈페이지 '온라인 새가족 등록' 제출은 비밀번호 없이 받습니다
   if (req.action === 'newcomer') return json_(newcomer_(req.card || {}));
 
   const gate = checkPassword_(req.password);
@@ -435,11 +435,11 @@ const DEFAULT_CONTENT = {
 };
 
 
-/* ---------------- 온라인 새가족 카드 ----------------
+/* ---------------- 온라인 새가족 등록 ----------------
  * 홈페이지에서 제출 → '새가족카드' 시트에 한 줄씩 쌓이고, 알림 메일이 갑니다.
- * 알림 받을 메일 주소는 관리자 페이지 [새가족 카드] 화면에서 정합니다(스크립트 속성 NOTIFY_EMAIL). */
+ * 알림 받을 메일 주소는 관리자 페이지 [온라인 새가족 등록] 화면에서 정합니다(스크립트 속성 NOTIFY_EMAIL). */
 const CARD_SHEET = '새가족카드';
-const CARD_HEAD = ['번호', '받은 시각', '이름', '휴대폰', '처음 오신 날', '함께 오신 가족', '소개해 주신 분', '통화 편한 시간', '기도 제목', '개인정보 동의', '상태', '통화 메모'];
+const CARD_HEAD = ['번호', '받은 시각', '이름', '휴대폰', '방문 예정일', '함께 오실 가족', '소개해 주신 분', '통화 편한 시간', '기도 제목', '개인정보 동의', '상태', '통화 메모', '초신자', '이전 교회·직분'];
 
 function cardSheet_() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -448,7 +448,11 @@ function cardSheet_() {
     sh = ss.insertSheet(CARD_SHEET);
     sh.appendRow(CARD_HEAD);
     sh.setFrozenRows(1);
-    sh.getRange('A:L').setNumberFormat('@');
+    sh.getRange('A:N').setNumberFormat('@');
+  }
+  if (sh.getLastColumn() < CARD_HEAD.length) {             // 예전 시트에 새 칸 이름 붙이기
+    sh.getRange(1, 1, 1, CARD_HEAD.length).setValues([CARD_HEAD]);
+    sh.getRange('M:N').setNumberFormat('@');
   }
   return sh;
 }
@@ -487,7 +491,7 @@ function newcomer_(c) {
     const sh = cardSheet_();
     const id = Utilities.getUuid().slice(0, 8);
     const now = Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd HH:mm');
-    const row = [id, now, name, phone, clip_(c.visit, 20), clip_(c.family, 200), clip_(c.referrer, 60), clip_(c.callTime, 60), clip_(c.prayer, 1000), '동의함 ' + now, '새로 옴', ''];
+    const row = [id, now, name, phone, clip_(c.visit, 20), clip_(c.family, 200), clip_(c.referrer, 60), clip_(c.callTime, 60), clip_(c.prayer, 1000), '동의함 ' + now, '새로 옴', '', c.newbie === true ? '예' : '', clip_(c.prevChurch, 120)];
     sh.appendRow(row.map(cell_));
     cache.put('cards1h', String(recent + 1), 3600);
     cache.put(key, '1', 120);
@@ -495,15 +499,16 @@ function newcomer_(c) {
     if (to) {
       try {
         const lines = [
-          '홈페이지에서 새가족 카드가 들어왔습니다.', '',
+          '홈페이지에서 온라인 새가족 등록이 들어왔습니다.', '',
           '이름: ' + name, '휴대폰: ' + phone,
-          '처음 오신 날: ' + (row[4] || '-'), '함께 오신 가족: ' + (row[5] || '-'),
+          '방문 예정일: ' + (row[4] || '-'), '함께 오실 가족: ' + (row[5] || '-'),
+          '초신자: ' + (row[12] || '아니오'), '이전 교회·직분: ' + (row[13] || '-'),
           '소개해 주신 분: ' + (row[6] || '-'), '통화 편한 시간: ' + (row[7] || '-'),
           '기도 제목: ' + (row[8] || '-'), '',
-          '관리자 페이지 [새가족 카드]에서 전체 목록을 보고 통화 완료로 표시할 수 있습니다.',
+          '관리자 페이지 [온라인 새가족 등록]에서 전체 목록을 보고 통화 완료로 표시할 수 있습니다.',
           'https://midbarchurch.org/admin.html#cards'
         ];
-        MailApp.sendEmail({ to: to, subject: '[광야교회] 새가족 카드 - ' + name + ' (' + phone + ')', body: lines.join('\n'), name: '광야교회 홈페이지' });
+        MailApp.sendEmail({ to: to, subject: '[광야교회] 온라인 새가족 등록 - ' + name + ' (' + phone + ')', body: lines.join('\n'), name: '광야교회 홈페이지' });
       } catch (err) { /* 메일이 실패해도 카드는 시트에 저장되어 있습니다 */ }
     }
     return { ok: true };
@@ -515,7 +520,7 @@ function cards_() {
   const n = sh.getLastRow();
   if (n < 2) return [];
   return sh.getRange(2, 1, n - 1, CARD_HEAD.length).getDisplayValues().map(function (r) {
-    return { id: r[0], time: r[1], name: r[2], phone: r[3], visit: r[4], family: r[5], referrer: r[6], callTime: r[7], prayer: r[8], agree: r[9], status: r[10], memo: r[11] };
+    return { id: r[0], time: r[1], name: r[2], phone: r[3], visit: r[4], family: r[5], referrer: r[6], callTime: r[7], prayer: r[8], agree: r[9], status: r[10], memo: r[11], newbie: r[12], prevChurch: r[13] };
   }).filter(function (c) { return c.id && c.status !== '삭제'; }).reverse();
 }
 
