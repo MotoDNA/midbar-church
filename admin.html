@@ -981,7 +981,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     cc.textContent=nNew;cc.hidden=!nNew;
     if(!CARDS.length){box.innerHTML='<div class="empty">아직 받은 새가족 등록이 없습니다.</div>';return}
     box.innerHTML=CARDS.map(function(c){
-      var isNew=c.status==="새로 옴",rows=[["방문 예정일",c.visit],["통화 편한 시간",c.callTime],["함께 오실 가족",c.family],["초신자",c.newbie],["이전 교회·직분",c.prevChurch],["소개해 주신 분",c.referrer],["기도 제목",c.prayer]].filter(function(r){return r[1]});
+      var isNew=c.status==="새로 옴",rows=[["성별·연령대",[c.gender,c.age].filter(Boolean).join(" · ")],["방문 예정일",c.visit],["통화 편한 시간",c.callTime],["함께 오실 가족",c.family],["초신자",c.newbie],["이전 교회·직분",c.prevChurch],["소개해 주신 분",c.referrer],["기도 제목",c.prayer]].filter(function(r){return r[1]});
       return '<div class="ccard'+(isNew?' isnew':'')+'"><div class="top"><b>'+E(c.name)+'</b><a class="tel" href="'+E(telHref(c.phone))+'">'+E(c.phone)+'</a><span class="st">'+E(isNew?"새로 옴":c.status)+'</span><span class="time">'+E(c.time)+'</span></div>'+
         (rows.length?'<dl>'+rows.map(function(r){return '<dt>'+E(r[0])+'</dt><dd>'+E(r[1])+'</dd>'}).join("")+'</dl>':'')+
         (cardDel===c.id?'<div class="confirm"><span>이 등록을 완전히 삭제할까요?</span><button class="btn sm danger" type="button" data-carddelok="'+E(c.id)+'">삭제</button><button class="btn sm" type="button" data-carddelno>취소</button></div>'
@@ -989,7 +989,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     }).join("");
   }
   function loadCards(){
-    if(DEMO){CARDS=CARDS.length?CARDS:[{id:"demo1",time:"2026-11-17 16:50",name:"홍길동",phone:"010-1234-5678",visit:"2026-11-15",callTime:"평일 저녁",family:"배우자, 자녀 1명",newbie:"예",prevChurch:"",referrer:"",prayer:"가정의 평안을 위해",status:"새로 옴"}];renderCards();return}
+    if(DEMO){CARDS=CARDS.length?CARDS:[{id:"demo1",time:"2026-11-17 16:50",name:"홍길동",phone:"010-1234-5678",visit:"2026-11-15",callTime:"평일 저녁",family:"배우자, 자녀 1명",gender:"남",age:"40대",newbie:"예",prevChurch:"",referrer:"",prayer:"가정의 평안을 위해",status:"새로 옴"}];renderCards();return}
     $("#cardsList").innerHTML='<div class="empty">불러오는 중…</div>';
     post({action:"cards",password:PW}).then(function(r){
       if(!r||!r.ok)throw new Error((r&&r.error)||"");

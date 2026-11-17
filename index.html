@@ -778,6 +778,12 @@ footer .wrap{padding-block:56px 48px}
 .nc-check input{width:20px;height:20px;accent-color:var(--ink,#191B16)}
 .nc-check small{color:#6B6B62}
 .nc-hint{font-size:13px;color:#6B6B62}
+.nc-seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.nc-seg label{position:relative;cursor:pointer}
+.nc-seg input{position:absolute;opacity:0;inset:0}
+.nc-seg b{display:flex;align-items:center;justify-content:center;min-height:48px;border:1px solid #D9D3C6;border-radius:12px;background:#FDFCF9;font-weight:500;font-size:16px}
+.nc-seg input:checked+b{background:var(--ink,#191B16);color:#fff;border-color:var(--ink,#191B16)}
+.nc-seg input:focus-visible+b{outline:2px solid var(--dawn,#b5793b);outline-offset:1px}
 .ncard-cta{margin-top:28px}
 .nc-lead{margin:0 0 16px;color:#3E403A;font-size:16px;line-height:1.7}
 .btn-ncard{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 26px;border-radius:999px;border:0;background:var(--ink,#191B16);color:#fff;font:inherit;font-size:16px;font-weight:500;text-decoration:none;cursor:pointer}
@@ -1095,11 +1101,15 @@ footer .wrap{padding-block:56px 48px}
     </div>
     <div id="sec-together-card" class="block block-grid">
       <div><span class="k">새가족 등록</span><h2>온라인 새가족 등록</h2></div>
-      <div class="nc-wrap"><p class="nc-lead">방문 예정을 미리 알려 주시면 담임목사님이 반갑게 인사 전화를 드리고, 오시는 날 기쁘게 맞이하겠습니다.</p>
+      <div class="nc-wrap"><p class="nc-lead">작성해 주시면 교회에서 반갑게 인사 전화를 드립니다. 혹시 등록하시지 않더라도 교회 방문을 원하시는 분은 부담없이 자유롭게 남겨주세요.</p>
       <form class="ncard" id="ncardForm" novalidate>
         <div class="nc-row">
           <label class="nc-f"><span>이름 <i>*</i></span><input name="name" autocomplete="name" maxlength="40" required></label>
           <label class="nc-f"><span>휴대폰 번호 <i>*</i></span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="010-0000-0000" required></label>
+        </div>
+        <div class="nc-row">
+          <div class="nc-f"><span>성별</span><div class="nc-seg" role="radiogroup" aria-label="성별"><label><input type="radio" name="gender" value="남"><b>남</b></label><label><input type="radio" name="gender" value="여"><b>여</b></label></div></div>
+          <label class="nc-f"><span>연령대</span><select name="age"><option value="">선택 안 함</option><option>10대</option><option>20대</option><option>30대</option><option>40대</option><option>50대</option><option>60대</option><option>70대 이상</option></select></label>
         </div>
         <div class="nc-row">
           <label class="nc-f"><span>처음 방문 예정인 날</span><input name="visit" type="date"></label>
@@ -1113,7 +1123,7 @@ footer .wrap{padding-block:56px 48px}
         <label class="nc-hp" aria-hidden="true">홈페이지 <input name="website" tabindex="-1" autocomplete="off"></label>
         <div class="nc-agree">
           <label><input type="checkbox" name="agree"> <b>개인정보 수집·이용에 동의합니다 (필수)</b></label>
-          <p>수집 항목: 이름, 휴대폰 번호, 그 밖에 적어 주신 내용 · 이용 목적: 새가족 환영 연락과 교회 안내 · 보관 기간: 연락을 마친 뒤 등록하지 않으시면 지체 없이 삭제하며, 요청하시면 언제든 바로 삭제합니다. 동의하지 않으셔도 예배에 함께하시는 데에는 아무 제한이 없습니다.</p>
+          <p>수집 항목: 이름, 휴대폰 번호, 성별·연령대 등 그 밖에 적어 주신 내용 · 이용 목적: 새가족 환영 연락과 교회 안내 · 보관 기간: 연락을 마친 뒤 등록하지 않으시면 지체 없이 삭제하며, 요청하시면 언제든 바로 삭제합니다. 동의하지 않으셔도 예배에 함께하시는 데에는 아무 제한이 없습니다.</p>
         </div>
         <p class="nc-err" role="alert" aria-live="polite"></p>
         <button class="btn-ncard" type="submit" id="ncardBtn">새가족 등록하기</button>
@@ -1400,7 +1410,7 @@ footer .wrap{padding-block:56px 48px}
     f.addEventListener("submit",function(e){
       e.preventDefault();err.textContent="";
       var v=function(n){return (f.elements[n].value||"").trim()};
-      var card={name:v("name"),phone:v("phone"),visit:v("visit"),callTime:v("callTime"),family:v("family"),referrer:v("referrer"),prayer:v("prayer"),prevChurch:v("prevChurch"),newbie:f.elements.newbie.checked,website:v("website"),agree:f.elements.agree.checked,t:t0};
+      var card={name:v("name"),phone:v("phone"),visit:v("visit"),callTime:v("callTime"),family:v("family"),referrer:v("referrer"),prayer:v("prayer"),prevChurch:v("prevChurch"),newbie:f.elements.newbie.checked,gender:((f.querySelector("[name=gender]:checked")||{}).value||""),age:v("age"),website:v("website"),agree:f.elements.agree.checked,t:t0};
       if(!card.name){err.textContent="이름을 적어 주세요.";f.elements.name.focus();return}
       if(card.phone.replace(/\D/g,"").length<9){err.textContent="연락 가능한 휴대폰 번호를 적어 주세요.";f.elements.phone.focus();return}
       if(!card.agree){err.textContent="개인정보 수집·이용에 동의해 주셔야 보낼 수 있습니다.";f.elements.agree.focus();return}
