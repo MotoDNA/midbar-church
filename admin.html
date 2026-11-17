@@ -355,6 +355,24 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
 .pend.alb .pf img{object-position:center}
 .bl .bi .th.alb{aspect-ratio:4/3}
 .bl .bi .th.alb img{object-position:center}
+
+/* 새가족 카드 */
+.cnt.new{background:#C2412D;color:#fff}
+.nt-form{display:flex;gap:10px;flex-wrap:wrap}
+.nt-form .inp{flex:1;min-width:220px}
+.cards-list{display:grid;gap:14px}
+.ccard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:grid;gap:10px}
+.ccard.isnew{border-color:#E3A595;box-shadow:0 0 0 3px #FBE9E4}
+.ccard .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ccard .top b{font-size:19px}
+.ccard .tel{font-size:18px;font-weight:600;color:var(--dawn);text-decoration:none}
+.ccard .st{font-size:13px;border-radius:999px;padding:3px 10px;background:#EEE;color:#555}
+.ccard.isnew .st{background:#C2412D;color:#fff}
+.ccard .time{margin-left:auto;color:var(--mute);font-size:14px}
+.ccard dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0;font-size:15px}
+.ccard dt{color:var(--mute)}
+.ccard dd{margin:0;white-space:pre-wrap;word-break:break-word}
+.ccard .acts{display:flex;gap:8px;flex-wrap:wrap}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -422,6 +440,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
       <a href="#bulletin" class="sub">주보<span class="cnt" id="cBul">0</span></a>
       <span class="grp">함께하기</span>
       <a href="#newcomer" class="sub">새가족 안내</a>
+      <a href="#cards" class="sub">새가족 카드<span class="cnt new" id="cCards" hidden>0</span></a>
       <a href="#prayer" class="sub">기도 제목<span class="cnt" id="cPrayer">0</span></a>
       <a href="#news" class="sub">교회 소식<span class="cnt" id="cNews">0</span></a>
       <a href="#album" class="sub">교회앨범<span class="cnt" id="cAlbum">0</span></a>
@@ -492,6 +511,20 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
         <div class="form-acts"><button class="btn primary" type="submit" id="bulSubmit">홈페이지에 주보 올리기</button><button class="btn" type="button" id="bulCancel" hidden>수정 취소</button></div>
       </form>
       <div class="sec"><h2>올린 주보</h2><p class="hint" style="margin:-4px 0 14px;color:var(--mute);font-size:15px">주보를 누르면 위 칸에서 날짜·호수·메모와 사진을 고칠 수 있습니다.</p><div class="bl" id="bulList"></div></div>
+    </section>
+
+    <!-- 새가족 카드 -->
+    <section class="view" id="v-cards">
+      <div class="page-head"><div><small class="crumb">함께하기</small><h1>새가족 카드</h1><p>홈페이지 <b>함께하기 → 새가족 카드</b>에서 보낸 카드가 최신순으로 쌓입니다. 전화번호를 누르면 바로 전화가 걸립니다.</p></div>
+        <button class="btn" type="button" id="cardsReload">새로 고침</button></div>
+      <div class="panel" style="margin-bottom:20px">
+        <h2>알림 받을 메일</h2>
+        <p class="hint" style="color:var(--mute);font-size:15px;margin:4px 0 12px">카드가 들어오면 이 주소로 바로 메일이 갑니다. 휴대폰 메일 앱 알림을 켜 두시면 좋습니다.</p>
+        <form class="nt-form" id="notifyForm"><input class="inp" type="email" name="email" placeholder="example@hanmail.net" autocomplete="email"><button class="btn primary" type="submit">저장</button></form>
+        <div class="ferr" id="notifyMsg" aria-live="polite"></div>
+      </div>
+      <div class="cards-list" id="cardsList"><div class="empty">불러오는 중…</div></div>
+      <p class="hint" style="color:var(--mute);font-size:14px;margin-top:16px">개인정보 보호: 연락을 마치고 등록하지 않으신 분이나 삭제를 요청하신 분의 카드는 <b>삭제</b>를 눌러 지워 주세요. 삭제하면 시트에서도 완전히 지워집니다.</p>
     </section>
 
     <!-- 교회앨범 -->
@@ -938,6 +971,51 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
 
 
 
+
+  /* ---------- 새가족 카드 (홈페이지에서 받은 카드 목록 · 통화 완료 · 삭제 · 알림 메일) ---------- */
+  var CARDS=[], cardDel=null, cardsPeek=false;
+  function telHref(p){return "tel:"+String(p||"").replace(/[^0-9+]/g,"")}
+  function renderCards(){
+    var box=$("#cardsList");
+    var nNew=CARDS.filter(function(c){return c.status==="새로 옴"}).length,cc=$("#cCards");
+    cc.textContent=nNew;cc.hidden=!nNew;
+    if(!CARDS.length){box.innerHTML='<div class="empty">아직 받은 새가족 카드가 없습니다.</div>';return}
+    box.innerHTML=CARDS.map(function(c){
+      var isNew=c.status==="새로 옴",rows=[["처음 오신 날",c.visit],["통화 편한 시간",c.callTime],["함께 오신 가족",c.family],["소개해 주신 분",c.referrer],["기도 제목",c.prayer]].filter(function(r){return r[1]});
+      return '<div class="ccard'+(isNew?' isnew':'')+'"><div class="top"><b>'+E(c.name)+'</b><a class="tel" href="'+E(telHref(c.phone))+'">'+E(c.phone)+'</a><span class="st">'+E(isNew?"새로 옴":c.status)+'</span><span class="time">'+E(c.time)+'</span></div>'+
+        (rows.length?'<dl>'+rows.map(function(r){return '<dt>'+E(r[0])+'</dt><dd>'+E(r[1])+'</dd>'}).join("")+'</dl>':'')+
+        (cardDel===c.id?'<div class="confirm"><span>이 카드를 완전히 삭제할까요?</span><button class="btn sm danger" type="button" data-carddelok="'+E(c.id)+'">삭제</button><button class="btn sm" type="button" data-carddelno>취소</button></div>'
+        :'<div class="acts"><a class="btn sm primary" href="'+E(telHref(c.phone))+'">전화 걸기</a>'+(isNew?'<button class="btn sm" type="button" data-cardst="'+E(c.id)+'" data-to="통화 완료">통화 완료로 표시</button>':'<button class="btn sm ghost" type="button" data-cardst="'+E(c.id)+'" data-to="새로 옴">새로 옴으로 되돌리기</button>')+'<button class="btn sm ghost" type="button" data-carddel="'+E(c.id)+'">삭제</button></div>')+'</div>';
+    }).join("");
+  }
+  function loadCards(){
+    if(DEMO){CARDS=CARDS.length?CARDS:[{id:"demo1",time:"2026-11-17 16:50",name:"홍길동",phone:"010-1234-5678",visit:"2026-11-15",callTime:"평일 저녁",family:"배우자, 자녀 1명",referrer:"",prayer:"가정의 평안을 위해",status:"새로 옴"}];renderCards();return}
+    $("#cardsList").innerHTML='<div class="empty">불러오는 중…</div>';
+    post({action:"cards",password:PW}).then(function(r){
+      if(!r||!r.ok)throw new Error((r&&r.error)||"");
+      CARDS=r.items||[];renderCards();
+      var f=$("#notifyForm");if(document.activeElement!==f.elements.email)f.elements.email.value=r.notify||"";
+    }).catch(function(x){$("#cardsList").innerHTML='<div class="empty">카드를 불러오지 못했습니다. '+E((x&&x.message)||"저장 서버를 새 버전으로 배포했는지 확인해 주세요.")+'</div>'});
+  }
+  $("#cardsReload").addEventListener("click",loadCards);
+  $("#notifyForm").addEventListener("submit",function(e){
+    e.preventDefault();var em=e.target.elements.email.value.trim(),msg=$("#notifyMsg");msg.textContent="";
+    if(DEMO){msg.textContent="연습 모드에서는 저장하지 않습니다.";return}
+    busy(true,"저장 중…");
+    post({action:"notify",password:PW,email:em}).then(function(r){busy(false);msg.textContent=r&&r.ok?(em?"저장했습니다. 이제 카드가 오면 "+em+" 로 메일이 갑니다.":"알림 메일을 껐습니다."):((r&&r.error)||"저장하지 못했습니다.")})
+      .catch(function(){busy(false);msg.textContent="저장하지 못했습니다."});
+  });
+  document.addEventListener("click",function(e){
+    var t=e.target.closest&&e.target.closest("[data-cardst],[data-carddel],[data-carddelok],[data-carddelno]");if(!t)return;
+    if(t.dataset.carddel){cardDel=t.dataset.carddel;renderCards();return}
+    if(t.hasAttribute("data-carddelno")){cardDel=null;renderCards();return}
+    var id=t.dataset.cardst||t.dataset.carddelok,to=t.dataset.carddelok?"삭제":t.dataset.to;
+    function apply(){CARDS=to==="삭제"?CARDS.filter(function(c){return c.id!==id}):CARDS.map(function(c){if(c.id===id)c.status=to;return c});cardDel=null;renderCards()}
+    if(DEMO){apply();return}
+    busy(true,"저장 중…");
+    post({action:"cardStatus",password:PW,id:id,status:to}).then(function(r){busy(false);if(r&&r.ok)apply();else toast((r&&r.error)||"저장하지 못했습니다.",true)})
+      .catch(function(){busy(false);toast("저장하지 못했습니다.",true)});
+  });
   /* ---------- 인사말 목사님 사진 (고르면 바로 저장) ---------- */
   function gpSrc(g){g=g||{};return g.photo?driveImg(g.photo,600):(g.photoSrc||"pastor.jpg")}
   function renderGP(){var g=(saved&&saved.greeting)||{};$("#gpImg").src=gpSrc(g);$("#gpReset").hidden=!(g.photo||g.photoSrc)}
@@ -1408,7 +1486,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
   }
 
   /* 화면 이동 */
-  var VIEWS=["dash","hero","greeting","history","worship","place","word","bulletin","newcomer","prayer","news","album","offering"];
+  var VIEWS=["dash","hero","greeting","history","worship","place","word","bulletin","newcomer","cards","prayer","news","album","offering"];
 
   /* ---------- 홈페이지 미리보기 ---------- */
   var PV={
@@ -1482,6 +1560,8 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     if(v==="news")renderNews();
     if(v==="bulletin")prepBulForm();
     if(v==="album")prepAlbForm();
+    if(v==="cards")loadCards();
+    else if(v==="dash"&&!cardsPeek&&PW){cardsPeek=true;if(!DEMO)post({action:"cards",password:PW}).then(function(r){if(r&&r.ok){CARDS=r.items||[];renderCards()}}).catch(function(){})}
     pvSetView(v);
     window.scrollTo(0,0);
     if(v==="word"){if(!$("#wp-"+sub))sub="sunday";$$(".wp").forEach(function(x){x.classList.toggle("on",x.id==="wp-"+sub)})}

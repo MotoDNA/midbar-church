@@ -64,6 +64,9 @@ function doPost(e) {
   try { req = JSON.parse((e && e.postData && e.postData.contents) || '{}'); }
   catch (err) { return json_({ ok: false, error: '요청 형식이 올바르지 않습니다.' }); }
 
+  // 홈페이지 '온라인 새가족 카드' 제출은 비밀번호 없이 받습니다
+  if (req.action === 'newcomer') return json_(newcomer_(req.card || {}));
+
   const gate = checkPassword_(req.password);
   if (gate) return json_({ ok: false, error: gate });
 
@@ -82,6 +85,12 @@ function doPost(e) {
       return json_(refresh_());
     case 'trash':
       return json_(trash_(req.ids));
+    case 'cards':
+      return json_({ ok: true, items: cards_(), notify: notifyEmail_() });
+    case 'cardStatus':
+      return json_(cardStatus_(req.id, req.status));
+    case 'notify':
+      return json_(setNotify_(req.email));
     default:
       return json_({ ok: false, error: '알 수 없는 요청입니다.' });
   }
@@ -424,3 +433,103 @@ const DEFAULT_CONTENT = {
     }
   ]
 };
+
+
+/* ---------------- 온라인 새가족 카드 ----------------
+ * 홈페이지에서 제출 → '새가족카드' 시트에 한 줄씩 쌓이고, 알림 메일이 갑니다.
+ * 알림 받을 메일 주소는 관리자 페이지 [새가족 카드] 화면에서 정합니다(스크립트 속성 NOTIFY_EMAIL). */
+const CARD_SHEET = '새가족카드';
+const CARD_HEAD = ['번호', '받은 시각', '이름', '휴대폰', '처음 오신 날', '함께 오신 가족', '소개해 주신 분', '통화 편한 시간', '기도 제목', '개인정보 동의', '상태', '통화 메모'];
+
+function cardSheet_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sh = ss.getSheetByName(CARD_SHEET);
+  if (!sh) {
+    sh = ss.insertSheet(CARD_SHEET);
+    sh.appendRow(CARD_HEAD);
+    sh.setFrozenRows(1);
+    sh.getRange('A:L').setNumberFormat('@');
+  }
+  return sh;
+}
+
+function clip_(v, n) { return String(v == null ? '' : v).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, '').trim().slice(0, n); }
+function cell_(v) { return /^[=+\-@]/.test(v) ? "'" + v : v; }   // 시트 수식으로 바뀌지 않게
+
+function notifyEmail_() {
+  return PropertiesService.getScriptProperties().getProperty('NOTIFY_EMAIL') || '';
+}
+
+function setNotify_(email) {
+  email = clip_(email, 200);
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, error: '메일 주소 형식이 올바르지 않습니다.' };
+  if (email) PropertiesService.getScriptProperties().setProperty('NOTIFY_EMAIL', email);
+  else PropertiesService.getScriptProperties().deleteProperty('NOTIFY_EMAIL');
+  return { ok: true, notify: email };
+}
+
+function newcomer_(c) {
+  if (c.website) return { ok: true };                       // 자동 등록 프로그램이 채우는 숨은 칸
+  const name = clip_(c.name, 40), phone = clip_(c.phone, 30).replace(/[^0-9+\- ]/g, '');
+  if (!name) return { ok: false, error: '이름을 적어 주세요.' };
+  if (phone.replace(/\D/g, '').length < 9) return { ok: false, error: '연락 가능한 휴대폰 번호를 적어 주세요.' };
+  if (c.agree !== true) return { ok: false, error: '개인정보 수집·이용에 동의해 주셔야 제출할 수 있습니다.' };
+  if (Number(c.t || 0) && Date.now() - Number(c.t) < 3000) return { ok: false, error: '잠시 후 다시 제출해 주세요.' };
+  const cache = CacheService.getScriptCache();
+  const recent = Number(cache.get('cards1h') || 0);
+  if (recent >= 30) return { ok: false, error: '지금은 제출이 많아 잠시 후 다시 시도해 주세요.' };
+  const key = 'card_' + Utilities.base64EncodeWebSafe(Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, name + phone));
+  if (cache.get(key)) return { ok: true, dup: true };       // 같은 분이 연달아 두 번 누른 경우
+
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const sh = cardSheet_();
+    const id = Utilities.getUuid().slice(0, 8);
+    const now = Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd HH:mm');
+    const row = [id, now, name, phone, clip_(c.visit, 20), clip_(c.family, 200), clip_(c.referrer, 60), clip_(c.callTime, 60), clip_(c.prayer, 1000), '동의함 ' + now, '새로 옴', ''];
+    sh.appendRow(row.map(cell_));
+    cache.put('cards1h', String(recent + 1), 3600);
+    cache.put(key, '1', 120);
+    const to = notifyEmail_();
+    if (to) {
+      try {
+        const lines = [
+          '홈페이지에서 새가족 카드가 들어왔습니다.', '',
+          '이름: ' + name, '휴대폰: ' + phone,
+          '처음 오신 날: ' + (row[4] || '-'), '함께 오신 가족: ' + (row[5] || '-'),
+          '소개해 주신 분: ' + (row[6] || '-'), '통화 편한 시간: ' + (row[7] || '-'),
+          '기도 제목: ' + (row[8] || '-'), '',
+          '관리자 페이지 [새가족 카드]에서 전체 목록을 보고 통화 완료로 표시할 수 있습니다.',
+          'https://midbarchurch.org/admin.html#cards'
+        ];
+        MailApp.sendEmail({ to: to, subject: '[광야교회] 새가족 카드 - ' + name + ' (' + phone + ')', body: lines.join('\n'), name: '광야교회 홈페이지' });
+      } catch (err) { /* 메일이 실패해도 카드는 시트에 저장되어 있습니다 */ }
+    }
+    return { ok: true };
+  } finally { lock.releaseLock(); }
+}
+
+function cards_() {
+  const sh = cardSheet_();
+  const n = sh.getLastRow();
+  if (n < 2) return [];
+  return sh.getRange(2, 1, n - 1, CARD_HEAD.length).getDisplayValues().map(function (r) {
+    return { id: r[0], time: r[1], name: r[2], phone: r[3], visit: r[4], family: r[5], referrer: r[6], callTime: r[7], prayer: r[8], agree: r[9], status: r[10], memo: r[11] };
+  }).filter(function (c) { return c.id && c.status !== '삭제'; }).reverse();
+}
+
+function cardStatus_(id, status) {
+  if (['새로 옴', '통화 완료', '삭제'].indexOf(status) < 0) return { ok: false, error: '알 수 없는 상태입니다.' };
+  const sh = cardSheet_(), n = sh.getLastRow();
+  if (n < 2) return { ok: false, error: '카드를 찾지 못했습니다.' };
+  const ids = sh.getRange(2, 1, n - 1, 1).getDisplayValues();
+  for (let i = 0; i < ids.length; i++) {
+    if (ids[i][0] === String(id)) {
+      if (status === '삭제') { sh.deleteRow(i + 2); return { ok: true }; }   // 요청 시 개인정보를 완전히 지웁니다
+      sh.getRange(i + 2, 11).setValue(status);
+      return { ok: true };
+    }
+  }
+  return { ok: false, error: '카드를 찾지 못했습니다.' };
+}
