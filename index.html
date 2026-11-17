@@ -1500,7 +1500,16 @@ footer .wrap{padding-block:56px 48px}
     return root.innerHTML;
   }
   function load(url){return fetch(url,{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()})}
-  (CONTENT_API?load(CONTENT_API+"?action=content").catch(function(){return load("content.json")}):load("content.json")).then(function(C){if(!previewData)render(C)}).catch(function(){});
+  /* 구글 서버가 가끔 잠깐 오류를 내므로 몇 번 다시 시도하고, 마지막으로 받은 최신 내용을 기억해 둡니다 */
+  function retry(f,n,ms){return f().catch(function(e){if(n<=0)throw e;return new Promise(function(r){setTimeout(r,ms)}).then(function(){return retry(f,n-1,ms*1.6)})})}
+  var CKEY="midbar-content-v1";
+  function cachedC(){try{return JSON.parse(localStorage.getItem(CKEY)||"null")}catch(e){return null}}
+  function newer(a,b){return !b||String((a&&a.updated)||"")>=String(b.updated||"")}
+  (CONTENT_API
+    ?retry(function(){return load(CONTENT_API+"?action=content")},4,600)
+      .then(function(C){try{localStorage.setItem(CKEY,JSON.stringify(C))}catch(e){}return C})
+      .catch(function(){var k=cachedC();return load("content.json").then(function(F){return newer(k,F)?k:F}).catch(function(){if(k)return k;throw 0})})
+    :load("content.json")).then(function(C){if(!previewData)render(C)}).catch(function(){});
   window.MIDBAR_PREVIEW=function(C,view,target){
     if(C){previewData=C;render(C)}
     if(view&&location.hash!=="#"+view)location.hash=view;

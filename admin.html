@@ -706,8 +706,10 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
 
   /* ---------- 서버 통신 ---------- */
   function post(body){
-    return fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)})
-      .then(function(r){return r.json()});
+    var data=JSON.stringify(body);
+    function once(){return fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:data}).then(function(r){if(!r.ok)throw 0;return r.json()})}
+    function retry(n,ms){return once().catch(function(e){if(n<=0)throw e;return new Promise(function(r){setTimeout(r,ms)}).then(function(){return retry(n-1,ms*1.6)})})}
+    return retry(3,700);
   }
   function fetchContent(){
     if(DEMO){
@@ -715,7 +717,9 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
       if(local)return Promise.resolve(local);
       return fetch("content.json",{cache:"no-store"}).then(function(r){return r.json()});
     }
-    return fetch(API_URL+"?action=content",{cache:"no-store"}).then(function(r){return r.json()});
+    function once(){return fetch(API_URL+"?action=content",{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()})}
+    function retry(n,ms){return once().catch(function(e){if(n<=0)throw e;return new Promise(function(r){setTimeout(r,ms)}).then(function(){return retry(n-1,ms*1.6)})})}
+    return retry(4,600);
   }
   function saveAll(next,note){
     next.updated=new Date().toISOString();
