@@ -805,6 +805,11 @@ footer .wrap{padding-block:56px 48px}
 .nc-done b{display:block;font-size:19px;font-weight:500;margin-bottom:8px}
 .nc-done p{margin:0;color:#3E403A;line-height:1.7}
 @media (max-width:760px){.ncard{padding:20px 16px}.nc-row{grid-template-columns:1fr}.btn-ncard{width:100%}}
+
+/* 첫 화면에서 누른 소식으로 바로 이동 + 잠깐 강조 */
+#newsRows .nrow{scroll-margin-top:150px}
+#newsRows .nrow.flash{animation:nflash 2.4s ease-out}
+@keyframes nflash{0%,30%{background:#F6E9D2;box-shadow:0 0 0 10px #F6E9D2}100%{background:transparent;box-shadow:0 0 0 10px transparent}}
 </style>
 
 <header id="hd" class="enter">
@@ -1222,8 +1227,10 @@ footer .wrap{padding-block:56px 48px}
   function goSub(p,sub){
     if(p==="word"){sub={sermon:"sunday"}[sub]||sub;wordJump={sub:sub,t:Date.now()};if(sub)loadWord()}
     var el=sub&&document.getElementById("sec-"+p+"-"+sub);
-    markSub(p,sub||firstSub(p),false);
+    markSub(p,(sub&&/^news-\d+$/.test(sub))?"news":(sub||firstSub(p)),false);
     if(!el)return;
+    if(/^news-\d+$/.test(sub)){el.classList.remove("flash");void el.offsetWidth;el.classList.add("flash")}
+    if(/^news-\d+$/.test(sub)){[700,1500,2600].forEach(function(t){setTimeout(function(){var e2=document.getElementById("sec-"+p+"-"+sub);if(!e2)return;var top=e2.getBoundingClientRect().top;if(Math.abs(top-150)>60){spyLock=Date.now()+900;e2.scrollIntoView({block:"start",behavior:"auto"})}},t)})}
     spyLock=Date.now()+1200;
     requestAnimationFrame(function(){el.scrollIntoView({block:"start",behavior:"smooth"})});
   }
@@ -1352,8 +1359,8 @@ footer .wrap{padding-block:56px 48px}
     if(W.length){setHTML("homeTimes",times);setHTML("worshipTimes",times)}
     N.sort(function(a,b){return (b.pinned?1:0)-(a.pinned?1:0)||String(b.date).localeCompare(String(a.date))});
     if(N.length){
-      setHTML("homeNews",N.slice(0,4).map(function(n){return '<li><a href="#together/news"><span class="t">'+(n.tag?'<i class="n">'+E(n.tag)+'</i>':'')+E(n.title)+NB(n.date)+'</span><span class="dt">'+E(D(n.date))+'</span></a></li>'}).join(""));
-      setHTML("newsRows",N.map(function(n){return '<li><b>'+E(D(n.date))+'</b><span><strong>'+(n.tag?'['+E(n.tag)+'] ':'')+E(n.title)+NB(n.date)+'</strong>'+(n.html?'<div class="nbody">'+showHTML(n.html)+'</div>':BR(n.body))+'</span></li>'}).join(""));
+      setHTML("homeNews",N.slice(0,4).map(function(n,i){return '<li><a href="#together/news-'+i+'"><span class="t">'+(n.tag?'<i class="n">'+E(n.tag)+'</i>':'')+E(n.title)+NB(n.date)+'</span><span class="dt">'+E(D(n.date))+'</span></a></li>'}).join(""));
+      setHTML("newsRows",N.map(function(n,i){return '<li id="sec-together-news-'+i+'" class="nrow"><b>'+E(D(n.date))+'</b><span><strong>'+(n.tag?'['+E(n.tag)+'] ':'')+E(n.title)+NB(n.date)+'</strong>'+(n.html?'<div class="nbody">'+showHTML(n.html)+'</div>':BR(n.body))+'</span></li>'}).join(""));
     }
     if(C.newcomer&&C.newcomer.length)setHTML("newcSteps",C.newcomer.map(function(n){return '<li><span class="s">'+E(n.step)+'</span><b>'+E(n.title)+'</b><p>'+BR(n.text)+'</p></li>'}).join(""));
     if(C.history&&C.history.length)setHTML("histRows",C.history.map(function(h){return '<li><b>'+E(h.label)+'</b><span>'+BR(h.text)+'</span></li>'}).join(""));
