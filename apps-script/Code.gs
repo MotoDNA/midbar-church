@@ -491,7 +491,7 @@ function newcomer_(c) {
     const sh = cardSheet_();
     const id = Utilities.getUuid().slice(0, 8);
     const now = Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd HH:mm');
-    const row = [id, now, name, phone, clip_(c.visit, 20), clip_(c.family, 200), clip_(c.referrer, 60), clip_(c.callTime, 60), clip_(c.prayer, 1000), '동의함 ' + now, '새로 옴', '', c.newbie === true ? '예' : '', clip_(c.prevChurch, 120), ['남', '여'].indexOf(c.gender) >= 0 ? c.gender : '', clip_(c.age, 10)];
+    const row = [id, now, name, phone, clip_(c.visit, 20), clip_(c.family, 200), clip_(c.referrer, 60), clip_(c.callTime, 60), '', '동의함 ' + now, '새로 옴', '', c.newbie === true ? '예' : '', clip_(c.prevChurch, 120), ['남', '여'].indexOf(c.gender) >= 0 ? c.gender : '', clip_(c.age, 10)];
     sh.appendRow(row.map(cell_));
     cache.put('cards1h', String(recent + 1), 3600);
     cache.put(key, '1', 120);
@@ -505,7 +505,6 @@ function newcomer_(c) {
           '방문 예정일: ' + (row[4] || '-'), '함께 오실 가족: ' + (row[5] || '-'),
           '초신자: ' + (row[12] || '아니오'), '이전 교회·직분: ' + (row[13] || '-'),
           '소개해 주신 분: ' + (row[6] || '-'), '통화 편한 시간: ' + (row[7] || '-'),
-          '기도 제목: ' + (row[8] || '-'), '',
           '관리자 페이지 [온라인 새가족 등록]에서 전체 목록을 보고 통화 완료로 표시할 수 있습니다.',
           'https://midbarchurch.org/admin.html#cards'
         ];

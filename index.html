@@ -800,6 +800,9 @@ footer .wrap{padding-block:56px 48px}
 .nc-agree label{display:flex;gap:10px;align-items:center;cursor:pointer}
 .nc-agree input{width:20px;height:20px;accent-color:var(--ink,#191B16)}
 .nc-agree p{margin:8px 0 0;font-size:13px;line-height:1.6;color:#6B6B62}
+.nc-agree ol{list-style:decimal;margin:10px 0 0;padding-left:20px;font-size:13px;line-height:1.65;color:#6B6B62}
+.nc-agree ol li{margin-top:4px;list-style:decimal}
+.nc-agree ol b{color:#4A4A42;font-weight:600}
 .nc-err{margin:0;color:#B5432E;font-size:14.5px;min-height:1em}
 .nc-done{background:#F1F6EE;border:1px solid #CFE0C6;border-radius:20px;padding:32px 28px}
 .nc-done b{display:block;font-size:19px;font-weight:500;margin-bottom:8px}
@@ -1114,8 +1117,8 @@ footer .wrap{padding-block:56px 48px}
           <label class="nc-f"><span>휴대폰 번호 <i>*</i></span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="010-0000-0000" required></label>
         </div>
         <div class="nc-row">
-          <div class="nc-f"><span>성별</span><div class="nc-seg" role="radiogroup" aria-label="성별"><label><input type="radio" name="gender" value="남"><b>남</b></label><label><input type="radio" name="gender" value="여"><b>여</b></label></div></div>
-          <label class="nc-f"><span>연령대</span><select name="age"><option value="">선택 안 함</option><option>10대</option><option>20대</option><option>30대</option><option>40대</option><option>50대</option><option>60대</option><option>70대 이상</option></select></label>
+          <div class="nc-f"><span>성별 <i>*</i></span><div class="nc-seg" role="radiogroup" aria-label="성별"><label><input type="radio" name="gender" value="남"><b>남</b></label><label><input type="radio" name="gender" value="여"><b>여</b></label></div></div>
+          <label class="nc-f"><span>연령대 <i>*</i></span><select name="age" required><option value="">선택해 주세요</option><option>20대</option><option>30대</option><option>40대</option><option>50대</option><option>60대</option><option>70대 이상</option></select></label>
         </div>
         <div class="nc-row">
           <label class="nc-f"><span>처음 방문 예정인 날</span><input name="visit" type="date"></label>
@@ -1125,11 +1128,16 @@ footer .wrap{padding-block:56px 48px}
         <label class="nc-check"><input type="checkbox" name="newbie"> <span><b>초신자</b>이시면 체크해 주세요 <small>(교회에 처음 나오시는 분)</small></span></label>
         <label class="nc-f"><span>이전 교회명과 직분</span><input name="prevChurch" maxlength="120" placeholder="예) ○○교회 / 집사"><small class="nc-hint">이전에 다니시던 교회의 이름과 직분을 기록해 주세요.</small></label>
         <label class="nc-f"><span>소개해 주신 분</span><input name="referrer" maxlength="60" placeholder="없으면 비워 두세요"></label>
-        <label class="nc-f"><span>기도 제목 / 하고 싶은 말</span><textarea name="prayer" rows="3" maxlength="1000"></textarea></label>
         <label class="nc-hp" aria-hidden="true">홈페이지 <input name="website" tabindex="-1" autocomplete="off"></label>
         <div class="nc-agree">
-          <label><input type="checkbox" name="agree"> <b>개인정보 수집·이용에 동의합니다 (필수)</b></label>
-          <p>수집 항목: 이름, 휴대폰 번호, 성별·연령대 등 그 밖에 적어 주신 내용 · 이용 목적: 새가족 환영 연락과 교회 안내 · 보관 기간: 연락을 마친 뒤 등록하지 않으시면 지체 없이 삭제하며, 요청하시면 언제든 바로 삭제합니다. 동의하지 않으셔도 예배에 함께하시는 데에는 아무 제한이 없습니다.</p>
+          <label><input type="checkbox" name="agree"> <b>개인정보 수집·이용 및 민감정보 처리에 동의합니다. (필수)</b></label>
+          <ol>
+            <li><b>수집·이용 목적:</b> 광야교회 새가족 환영 연락, 등록 심방, 교적 관리 및 교회 안내</li>
+            <li><b>수집 항목:</b><br>1) (필수) 이름, 휴대전화 번호, 성별, 연령대<br>2) (선택) 처음 방문 예정일, 통화하기 편한 시간, 함께 오신 가족, 초신자 여부, 이전 교회명 및 직분, 소개자</li>
+            <li><b>보유 및 이용 기간:</b> 새가족 등록 상담 완료 후 미등록 시 즉시 파기 (단, 정식 등록 시 교적 관리 기간 동안 교적프로그램에 보관)</li>
+            <li><b>동의 거부 권리 및 불이익:</b> 귀하는 위 개인정보 수집·이용 및 민감정보 처리에 대한 동의를 거부할 권리가 있습니다. 다만, 동의를 거부하실 경우 온라인 새가족 등록 및 관련 안내 서비스 제공이 제한될 수 있습니다. (※ 단, 동의 여부와 관계없이 교회 예배 참석에는 어떠한 제한도 없습니다.)</li>
+            <li>만19세 이하 미성년자가 등록을 원할시에는 법정대리인(부모 등)에 의한 동의와 등록절차가 필요합니다.</li>
+          </ol>
         </div>
         <p class="nc-err" role="alert" aria-live="polite"></p>
         <button class="btn-ncard" type="submit" id="ncardBtn">새가족 등록하기</button>
@@ -1447,10 +1455,12 @@ footer .wrap{padding-block:56px 48px}
     f.addEventListener("submit",function(e){
       e.preventDefault();err.textContent="";
       var v=function(n){return (f.elements[n].value||"").trim()};
-      var card={name:v("name"),phone:v("phone"),visit:v("visit"),callTime:v("callTime"),family:v("family"),referrer:v("referrer"),prayer:v("prayer"),prevChurch:v("prevChurch"),newbie:f.elements.newbie.checked,gender:((f.querySelector("[name=gender]:checked")||{}).value||""),age:v("age"),website:v("website"),agree:f.elements.agree.checked,t:t0};
+      var card={name:v("name"),phone:v("phone"),visit:v("visit"),callTime:v("callTime"),family:v("family"),referrer:v("referrer"),prevChurch:v("prevChurch"),newbie:f.elements.newbie.checked,gender:((f.querySelector("[name=gender]:checked")||{}).value||""),age:v("age"),website:v("website"),agree:f.elements.agree.checked,t:t0};
       if(!card.name){err.textContent="이름을 적어 주세요.";f.elements.name.focus();return}
       if(card.phone.replace(/\D/g,"").length<9){err.textContent="연락 가능한 휴대폰 번호를 적어 주세요.";f.elements.phone.focus();return}
-      if(!card.agree){err.textContent="개인정보 수집·이용에 동의해 주셔야 보낼 수 있습니다.";f.elements.agree.focus();return}
+      if(!card.gender){err.textContent="성별을 골라 주세요.";f.querySelector("[name=gender]").focus();return}
+      if(!card.age){err.textContent="연령대를 골라 주세요.";f.elements.age.focus();return}
+      if(!card.agree){err.textContent="개인정보 수집·이용 및 민감정보 처리에 동의해 주셔야 보낼 수 있습니다.";f.elements.agree.focus();return}
       if(PREVIEW){err.textContent="미리보기에서는 보내지 않습니다.";return}
       btn.disabled=true;btn.textContent="보내는 중…";
       fetch(CONTENT_API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"newcomer",card:card})})
