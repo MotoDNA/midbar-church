@@ -846,8 +846,7 @@ footer .wrap{padding-block:56px 48px}
 <section class="page" id="p-home">
   <div class="hero">
     <img class="poster" src="poster.jpg" alt="해 뜨는 산 아래 강가에서 사슴들이 물을 마시는 풍경">
-    <video id="hv" src="hero.mp4" poster="poster.jpg" autoplay muted playsinline preload="auto" aria-hidden="true"></video>
-    <video id="hv2" src="hero2.mp4?v=2" muted playsinline preload="auto" aria-hidden="true"></video>
+    <video id="hv" src="hero.mp4" poster="poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
     <div class="scrim"></div>
     <div class="grain"></div>
     <div class="wrap">
@@ -1226,24 +1225,16 @@ footer .wrap{padding-block:56px 48px}
   /* 관리자 페이지 미리보기 안에서 열렸을 때 (index.html?preview) */
   var PREVIEW=/[?&]preview\b/.test(location.search), previewData=null;
   var v=document.getElementById("hv");
-  var v2=document.getElementById("hv2");
-  if(PREVIEW&&v){v.parentNode.removeChild(v);v=null;if(v2){v2.parentNode.removeChild(v2);v2=null}}
+  if(PREVIEW&&v){v.parentNode.removeChild(v);v=null}
   if(v){
     var ok=function(){v.classList.add("ready")};
     if(v.readyState>=2)ok();else v.addEventListener("loadeddata",ok);
-    var still=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if(still){v.removeAttribute("autoplay");try{v.pause()}catch(e){}if(v2)v2.parentNode.removeChild(v2);v.loop=true}
-    else if(v2){
-      /* 첫 영상(강가) → 두번째 영상(사막의 강) 번갈아 재생, 부드럽게 겹쳐 바뀜 */
-      var swap=function(from,to){
-        try{to.currentTime=0}catch(e){}
-        var p=to.play();if(p&&p.catch)p.catch(function(){});
-        to.classList.add("ready");to.style.zIndex=1;from.style.zIndex=0;
-        setTimeout(function(){from.classList.remove("ready")},700);
-      };
-      v.addEventListener("ended",function(){if(v2.readyState>=2)swap(v,v2);else{v.currentTime=0;v.play()}});
-      v2.addEventListener("ended",function(){swap(v2,v)});
-    }else v.loop=true;
+    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){v.removeAttribute("autoplay");try{v.pause()}catch(e){}}
+    else{
+      /* 휴대폰에서 잠깐 멈추거나 다른 앱에 다녀오면 다시 재생 */
+      var kick=function(){if(!document.hidden&&v.paused){var p=v.play();if(p&&p.catch)p.catch(function(){})}};
+      document.addEventListener("visibilitychange",kick);window.addEventListener("pageshow",kick);setInterval(kick,3000);
+    }
   }
   function paint(){hd.classList.toggle("solid",window.scrollY>40)}
   function goSub(p,sub){
