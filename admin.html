@@ -345,6 +345,17 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
 
 /* 목사님 사진 · 교회앨범 */
 .gp{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+.tx-grp{margin:26px 0 10px;font-size:15px;font-weight:700}
+.tx-item{margin-bottom:14px}
+.tx-item .tx-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.tx-item .tx-top span{font-weight:600;font-size:14px}
+.tx-item .tx-top em{font-style:normal;font-size:12px;color:#B5651D;margin-left:6px}
+.tx-item textarea{min-height:64px}
+.im-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap;padding:12px 0;border-top:1px solid var(--line)}
+.im-row:first-child{border-top:0}
+.im-th{width:96px;height:96px;flex:none;border-radius:12px;overflow:hidden;background:var(--bg);border:1px solid var(--line)}
+.im-th img{width:100%;height:100%;object-fit:contain;display:block}
+.im-row b{display:block;margin-bottom:6px}
 .gp-th{flex:none;width:132px;aspect-ratio:4/5;border-radius:14px;overflow:hidden;background:var(--bg);border:1px solid var(--line)}
 .gp-th img{width:100%;height:100%;object-fit:cover;display:block}
 .gp h3{margin:0 0 4px}
@@ -445,6 +456,8 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
       <a href="#news" class="sub">교회 소식<span class="cnt" id="cNews">0</span></a>
       <a href="#album" class="sub">교회앨범<span class="cnt" id="cAlbum">0</span></a>
       <a href="#offering" class="sub">헌금 안내</a>
+      <span class="grp">그 밖에</span>
+      <a href="#texts" class="sub">홈페이지 문구·그림</a>
     </nav>
     <div class="side-foot">
       <a id="siteLink" href="./" target="_blank" rel="noopener"><svg class="icon"><use href="#i-ext"/></svg>홈페이지 보기</a>
@@ -642,6 +655,17 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
       <div class="savebar" data-sec="newcomer"><span class="msg">바꾼 내용이 없습니다.</span><button class="btn ghost" type="button" data-reset="newcomer">되돌리기</button><button class="btn primary" type="button" data-save="newcomer">저장하기</button></div>
     </section>
 
+    <!-- 그 밖에 › 홈페이지 문구·그림 -->
+    <section class="view" id="v-texts">
+      <div class="page-head"><div><small class="crumb">그 밖에</small><h1>홈페이지 문구·그림</h1><p>홈페이지 곳곳의 짧은 문구와 그림을 직접 바꿀 수 있습니다. 칸을 비우거나 <b>기본 문구로</b>를 누르면 처음 문구로 돌아갑니다.<br>줄을 바꾸고 싶으면 엔터를 누르세요.</p></div></div>
+      <div class="form card" style="border-width:1px;border-color:var(--line)" id="txList"><p class="hint">불러오는 중…</p></div>
+      <div class="savebar" id="txBar"><span class="msg">바꾼 내용이 없습니다.</span><button class="btn ghost" type="button" id="txReset">되돌리기</button><button class="btn primary" type="button" id="txSave">저장하기</button></div>
+      <h2 class="tx-grp" style="margin-top:34px">그림 바꾸기</h2>
+      <p class="hint" style="margin:-4px 0 12px">사진을 고르면 <b>바로 홈페이지에 반영</b>됩니다.</p>
+      <div class="form card" style="border-width:1px;border-color:var(--line)" id="imList"><p class="hint">불러오는 중…</p></div>
+      <div class="ferr" id="imErr" aria-live="polite"></div>
+    </section>
+
     <!-- 말씀 › 설교 영상 -->
     <section class="view" id="v-word">
       <div class="page-head"><div><small class="crumb">말씀</small><h1>말씀 (자동)</h1><p>이 메뉴는 따로 고칠 것이 없습니다. 유튜브에 올리시면 <b>1시간 안에</b> 홈페이지에 저절로 나옵니다.<br>바로 올리고 싶으면 <b>유튜브에서 지금 불러오기</b>를 누르세요.</p></div>
@@ -800,8 +824,8 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     $("#dashNews").innerHTML=sn.slice(0,5).map(function(n){
       return '<li><span class="t"><b>'+(n.pinned?'<span class="chip pin">고정</span> ':'')+(n.tag?'<span class="chip">'+E(n.tag)+'</span> ':'')+E(n.title)+'</b><small>'+E(kdate(n.date))+'</small></span><a class="btn sm" href="#news" data-edit="'+E(n.id)+'">수정</a></li>';
     }).join("")||'<li><span class="t"><small>아직 소식이 없습니다.</small></span></li>';
-    renderNews();renderBulletins();renderAlbums();renderGP();renderWorship();renderPrayer();renderHist();renderNewc();fillForm("#offerForm",draft.offering);fillChurch();
-    $$(".savebar").forEach(updateBar);
+    if(TX)renderTexts();renderNews();renderBulletins();renderAlbums();renderGP();renderWorship();renderPrayer();renderHist();renderNewc();fillForm("#offerForm",draft.offering);fillChurch();
+    $$(".savebar[data-sec]").forEach(updateBar);
   }
 
   /* 교회 소식 */
@@ -1045,6 +1069,80 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     }).catch(function(x){busy(false);$("#gpErr").textContent=(x&&x.message)||"사진을 올리지 못했습니다."});
   });
   $("#gpReset").addEventListener("click",function(){setPhoto(null,null)});
+
+  /* ---------- 홈페이지 문구·그림 ---------- */
+  /* 홈페이지(index.html)에서 data-t / data-img 표시가 붙은 곳을 읽어 와서 고칠 칸을 만듭니다 */
+  var TX=null,IM=null;
+  function txPlain(html){var d=document.createElement("div");d.innerHTML=String(html).replace(/<br\s*\/?>/gi,"\n");return (d.textContent||"").replace(/[ \t]+\n/g,"\n").trim()}
+  function loadTexts(){
+    if(TX){renderTexts();return}
+    fetch(pvBase+"index.html?t="+Date.now(),{cache:"no-store"}).then(function(r){return r.text()}).then(function(h){
+      var doc=new DOMParser().parseFromString(h,"text/html");
+      TX=[].map.call(doc.querySelectorAll("[data-t]"),function(el){return {k:el.getAttribute("data-t"),g:el.getAttribute("data-tg")||"그 밖에",l:el.getAttribute("data-tl")||el.getAttribute("data-t"),d:txPlain(el.innerHTML)}});
+      IM=[].map.call(doc.querySelectorAll("img[data-img]"),function(el){return {k:el.getAttribute("data-img"),l:el.getAttribute("data-tl")||el.getAttribute("data-img"),d:el.getAttribute("src")}});
+      renderTexts();
+    }).catch(function(){$("#txList").innerHTML='<p class="hint">홈페이지 문구를 불러오지 못했습니다. 새로 고침해 주세요.</p>'});
+  }
+  function txSaved(){return (saved&&saved.texts)||{}}
+  function txDirty(){if(!draft.texts)return false;var a=txSaved(),b=draft.texts,ks={};Object.keys(a).concat(Object.keys(b)).forEach(function(k){ks[k]=1});return Object.keys(ks).some(function(k){return (a[k]||"")!==(b[k]||"")})}
+  function txBar(){var d=txDirty(),bar=$("#txBar");bar.classList.toggle("dirty",d);bar.querySelector(".msg").textContent=d?"아직 저장하지 않았습니다. 저장하기를 눌러야 홈페이지에 반영됩니다.":"바꾼 내용이 없습니다.";$("#txSave").disabled=!d;$("#txReset").disabled=!d}
+  function renderTexts(){
+    if(!TX||!saved)return;
+    if(!draft.texts)draft.texts=clone(txSaved());
+    var g=null,h="";
+    TX.forEach(function(t){
+      if(t.g!==g){g=t.g;h+='<h3 class="tx-grp">'+E(g)+'</h3>'}
+      var v=draft.texts[t.k],changed=v!=null&&String(v).trim()!==""&&String(v).trim()!==t.d;
+      h+='<div class="tx-item"><div class="tx-top"><span>'+E(t.l)+(changed?'<em>바꾼 문구</em>':'')+'</span>'+(changed?'<button type="button" class="btn sm ghost" data-txdef="'+E(t.k)+'">기본 문구로</button>':'')+'</div>'
+        +'<textarea class="inp" data-tx="'+E(t.k)+'" rows="2">'+E(changed?v:t.d)+'</textarea></div>';
+    });
+    $("#txList").innerHTML=h||'<p class="hint">고칠 수 있는 문구가 없습니다.</p>';
+    var I=(saved&&saved.images)||{};
+    $("#imList").innerHTML=(IM||[]).map(function(m){
+      var id=I[m.k],src=id?driveImg(id,400):pvBase+m.d;
+      return '<div class="im-row"><span class="im-th"><img src="'+E(src)+'" alt=""></span><div><b>'+E(m.l)+(id?' <small style="color:#B5651D;font-weight:500">바꾼 그림</small>':'')+'</b><div class="form-acts"><label class="btn primary gp-pick"><input type="file" accept="image/*" data-imfile="'+E(m.k)+'"><svg class="icon"><use href="#i-photo"/></svg>그림 바꾸기</label>'+(id?'<button type="button" class="btn ghost" data-imreset="'+E(m.k)+'">처음 그림으로</button>':'')+'</div></div></div>';
+    }).join("")||'<p class="hint">바꿀 수 있는 그림이 없습니다.</p>';
+    txBar();
+  }
+  document.addEventListener("input",function(e){
+    var k=e.target.getAttribute&&e.target.getAttribute("data-tx");if(!k)return;
+    var t=TX.filter(function(x){return x.k===k})[0],v=e.target.value;
+    if(!v.trim()||v.trim()===t.d)delete draft.texts[k];else draft.texts[k]=v.replace(/\s+$/,"");
+    txBar();
+  });
+  document.addEventListener("click",function(e){
+    var b=e.target.closest("[data-txdef]");if(!b)return;
+    delete draft.texts[b.getAttribute("data-txdef")];renderTexts();pvSoon();
+  });
+  $("#txReset").addEventListener("click",function(){draft.texts=clone(txSaved());renderTexts();pvSoon()});
+  $("#txSave").addEventListener("click",function(){
+    if(!txDirty()){toast("바꾼 내용이 없습니다.");return}
+    var next=clone(saved);next.texts=clone(draft.texts);if(!Object.keys(next.texts).length)delete next.texts;
+    saveAll(next,"홈페이지 문구 수정").then(function(ok){if(ok){draft.texts=clone(txSaved());renderTexts()}});
+  });
+  function setImg(k,id){
+    var old=((saved.images||{})[k]),next=clone(saved);next.images=next.images||{};
+    if(id)next.images[k]=id;else delete next.images[k];
+    if(!Object.keys(next.images).length)delete next.images;
+    var t=(IM||[]).filter(function(m){return m.k===k})[0];
+    return saveAll(next,(t?t.l:"그림")+(id?" 바꾸기":" 처음으로")).then(function(ok){
+      if(ok){if(!DEMO&&old&&old!==id)post({action:"trash",password:PW,ids:[old]}).catch(function(){});renderTexts()}
+      else if(!DEMO&&id)post({action:"trash",password:PW,ids:[id]}).catch(function(){});
+    });
+  }
+  document.addEventListener("change",function(e){
+    var k=e.target.getAttribute&&e.target.getAttribute("data-imfile");if(!k)return;
+    var file=e.target.files[0];e.target.value="";$("#imErr").textContent="";if(!file)return;
+    if(!/^image\//.test(file.type)){$("#imErr").textContent="사진 파일만 올릴 수 있습니다.";return}
+    if(DEMO){toast("연습 모드에서는 그림을 올릴 수 없습니다.");return}
+    busy(true,"그림 올리는 중…");
+    shrink(file,2000,.9).then(function(u){
+      return post({action:"upload",password:PW,name:k+"-"+today()+"-"+Date.now().toString(36)+".jpg",mime:"image/jpeg",data:u.split(",")[1]}).then(function(r){
+        busy(false);if(!r||!r.ok)throw new Error((r&&r.error)||"그림을 올리지 못했습니다.");return setImg(k,r.id);
+      });
+    }).catch(function(x){busy(false);$("#imErr").textContent=(x&&x.message)||"그림을 올리지 못했습니다."});
+  });
+  document.addEventListener("click",function(e){var b=e.target.closest("[data-imreset]");if(b)setImg(b.getAttribute("data-imreset"),null)});
 
   /* ---------- 교회앨범 ---------- */
   var apend=[], albEditId=null, albConfirm=null;
@@ -1490,7 +1588,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
   }
 
   /* 화면 이동 */
-  var VIEWS=["dash","hero","greeting","history","worship","place","word","bulletin","newcomer","cards","prayer","news","album","offering"];
+  var VIEWS=["dash","hero","greeting","history","worship","place","word","bulletin","newcomer","cards","prayer","news","album","offering","texts"];
 
   /* ---------- 홈페이지 미리보기 ---------- */
   var PV={
@@ -1506,7 +1604,8 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     history:[["교회소개 › 걸어온 길","about","histRows"]],
     place:[["예배안내 › 오시는 길","worship","placeRows"],["첫 화면 오른쪽 아래","home","heroSide"]],
     word:[["첫 화면 설교","home","svHome"],["주일설교","word/sunday","sec-word-sunday"],["금요기도회","word/friday","sec-word-friday"],["광야캔버스","word/canvas","sec-word-canvas"],["종려나무","word/palm","sec-word-palm"],["매일성경큐티","word/qt","sec-word-qt"],["말씀기도캘리","word/cali","sec-word-cali"]],
-    newcomer:[["함께하기 › 새가족 안내","together","newcSteps"]]
+    newcomer:[["함께하기 › 새가족 안내","together","newcSteps"]],
+    texts:[["첫 화면","home","heroSub"],["말씀","word/sunday","sec-word-sunday"],["새가족 등록","together/card","sec-together-card"],["교회소개 그림","about/mission","sec-about-mission"]]
   };
   var pvView="dash",pvIdx=0,pvReady=false,pvTimer=null,pvFrame=$("#pvFrame");
   var pvBase=(SITE_URL||"./").replace(/[^\/]*$/,"");
@@ -1518,6 +1617,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     if(draft.offering)C.offering=draft.offering;
     if(draft.history)C.history=draft.history;
     if(draft.newcomer)C.newcomer=draft.newcomer;
+    if(draft.texts)C.texts=draft.texts;
     if(draft.church){C.hero=draft.church.hero;C.greeting=draft.church.greeting;C.place=draft.church.place}
     var f=$("#v-news form");
     if(f&&f.elements.title){
@@ -1564,6 +1664,7 @@ textarea.inp{min-height:130px;resize:vertical;line-height:1.6}
     if(v==="news")renderNews();
     if(v==="bulletin")prepBulForm();
     if(v==="album")prepAlbForm();
+    if(v==="texts")loadTexts();
     if(v==="cards")loadCards();
     else if(v==="dash"&&!cardsPeek&&PW){cardsPeek=true;if(!DEMO)post({action:"cards",password:PW}).then(function(r){if(r&&r.ok){CARDS=r.items||[];renderCards()}}).catch(function(){})}
     pvSetView(v);
