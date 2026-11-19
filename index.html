@@ -849,7 +849,7 @@ footer .wrap{padding-block:56px 48px}
 <section class="page" id="p-home">
   <div class="hero">
     <img class="poster" src="poster.jpg?v=2" alt="메마른 유대 광야 골짜기에 풀이 돋고 시냇물이 흐르며 해가 떠오르는 풍경">
-    <video id="hv" src="hero.mp4?v=4" poster="poster.jpg?v=2" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+    <video id="hv" src="hero.mp4?v=5" poster="poster.jpg?v=2" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
     <div class="scrim"></div>
     <div class="grain"></div>
     <div class="wrap">
@@ -1284,7 +1284,7 @@ footer .wrap{padding-block:56px 48px}
       var mine=v.closest(".page")&&v.closest(".page").id==="p-"+p;
       if(!mine){try{v.pause()}catch(e){}return}
       if(reduce||PREVIEW)return;
-      if(!v.getAttribute("src")){v.addEventListener("playing",function(){v.classList.add("on")});v.setAttribute("src","hero.mp4?v=4")}
+      if(!v.getAttribute("src")){v.addEventListener("playing",function(){v.classList.add("on")});v.setAttribute("src","hero.mp4?v=5")}
       try{v.currentTime=0}catch(e){}
       var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});
     });
