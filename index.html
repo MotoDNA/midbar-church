@@ -360,7 +360,7 @@ header.solid .pill.glass{background:var(--ink);color:#fff;box-shadow:none}
 .hero video{opacity:0;transition:opacity .6s ease}
 .hero video.ready{opacity:1}
 .hero .poster{animation:settle 1.8s var(--ease) both}
-.hero .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,8,.45) 0%,rgba(10,12,8,0) 22%,rgba(10,12,8,0) 45%,rgba(10,12,8,.62) 100%)}
+.hero .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,8,.55) 0%,rgba(10,12,8,.28) 22%,rgba(10,12,8,.28) 45%,rgba(10,12,8,.7) 100%)}
 .grain{position:absolute;inset:0;pointer-events:none;opacity:.08;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
 .hero .wrap{position:relative;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-block:0 56px}
 .hero-row{display:flex;justify-content:space-between;align-items:flex-end;gap:40px}
@@ -692,7 +692,7 @@ footer .wrap{padding-block:56px 48px}
   .subtabs{top:calc(env(safe-area-inset-top,0px) + 64px)}
   .hero{height:max(640px,min(100svh,820px))}
   .hero video,.hero .poster{object-position:68% 50%}
-  .hero .scrim{background:linear-gradient(180deg,rgba(10,12,8,.4) 0%,rgba(10,12,8,0) 25%,rgba(10,12,8,.25) 45%,rgba(10,12,8,.78) 100%)}
+  .hero .scrim{background:linear-gradient(180deg,rgba(10,12,8,.55) 0%,rgba(10,12,8,.32) 25%,rgba(10,12,8,.42) 45%,rgba(10,12,8,.82) 100%)}
   .hero .wrap{padding-block:0 36px}
   .hero .sub{font-size:15.5px}
   .hero .acts{flex-direction:column;align-items:stretch}
@@ -845,8 +845,8 @@ footer .wrap{padding-block:56px 48px}
 <!-- =================== 메인 =================== -->
 <section class="page" id="p-home">
   <div class="hero">
-    <img class="poster" src="poster.jpg" alt="해 뜨는 산 아래 강가에서 사슴들이 물을 마시는 풍경">
-    <video id="hv" src="hero.mp4" poster="poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+    <img class="poster" src="poster.jpg?v=2" alt="메마른 유대 광야 골짜기에 풀이 돋고 시냇물이 흐르며 해가 떠오르는 풍경">
+    <video id="hv" src="hero.mp4?v=2" poster="poster.jpg?v=2" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
     <div class="scrim"></div>
     <div class="grain"></div>
     <div class="wrap">
@@ -951,7 +951,7 @@ footer .wrap{padding-block:56px 48px}
 
 <!-- =================== 교회소개 =================== -->
 <section class="page" id="p-about">
-  <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
+  <div class="subhero"><img src="subhero.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 교회소개</p><h1>교회소개</h1></div></div>
   <nav class="subtabs" aria-label="교회소개 메뉴"><ul class="wrap"><li><a href="#about/greet">인사말</a></li><li><a href="#about/name">교회 이름의 뜻</a></li><li><a href="#about/mission">사명선언문</a></li><li><a href="#about/vision">MIDBAR VISION</a></li><li><a href="#about/logo">광야교회 로고</a></li><li><a href="#about/history">걸어온 길</a></li></ul></nav>
   <div class="wrap">
@@ -1009,7 +1009,7 @@ footer .wrap{padding-block:56px 48px}
 
 <!-- =================== 예배안내 =================== -->
 <section class="page" id="p-worship">
-  <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
+  <div class="subhero"><img src="subhero.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 예배안내</p><h1>예배안내</h1></div></div>
   <nav class="subtabs" aria-label="예배안내 메뉴"><ul class="wrap"><li><a href="#worship/times">예배 시간</a></li><li><a href="#worship/place">오시는 길</a></li></ul></nav>
   <div class="wrap">
@@ -1038,7 +1038,7 @@ footer .wrap{padding-block:56px 48px}
 
 <!-- =================== 말씀 =================== -->
 <section class="page" id="p-word">
-  <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
+  <div class="subhero"><img src="subhero.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 말씀</p><h1>말씀</h1></div></div>
   <nav class="subtabs" aria-label="말씀 메뉴"><ul class="wrap"><li><a href="#word/sunday">주일설교</a></li><li><a href="#word/friday">금요기도회</a></li><li><a href="#word/canvas">광야캔버스</a></li><li><a href="#word/palm">뿌리깊은 종려나무</a></li><li><a href="#word/qt">매일성경큐티</a></li><li><a href="#word/cali">말씀기도캘리</a></li></ul></nav>
   <div class="wrap">
@@ -1083,7 +1083,7 @@ footer .wrap{padding-block:56px 48px}
 
 <!-- =================== 주보 =================== -->
 <section class="page" id="p-bulletin">
-  <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
+  <div class="subhero"><img src="subhero.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 주보</p><h1>주보</h1></div></div>
   <div class="wrap">
     <div class="block">
@@ -1095,7 +1095,7 @@ footer .wrap{padding-block:56px 48px}
 
 <!-- =================== 함께하기 =================== -->
 <section class="page" id="p-together">
-  <div class="subhero"><img src="poster.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
+  <div class="subhero"><img src="subhero.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 함께하기</p><h1>함께하기</h1></div></div>
   <nav class="subtabs" aria-label="함께하기 메뉴"><ul class="wrap"><li><a href="#together/new">새가족 안내</a></li><li><a href="#together/card">온라인 새가족 등록</a></li><li><a href="#together/faq">자주 묻는 질문</a></li><li><a href="#together/prayer">기도 제목</a></li><li><a href="#together/news">교회 소식</a></li><li><a href="#together/album">교회앨범</a></li><li><a href="#together/offering">헌금 안내</a></li></ul></nav>
   <div class="wrap">
