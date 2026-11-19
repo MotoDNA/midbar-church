@@ -371,7 +371,7 @@ header.solid .pill.glass{background:var(--ink);color:#fff;box-shadow:none}
 .hero h1 .ln:nth-child(2)>span{animation-delay:.12s}
 .hero h1 .cite{font-family:var(--f-sans);font-size:clamp(13px,1.2vw,17px);font-weight:500;letter-spacing:.08em;color:rgba(255,255,255,.8);margin-left:.9em;vertical-align:.35em;text-shadow:0 2px 12px rgba(0,0,0,.35);white-space:nowrap}
 .hero h1 em{font-style:normal;color:rgba(255,255,255,.62)}
-html.cwait #heroSub,html.cwait .hero .eyebrow [data-t]{visibility:hidden}
+html.cwait #bulList,html.cwait #footAddr,html.cwait #greetBody,html.cwait #greetLead,html.cwait #greetPhoto,html.cwait #heroSide,html.cwait #heroSub,html.cwait #histRows,html.cwait #homeBul,html.cwait #homeNews,html.cwait #homeTimes,html.cwait #newcSteps,html.cwait #newsRows,html.cwait #offerRows,html.cwait #placeRows,html.cwait #prayerRows,html.cwait #worshipTimes,html.cwait [data-t],html.cwait img[data-img]{visibility:hidden}
 .hero .sub{margin-top:22px;max-width:30rem;font-size:17px;font-weight:300;line-height:1.65;color:rgba(255,255,255,.86);text-shadow:0 2px 18px rgba(0,0,0,.42)}
 .hero .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
 .hero .side{width:300px;flex:none;border-top:1px solid rgba(255,255,255,.35);padding-top:16px;font-size:14px;color:rgba(255,255,255,.85)}
@@ -476,6 +476,8 @@ header.enter{animation:down .8s var(--ease) both}
 /* ---------- 서브 페이지 ---------- */
 .subhero{position:relative;height:420px;overflow:hidden;color:#fff;background:#2A2A20}
 .subhero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:settle 1.8s var(--ease) both}
+.subhero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s ease}
+.subhero video.on{opacity:1}
 .subhero .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,8,.5),rgba(10,12,8,.2) 40%,rgba(10,12,8,.6))}
 .subhero .wrap{position:relative;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-block:0 48px}
 .subhero .crumb{font-size:13px;opacity:.75;letter-spacing:.06em}
@@ -952,17 +954,17 @@ footer .wrap{padding-block:56px 48px}
 
 <!-- =================== 교회소개 =================== -->
 <section class="page" id="p-about">
-  <div class="subhero"><img src="subhero.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
+  <div class="subhero"><img src="poster.jpg?v=2" alt=""><video class="sv" muted loop playsinline preload="none" aria-hidden="true"></video><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 교회소개</p><h1>교회소개</h1></div></div>
   <nav class="subtabs" aria-label="교회소개 메뉴"><ul class="wrap"><li><a href="#about/greet">인사말</a></li><li><a href="#about/name">교회 이름의 뜻</a></li><li><a href="#about/mission">사명선언문</a></li><li><a href="#about/vision">MIDBAR VISION</a></li><li><a href="#about/logo">광야교회 로고</a></li><li><a href="#about/history">걸어온 길</a></li></ul></nav>
   <div class="wrap">
     <div id="sec-about-greet" class="block block-grid">
       <div><span class="k">인사말</span><h2>담임목사<br>인사말</h2></div>
       <div class="greet">
-        <div class="photo has"><img id="greetPhoto" src="pastor.jpg" alt="박규성 담임목사"></div>
+        <div class="photo has"><img id="greetPhoto" src="https://drive.google.com/thumbnail?id=1o4u2Ufx20P3LOibopXj7avDuSUw8Pwr0&amp;sz=w800" alt="박규성 담임목사"></div>
         <div class="prose">
           <p class="lead" id="greetLead">하나님을 가장 깊이 만나는 곳,<br>광야교회입니다.</p>
-          <div id="greetBody" style="margin-top:24px"><p>광야교회는 아직 이 땅에 건물이 없습니다. 그러나 하나님의 은혜로 일산은광교회에서 예배당을 무상으로 사용할 수 있도록 허락해 주셔서, 2026년 9월 18일 개척을 위한 준비기도회를 시작으로 현장에서 예배를 드리게 되었습니다.</p><p>척박한 광야 길을 걷는 듯한 일상 속에서, 광야교회가 여러분의 따뜻한 영적 오아시스가 되기를 소망합니다. 함께 은혜를 나누고 서로를 위로하며, 평안이 넘치는 신앙 공동체를 함께 만들어가요.</p></div>
+          <div id="greetBody" style="margin-top:24px"><p>광야교회는 아직 이 땅에 건물이 없습니다. 그러나 하나님의 은혜로 일산은광교회에서 예배당을 무상으로 사용할 수 있도록 허락해 주셔서, 2026년 9월 18일 개척을 위한 준비기도회를 시작으로 현장에서 예배를 드리게 되었습니다.</p><p>척박한 광야 길을 걷는 듯한 일상 속에서, 광야교회가 여러분의 따뜻한 영적 오아시스가 되기를 소망합니다. 함께 은혜를 나누고 서로를 위로하며, 평안이 넘치는 신앙 공동체를 함께 만들어가요.</p><p>*광야교회는 대한예수교장로회 통합측에 소속된 교회입니다.</p><p>[담임목사 약력]<br>전북대학교 심리학과(B.A)<br>장로회신학대학교 신학대학원 교역학(M.Div.)<br>장로회신학대학교 대학원 예배설교학(Th.M.)<br>풀러신학교 목회학박사(D.Min.) 수료<br>前 신광교회 부목사<br>前 장석교회 부목사<br>前 영락교회 부목사<br>前 승리교회 위임목사<br>前 제일병원 의학연구심의위원회(IRB) 위원<br>前 서울노회 서울성서신학원 교수<br>前 장로회신학대학교 겸임교수<br>前 알파코리아 이사<br>現 일산서부경찰서 경목위원 위원장</p></div>
           <p class="sign">광야교회 담임목사<b>박규성</b></p>
         </div>
       </div>
@@ -1010,7 +1012,7 @@ footer .wrap{padding-block:56px 48px}
 
 <!-- =================== 예배안내 =================== -->
 <section class="page" id="p-worship">
-  <div class="subhero"><img src="subhero.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
+  <div class="subhero"><img src="poster.jpg?v=2" alt=""><video class="sv" muted loop playsinline preload="none" aria-hidden="true"></video><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 예배안내</p><h1>예배안내</h1></div></div>
   <nav class="subtabs" aria-label="예배안내 메뉴"><ul class="wrap"><li><a href="#worship/times">예배 시간</a></li><li><a href="#worship/place">오시는 길</a></li></ul></nav>
   <div class="wrap">
@@ -1039,7 +1041,7 @@ footer .wrap{padding-block:56px 48px}
 
 <!-- =================== 말씀 =================== -->
 <section class="page" id="p-word">
-  <div class="subhero"><img src="subhero.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
+  <div class="subhero"><img src="poster.jpg?v=2" alt=""><video class="sv" muted loop playsinline preload="none" aria-hidden="true"></video><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 말씀</p><h1>말씀</h1></div></div>
   <nav class="subtabs" aria-label="말씀 메뉴"><ul class="wrap"><li><a href="#word/sunday">주일설교</a></li><li><a href="#word/friday">금요기도회</a></li><li><a href="#word/canvas">광야캔버스</a></li><li><a href="#word/palm">뿌리깊은 종려나무</a></li><li><a href="#word/qt">매일성경큐티</a></li><li><a href="#word/cali">말씀기도캘리</a></li></ul></nav>
   <div class="wrap">
@@ -1084,7 +1086,7 @@ footer .wrap{padding-block:56px 48px}
 
 <!-- =================== 주보 =================== -->
 <section class="page" id="p-bulletin">
-  <div class="subhero"><img src="subhero.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
+  <div class="subhero"><img src="poster.jpg?v=2" alt=""><video class="sv" muted loop playsinline preload="none" aria-hidden="true"></video><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 주보</p><h1>주보</h1></div></div>
   <div class="wrap">
     <div class="block">
@@ -1096,7 +1098,7 @@ footer .wrap{padding-block:56px 48px}
 
 <!-- =================== 함께하기 =================== -->
 <section class="page" id="p-together">
-  <div class="subhero"><img src="subhero.jpg" alt=""><div class="scrim"></div><div class="grain"></div>
+  <div class="subhero"><img src="poster.jpg?v=2" alt=""><video class="sv" muted loop playsinline preload="none" aria-hidden="true"></video><div class="scrim"></div><div class="grain"></div>
     <div class="wrap"><p class="crumb">홈 / 함께하기</p><h1>함께하기</h1></div></div>
   <nav class="subtabs" aria-label="함께하기 메뉴"><ul class="wrap"><li><a href="#together/new">새가족 안내</a></li><li><a href="#together/card">온라인 새가족 등록</a></li><li><a href="#together/faq">자주 묻는 질문</a></li><li><a href="#together/prayer">기도 제목</a></li><li><a href="#together/news">교회 소식</a></li><li><a href="#together/album">교회앨범</a></li><li><a href="#together/offering">헌금 안내</a></li></ul></nav>
   <div class="wrap">
@@ -1275,6 +1277,18 @@ footer .wrap{padding-block:56px 48px}
   window.addEventListener("scroll",function(){if(!spyRaf)spyRaf=requestAnimationFrame(function(){spyRaf=0;spy()})},{passive:true});
   window.addEventListener("scrollend",function(){spyLock=0;spy()});
   var PT={about:"교회소개",worship:"예배안내 · 오시는 길",word:"말씀",bulletin:"주보",together:"함께하기 · 온라인 새가족 등록 · 자주 묻는 질문"};
+  /* 메뉴 페이지 위쪽에도 메인 화면과 같은 영상을 틀어 줍니다 (보고 있는 페이지 것만 재생) */
+  var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function subVideo(p){
+    document.querySelectorAll(".subhero video.sv").forEach(function(v){
+      var mine=v.closest(".page")&&v.closest(".page").id==="p-"+p;
+      if(!mine){try{v.pause()}catch(e){}return}
+      if(reduce||PREVIEW)return;
+      if(!v.getAttribute("src")){v.addEventListener("playing",function(){v.classList.add("on")});v.setAttribute("src","hero.mp4?v=3")}
+      try{v.currentTime=0}catch(e){}
+      var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});
+    });
+  }
   function show(){
     var h=(location.hash||"#home").slice(1).split("/"),p=h[0],sub=h[1]||"";
     if(pages.indexOf(p)<0)p="home";
@@ -1285,6 +1299,7 @@ footer .wrap{padding-block:56px 48px}
     document.title=(PT[p]?PT[p]+" | ":"")+"광야교회 Midbar church | 대한예수교장로회(통합, 고양시)";
     if(p==="word")loadWord();
     if(p==="worship")initMap();
+    subVideo(p);
     goSub(p,sub);
   }
   /* 같은 하위 메뉴를 다시 눌렀을 때도 그 자리로 이동 */
@@ -1542,7 +1557,7 @@ footer .wrap{padding-block:56px 48px}
   var docEl=document.documentElement,firstC=cachedC();
   if(!PREVIEW&&CONTENT_API){
     if(firstC){try{render(firstC)}catch(e){}}
-    else{docEl.classList.add("cwait");setTimeout(function(){docEl.classList.remove("cwait")},2500)}
+    else{docEl.classList.add("cwait");setTimeout(function(){docEl.classList.remove("cwait")},3000)}
   }
   (CONTENT_API
     ?retry(function(){return load(CONTENT_API+"?action=content")},4,600)
