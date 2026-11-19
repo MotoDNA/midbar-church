@@ -371,6 +371,7 @@ header.solid .pill.glass{background:var(--ink);color:#fff;box-shadow:none}
 .hero h1 .ln:nth-child(2)>span{animation-delay:.12s}
 .hero h1 .cite{font-family:var(--f-sans);font-size:clamp(13px,1.2vw,17px);font-weight:500;letter-spacing:.08em;color:rgba(255,255,255,.8);margin-left:.9em;vertical-align:.35em;text-shadow:0 2px 12px rgba(0,0,0,.35);white-space:nowrap}
 .hero h1 em{font-style:normal;color:rgba(255,255,255,.62)}
+html.cwait #heroSub,html.cwait .hero .eyebrow [data-t]{visibility:hidden}
 .hero .sub{margin-top:22px;max-width:30rem;font-size:17px;font-weight:300;line-height:1.65;color:rgba(255,255,255,.86);text-shadow:0 2px 18px rgba(0,0,0,.42)}
 .hero .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
 .hero .side{width:300px;flex:none;border-top:1px solid rgba(255,255,255,.35);padding-top:16px;font-size:14px;color:rgba(255,255,255,.85)}
@@ -854,7 +855,7 @@ footer .wrap{padding-block:56px 48px}
         <div>
           <p class="eyebrow in d1"><img class="pck" src="about/pck.png" alt="대한예수교장로회 교단마크" onerror="this.remove()"><span data-t="heroEyebrow" data-tg="첫 화면" data-tl="맨 위 교단·지역 표기">대한예수교장로회(통합) · 고양시 풍동</span></p>
           <h1><span class="ln"><span>광야에 길을,</span></span><span class="ln"><span><em>사막에</em> 강을<small class="cite">이사야 43:19</small></span></span></h1>
-          <p class="sub in d3" id="heroSub">척박한 광야 길을 걷는 듯한 일상 속에서, 광야교회가 여러분의 따뜻한 영적 오아시스가 되기를 소망합니다.</p>
+          <p class="sub in d3" id="heroSub">척박한 광야 길을 걷는 듯한 메마르고 험난한 일상 속에서 광야교회가 여러분의 삶에 은혜의 싹을 틔워주는 따뜻한 영적 오아시스가 되기를 소망합니다.</p>
           <div class="acts in d4">
             <a class="pill solid" href="#worship/times">이번 주일 예배 오기<span class="ar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg></span></a>
             <a class="pill glass" href="https://www.youtube.com/@midbar-church-smilepastor" target="_blank" rel="noopener">설교 영상 보기<span class="ar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9 9 3M4 3h5v5"/></svg></span></a>
@@ -1536,11 +1537,18 @@ footer .wrap{padding-block:56px 48px}
   var CKEY="midbar-content-v1";
   function cachedC(){try{return JSON.parse(localStorage.getItem(CKEY)||"null")}catch(e){return null}}
   function newer(a,b){return !b||String((a&&a.updated)||"")>=String(b.updated||"")}
+  /* 새로고침할 때 예전 문구가 잠깐 보였다가 바뀌지 않도록: 기억해 둔 최신 내용을 먼저 보여 주고,
+     처음 오신 분은 서버 내용이 올 때까지(최대 2.5초) 첫 화면 소개 문구를 잠시 숨겨 둡니다 */
+  var docEl=document.documentElement,firstC=cachedC();
+  if(!PREVIEW&&CONTENT_API){
+    if(firstC){try{render(firstC)}catch(e){}}
+    else{docEl.classList.add("cwait");setTimeout(function(){docEl.classList.remove("cwait")},2500)}
+  }
   (CONTENT_API
     ?retry(function(){return load(CONTENT_API+"?action=content")},4,600)
       .then(function(C){try{localStorage.setItem(CKEY,JSON.stringify(C))}catch(e){}return C})
       .catch(function(){var k=cachedC();return load("content.json").then(function(F){return newer(k,F)?k:F}).catch(function(){if(k)return k;throw 0})})
-    :load("content.json")).then(function(C){if(!previewData)render(C)}).catch(function(){});
+    :load("content.json")).then(function(C){if(!previewData)render(C);docEl.classList.remove("cwait")}).catch(function(){docEl.classList.remove("cwait")});
   window.MIDBAR_PREVIEW=function(C,view,target){
     if(C){previewData=C;render(C)}
     if(view&&location.hash!=="#"+view)location.hash=view;
