@@ -355,7 +355,7 @@ header.solid .pill.glass{background:var(--ink);color:#fff;box-shadow:none}
 .mnav .x{position:absolute;top:calc(env(safe-area-inset-top,0px) + 16px);right:max(16px,env(safe-area-inset-right,0px));width:44px;height:44px;border:0;background:none;color:inherit;font-size:28px;cursor:pointer}
 
 /* ---------- 히어로 ---------- */
-.hero{position:relative;height:max(600px,min(100svh,900px));overflow:hidden;background:#2A2A20;color:#fff}
+.hero{position:relative;min-height:max(600px,min(100svh,900px));display:flex;flex-direction:column;overflow:hidden;background:#2A2A20;color:#fff}
 .hero video,.hero .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 50%}
 .hero video{opacity:0;transition:opacity .6s ease}
 .hero video.ready{opacity:1}
@@ -363,7 +363,7 @@ header.solid .pill.glass{background:var(--ink);color:#fff;box-shadow:none}
 .hero .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,8,.45) 0%,rgba(10,12,8,.1) 22%,rgba(10,12,8,.12) 45%,rgba(10,12,8,.62) 100%)}
 .hero .sub,.hero .eyebrow,.hero h1 small{text-shadow:0 1px 3px rgba(0,0,0,.55),0 4px 18px rgba(0,0,0,.35)}
 .grain{position:absolute;inset:0;pointer-events:none;opacity:.08;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
-.hero .wrap{position:relative;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-block:0 56px}
+.hero .wrap{position:relative;flex:1;width:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-block:calc(env(safe-area-inset-top,0px) + 100px) 56px}
 .hero-row{display:flex;justify-content:space-between;align-items:flex-end;gap:40px}
 .hero .eyebrow{font-size:13px;letter-spacing:.18em;opacity:.8;text-shadow:0 2px 16px rgba(0,0,0,.3);display:flex;align-items:center;gap:8px}.hero .eyebrow .pck{height:26px;width:auto;flex:none;filter:drop-shadow(0 1px 4px rgba(0,0,0,.35))}
 .hero h1{font-family:var(--f-serif);font-weight:500;font-size:clamp(44px,7.4vw,112px);line-height:1.08;letter-spacing:-.035em;margin-top:18px;text-shadow:0 16px 38px rgba(0,0,0,.28)}
@@ -695,10 +695,10 @@ footer .wrap{padding-block:56px 48px}
 @media (max-width:640px){
   header .wrap{height:64px}
   .subtabs{top:calc(env(safe-area-inset-top,0px) + 64px)}
-  .hero{height:max(640px,min(100svh,820px))}
+  .hero{min-height:max(640px,min(100svh,820px))}
   .hero video,.hero .poster{object-position:68% 50%}
   .hero .scrim{background:linear-gradient(180deg,rgba(10,12,8,.42) 0%,rgba(10,12,8,.12) 25%,rgba(10,12,8,.26) 45%,rgba(10,12,8,.78) 100%)}
-  .hero .wrap{padding-block:0 36px}
+  .hero .wrap{padding-block:calc(env(safe-area-inset-top,0px) + 84px) 36px}
   .hero .sub{font-size:15.5px}
   .hero .acts{flex-direction:column;align-items:stretch}
   .hero .acts .pill{justify-content:space-between}
