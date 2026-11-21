@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-19T14:53:02+09:00",
+ "updated": "2026-11-21T18:52:41+09:00",
  "categories": [
   {
    "key": "sunday",
@@ -102,6 +102,13 @@
    "key": "friday",
    "name": "금요기도회",
    "videos": [
+    {
+     "id": "9m6ZbfCz1K4",
+     "title": "기도의 친구를 만들라",
+     "scripture": "다니엘 2:12~19",
+     "date": "2026-11-20",
+     "note": ""
+    },
     {
      "id": "49EO3qa4SwA",
      "title": "착한 일을 시작하신 하나님",
