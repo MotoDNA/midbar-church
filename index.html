@@ -360,7 +360,8 @@ header.solid .pill.glass{background:var(--ink);color:#fff;box-shadow:none}
 .hero video{opacity:0;transition:opacity .6s ease}
 .hero video.ready{opacity:1}
 .hero .poster{animation:settle 1.8s var(--ease) both}
-.hero .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,8,.55) 0%,rgba(10,12,8,.28) 22%,rgba(10,12,8,.28) 45%,rgba(10,12,8,.7) 100%)}
+.hero .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,8,.45) 0%,rgba(10,12,8,.1) 22%,rgba(10,12,8,.12) 45%,rgba(10,12,8,.62) 100%)}
+.hero .sub,.hero .eyebrow,.hero h1 small{text-shadow:0 1px 3px rgba(0,0,0,.55),0 4px 18px rgba(0,0,0,.35)}
 .grain{position:absolute;inset:0;pointer-events:none;opacity:.08;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
 .hero .wrap{position:relative;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-block:0 56px}
 .hero-row{display:flex;justify-content:space-between;align-items:flex-end;gap:40px}
@@ -372,6 +373,7 @@ header.solid .pill.glass{background:var(--ink);color:#fff;box-shadow:none}
 .hero h1 .cite{font-family:var(--f-sans);font-size:clamp(13px,1.2vw,17px);font-weight:500;letter-spacing:.08em;color:rgba(255,255,255,.8);margin-left:.9em;vertical-align:.35em;text-shadow:0 2px 12px rgba(0,0,0,.35);white-space:nowrap}
 .hero h1 em{font-style:normal;color:rgba(255,255,255,.62)}
 html.cwait #bulList,html.cwait #footAddr,html.cwait #greetBody,html.cwait #greetLead,html.cwait #greetPhoto,html.cwait #heroSide,html.cwait #heroSub,html.cwait #histRows,html.cwait #homeBul,html.cwait #homeNews,html.cwait #homeTimes,html.cwait #newcSteps,html.cwait #newsRows,html.cwait #offerRows,html.cwait #placeRows,html.cwait #prayerRows,html.cwait #worshipTimes,html.cwait [data-t],html.cwait img[data-img]{visibility:hidden}
+html.cwait .hero-row{visibility:hidden}html.cwait .hero-row,html.cwait .hero-row *{animation-play-state:paused!important}
 .hero .sub{margin-top:22px;max-width:30rem;font-size:17px;font-weight:300;line-height:1.65;color:rgba(255,255,255,.86);text-shadow:0 2px 18px rgba(0,0,0,.42)}
 .hero .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
 .hero .side{width:300px;flex:none;border-top:1px solid rgba(255,255,255,.35);padding-top:16px;font-size:14px;color:rgba(255,255,255,.85)}
@@ -695,7 +697,7 @@ footer .wrap{padding-block:56px 48px}
   .subtabs{top:calc(env(safe-area-inset-top,0px) + 64px)}
   .hero{height:max(640px,min(100svh,820px))}
   .hero video,.hero .poster{object-position:68% 50%}
-  .hero .scrim{background:linear-gradient(180deg,rgba(10,12,8,.55) 0%,rgba(10,12,8,.32) 25%,rgba(10,12,8,.42) 45%,rgba(10,12,8,.82) 100%)}
+  .hero .scrim{background:linear-gradient(180deg,rgba(10,12,8,.42) 0%,rgba(10,12,8,.12) 25%,rgba(10,12,8,.26) 45%,rgba(10,12,8,.78) 100%)}
   .hero .wrap{padding-block:0 36px}
   .hero .sub{font-size:15.5px}
   .hero .acts{flex-direction:column;align-items:stretch}
