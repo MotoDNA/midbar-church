@@ -1,10 +1,17 @@
 {
- "updated": "2026-11-21T18:52:41+09:00",
+ "updated": "2026-11-23T15:04:28+09:00",
  "categories": [
   {
    "key": "sunday",
    "name": "주일설교",
    "videos": [
+    {
+     "id": "qOF0Bkz3KqU",
+     "title": "외롭다고 느껴질 때",
+     "scripture": "요한복음 14:16~20",
+     "date": "2026-11-22",
+     "note": ""
+    },
     {
      "id": "sexCjcuHsVk",
      "title": "인생이 불확실할 때",
