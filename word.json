@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23T15:04:28+09:00",
+ "updated": "2026-11-28T19:27:43+09:00",
  "categories": [
   {
    "key": "sunday",
@@ -109,6 +109,13 @@
    "key": "friday",
    "name": "금요기도회",
    "videos": [
+    {
+     "id": "CLdDmSxEWaI",
+     "title": "크고 은밀한 응답",
+     "scripture": "예레미야 33:1~3",
+     "date": "2026-11-27",
+     "note": ""
+    },
     {
      "id": "9m6ZbfCz1K4",
      "title": "기도의 친구를 만들라",
